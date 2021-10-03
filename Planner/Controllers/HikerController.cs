@@ -49,13 +49,13 @@ namespace Planner.Controllers
 		/// <summary>
 		/// Get a hiker by ID.
 		/// </summary>
-		/// <param name="Id"></param>
+		/// <param name="id"></param>
 		/// <returns>ID of the hiker.</returns>
 		[HttpGet]
-		public async Task<ActionResult> Details(int Id)
+		public async Task<ActionResult> Details(int id)
 		{
 			var hiker = await _dbContext.Hiker
-				.FirstOrDefaultAsync(h => h.Id == Id)
+				.FirstOrDefaultAsync(h => h.Id == id)
 				.ConfigureAwait(true);
 			var viewModel = new HikerViewModel(hiker);
 			return View(viewModel);
@@ -83,7 +83,7 @@ namespace Planner.Controllers
 			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction("Index");
+			return RedirectToAction(nameof(Index));
 		}
 
 		/// <summary>
@@ -104,7 +104,45 @@ namespace Planner.Controllers
 			_dbContext.Entry(hiker).State = EntityState.Modified;
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 			
-			return RedirectToAction("Index");
+			return RedirectToAction(nameof(Index));
+		}
+
+		// GET: Hiker/Delete/{id}
+		/// <summary>
+		/// Confirm deleting a hiker.
+		/// </summary>
+		/// <param name="id">ID of the hiker.</param>
+		/// <returns></returns>
+		public async Task<IActionResult> Delete(int id)
+		{
+			var hiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.Id == id)
+				.ConfigureAwait(true);
+			if (hiker == null)
+			{
+				return NotFound();
+			}
+
+			var viewModel = new HikerViewModel(hiker);
+			return View(viewModel);
+		}
+
+		// POST: Hiker/Delete/{id}
+		/// <summary>
+		/// Delete a hiker by ID.
+		/// </summary>
+		/// <param name="id">ID of the hiker.</param>
+		/// <returns></returns>
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			var hiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.Id == id)
+				.ConfigureAwait(true);
+			_dbContext.Hiker.Remove(hiker);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			return RedirectToAction(nameof(Index));
 		}
 	}
 }

@@ -54,15 +54,15 @@ namespace Planner.Controllers
 		/// <summary>
 		/// Get a trip by ID.
 		/// </summary>
-		/// <param name="Id"></param>
+		/// <param name="id"></param>
 		/// <returns>ID of the trip.</returns>
 		[HttpGet]
-		public async Task<ActionResult> Details(int Id)
+		public async Task<ActionResult> Details(int id)
 		{
 			var trip = await _dbContext.Trip
 				.Include(t => t.Peak)
 				.Include(t => t.Owner)
-				.FirstOrDefaultAsync(t => t.Id == Id)
+				.FirstOrDefaultAsync(t => t.Id == id)
 				.ConfigureAwait(true);
 			var viewModel = new TripViewModel(trip);
 			return View(viewModel);
@@ -90,7 +90,7 @@ namespace Planner.Controllers
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction("Index");
+			return RedirectToAction(nameof(Index));
 		}
 
 		/// <summary>
@@ -111,7 +111,49 @@ namespace Planner.Controllers
 			_dbContext.Entry(trip).State = EntityState.Modified;
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction("Index");
+			return RedirectToAction(nameof(Index));
+		}
+
+		// GET: Trip/Delete/{id}
+		/// <summary>
+		/// Confirm deleting a trip.
+		/// </summary>
+		/// <param name="id">ID of the trip.</param>
+		/// <returns></returns>
+		public async Task<IActionResult> Delete(int id)
+		{
+			var trip = await _dbContext.Trip
+				.Include(t => t.Peak)
+				.Include(t => t.Owner)
+				.FirstOrDefaultAsync(t => t.Id == id)
+				.ConfigureAwait(true);
+			if (trip == null)
+			{
+				return NotFound();
+			}
+
+			var viewModel = new TripViewModel(trip);
+			return View(viewModel);
+		}
+
+		// POST: Trip/Delete/{id}
+		/// <summary>
+		/// Delete a trip by ID.
+		/// </summary>
+		/// <param name="id">ID of the trip.</param>
+		/// <returns></returns>
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			var trip = await _dbContext.Trip
+				.Include(t => t.Peak)
+				.Include(t => t.Owner)
+				.FirstOrDefaultAsync(t => t.Id == id)
+				.ConfigureAwait(true);
+			_dbContext.Trip.Remove(trip);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			return RedirectToAction(nameof(Index));
 		}
 	}
 }
