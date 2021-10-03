@@ -37,6 +37,7 @@ namespace Planner.Models
 			set;
 		}
 
+		[Required]
 		public int Days
 		{
 			get;
@@ -44,6 +45,7 @@ namespace Planner.Models
 		}
 
 		[Column("start_date")]
+		[Required]
 		public DateTime StartDate
 		{
 			get;
@@ -51,6 +53,7 @@ namespace Planner.Models
 		}
 
 		[Column("peak_id")]
+		[Required]
 		public int PeakId
 		{
 			get;
@@ -65,6 +68,7 @@ namespace Planner.Models
 		}
 
 		[Column("owner_id")]
+		[Required]
 		public int OwnerId
 		{
 			get;
@@ -79,6 +83,7 @@ namespace Planner.Models
 		}
 
 		[Column("group_size")]
+		[Required]
 		public int GroupSize
 		{
 			get;

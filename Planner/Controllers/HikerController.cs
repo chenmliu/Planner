@@ -62,6 +62,31 @@ namespace Planner.Controllers
 		}
 
 		/// <summary>
+		/// Fill in the details to add a hiker.
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		public ActionResult Create()
+		{
+			return View();
+		}
+
+		/// <summary>
+		/// Submit a hiker.
+		/// </summary>
+		/// <param name="hikerViewModel">Hiker information.</param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<ActionResult> CreateSubmit(HikerViewModel hikerViewModel)
+		{
+			var hiker = new Hiker(hikerViewModel);
+			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			return RedirectToAction("Index");
+		}
+
+		/// <summary>
 		/// Update a hiker by ID.
 		/// </summary>
 		/// <param name="updatedHiker">Updated hiker information.</param>
@@ -77,7 +102,6 @@ namespace Planner.Controllers
 
 			var hiker = new Hiker(updatedHiker);
 			_dbContext.Entry(hiker).State = EntityState.Modified;
-			
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 			
 			return RedirectToAction("Index");

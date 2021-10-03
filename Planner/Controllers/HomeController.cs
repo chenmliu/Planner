@@ -69,6 +69,31 @@ namespace Planner.Controllers
 		}
 
 		/// <summary>
+		/// Fill in the details to add a trip.
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		public ActionResult Create()
+		{
+			return View();
+		}
+
+		/// <summary>
+		/// Submit a trip.
+		/// </summary>
+		/// <param name="tripViewModel">Trip information.</param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<ActionResult> CreateSubmit(TripViewModel tripViewModel)
+		{
+			var trip = new Trip(tripViewModel);
+			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			return RedirectToAction("Index");
+		}
+
+		/// <summary>
 		/// Update a trip by ID.
 		/// </summary>
 		/// <param name="updatedTrip">Updated trip information.</param>
@@ -84,7 +109,6 @@ namespace Planner.Controllers
 
 			var trip = new Trip(updatedTrip);
 			_dbContext.Entry(trip).State = EntityState.Modified;
-
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
 			return RedirectToAction("Index");

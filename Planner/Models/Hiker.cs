@@ -47,18 +47,21 @@ namespace Planner.Models
 			set;
 		}
 
+		[Required]
 		public string Phone
 		{
 			get;
 			set;
 		}
 
+		[Required]
 		public string City
 		{
 			get;
 			set;
 		}
 
+		[Required]
 		public bool Awd
 		{
 			get;
@@ -66,6 +69,7 @@ namespace Planner.Models
 		}
 
 		[Column("emergency_contact_name")]
+		[Required]
 		public string EmergencyContactName
 		{
 			get;
@@ -73,6 +77,7 @@ namespace Planner.Models
 		}
 
 		[Column("emergency_contact_phone")]
+		[Required]
 		public string EmergencyContactPhone
 		{
 			get;
