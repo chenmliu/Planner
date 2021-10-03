@@ -35,22 +35,12 @@ namespace Planner.Controllers
 		/// Get a hiker by ID.
 		/// GET: Hiker/Edit/{id}
 		/// </summary>
-		/// <param name="Id"></param>
+		/// <param name="id"></param>
 		/// <returns>ID of the hiker.</returns>
 		[HttpGet]
-		public async Task<ActionResult> Edit(int Id)
+		public async Task<IActionResult> Edit(int id)
 		{
-			var hiker = await _dbContext.Hiker
-				.FirstOrDefaultAsync(h => h.Id == Id)
-				.ConfigureAwait(true);
-
-			if (hiker == null)
-			{
-				return NotFound();
-			}
-
-			var viewModel = new HikerViewModel(hiker);
-			return View(viewModel);
+			return await GetHikerViewModelByIdAsync(id);
 		}
 
 		/// <summary>
@@ -60,19 +50,9 @@ namespace Planner.Controllers
 		/// <param name="id"></param>
 		/// <returns>ID of the hiker.</returns>
 		[HttpGet]
-		public async Task<ActionResult> Details(int id)
+		public async Task<IActionResult> Details(int id)
 		{
-			var hiker = await _dbContext.Hiker
-				.FirstOrDefaultAsync(h => h.Id == id)
-				.ConfigureAwait(true);
-
-			if (hiker == null)
-			{
-				return NotFound();
-			}
-
-			var viewModel = new HikerViewModel(hiker);
-			return View(viewModel);
+			return await GetHikerViewModelByIdAsync(id);
 		}
 
 		/// <summary>
@@ -129,17 +109,7 @@ namespace Planner.Controllers
 		/// <returns></returns>
 		public async Task<IActionResult> Delete(int id)
 		{
-			var hiker = await _dbContext.Hiker
-				.FirstOrDefaultAsync(h => h.Id == id)
-				.ConfigureAwait(true);
-
-			if (hiker == null)
-			{
-				return NotFound();
-			}
-
-			var viewModel = new HikerViewModel(hiker);
-			return View(viewModel);
+			return await GetHikerViewModelByIdAsync(id);
 		}
 
 		/// <summary>
@@ -164,6 +134,21 @@ namespace Planner.Controllers
 			_dbContext.Hiker.Remove(hiker);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 			return RedirectToAction(nameof(Index));
+		}
+
+		private async Task<IActionResult> GetHikerViewModelByIdAsync(int id)
+		{
+			var hiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.Id == id)
+				.ConfigureAwait(true);
+
+			if (hiker == null)
+			{
+				return NotFound();
+			}
+
+			var viewModel = new HikerViewModel(hiker);
+			return View(viewModel);
 		}
 	}
 }

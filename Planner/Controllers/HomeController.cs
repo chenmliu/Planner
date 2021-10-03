@@ -38,24 +38,12 @@ namespace Planner.Controllers
 		/// Get a trip by ID.
 		/// GET: Trip/Edit/{id}
 		/// </summary>
-		/// <param name="Id"></param>
+		/// <param name="id"></param>
 		/// <returns>ID of the trip.</returns>
 		[HttpGet]
-		public async Task<ActionResult> Edit(int Id)
+		public async Task<IActionResult> Edit(int id)
 		{
-			var trip = await _dbContext.Trip
-				.Include(t => t.Peak)
-				.Include(t => t.Owner)
-				.FirstOrDefaultAsync(t => t.Id == Id)
-				.ConfigureAwait(true);
-
-			if (trip == null)
-			{
-				return NotFound();
-			}
-
-			var viewModel = new TripViewModel(trip);
-			return View(viewModel);
+			return await GetTripViewModelByIdAsync(id);
 		}
 
 		/// <summary>
@@ -65,21 +53,9 @@ namespace Planner.Controllers
 		/// <param name="id"></param>
 		/// <returns>ID of the trip.</returns>
 		[HttpGet]
-		public async Task<ActionResult> Details(int id)
+		public async Task<IActionResult> Details(int id)
 		{
-			var trip = await _dbContext.Trip
-				.Include(t => t.Peak)
-				.Include(t => t.Owner)
-				.FirstOrDefaultAsync(t => t.Id == id)
-				.ConfigureAwait(true);
-
-			if (trip == null)
-			{
-				return NotFound();
-			}
-
-			var viewModel = new TripViewModel(trip);
-			return View(viewModel);
+			return await GetTripViewModelByIdAsync(id);
 		}
 
 		/// <summary>
@@ -136,19 +112,7 @@ namespace Planner.Controllers
 		/// <returns></returns>
 		public async Task<IActionResult> Delete(int id)
 		{
-			var trip = await _dbContext.Trip
-				.Include(t => t.Peak)
-				.Include(t => t.Owner)
-				.FirstOrDefaultAsync(t => t.Id == id)
-				.ConfigureAwait(true);
-
-			if (trip == null)
-			{
-				return NotFound();
-			}
-
-			var viewModel = new TripViewModel(trip);
-			return View(viewModel);
+			return await GetTripViewModelByIdAsync(id);
 		}
 
 		/// <summary>
@@ -175,6 +139,23 @@ namespace Planner.Controllers
 			_dbContext.Trip.Remove(trip);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 			return RedirectToAction(nameof(Index));
+		}
+
+		private async Task<IActionResult> GetTripViewModelByIdAsync(int id)
+		{
+			var trip = await _dbContext.Trip
+				.Include(t => t.Peak)
+				.Include(t => t.Owner)
+				.FirstOrDefaultAsync(t => t.Id == id)
+				.ConfigureAwait(true);
+
+			if (trip == null)
+			{
+				return NotFound();
+			}
+
+			var viewModel = new TripViewModel(trip);
+			return View(viewModel);
 		}
 	}
 }
