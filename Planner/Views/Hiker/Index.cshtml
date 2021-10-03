@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Hikers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Hikers</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@model IEnumerable<HikerViewModel>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var hiker in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => hiker.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => hiker.City)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = hiker.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = hiker.Id  }) |
+            @Html.ActionLink("Delete", "Delete", new { id = hiker.Id })
+        </td>
+    </tr>
+}
+</table>

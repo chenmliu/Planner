@@ -1,0 +1,66 @@
+﻿@model Planner.Models.TripViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>TripViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Days" class="control-label"></label>
+                <input asp-for="Days" class="form-control" />
+                <span asp-validation-for="Days" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PeakId" class="control-label"></label>
+                <input asp-for="PeakId" class="form-control" />
+                <span asp-validation-for="PeakId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PeakName" class="control-label"></label>
+                <input asp-for="PeakName" class="form-control" />
+                <span asp-validation-for="PeakName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OwnerId" class="control-label"></label>
+                <input asp-for="OwnerId" class="form-control" />
+                <span asp-validation-for="OwnerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OwnerName" class="control-label"></label>
+                <input asp-for="OwnerName" class="form-control" />
+                <span asp-validation-for="OwnerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupSize" class="control-label"></label>
+                <input asp-for="GroupSize" class="form-control" />
+                <span asp-validation-for="GroupSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
