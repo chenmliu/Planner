@@ -39,7 +39,25 @@ namespace Planner.Controllers
 		/// </summary>
 		/// <param name="Id"></param>
 		/// <returns>ID of the trip.</returns>
+		[HttpGet]
 		public async Task<ActionResult> Edit(int Id)
+		{
+			var trip = await _dbContext.Trip
+				.Include(t => t.Peak)
+				.Include(t => t.Owner)
+				.FirstOrDefaultAsync(t => t.Id == Id)
+				.ConfigureAwait(true);
+			var viewModel = new TripViewModel(trip);
+			return View(viewModel);
+		}
+
+		/// <summary>
+		/// Get a trip by ID.
+		/// </summary>
+		/// <param name="Id"></param>
+		/// <returns>ID of the trip.</returns>
+		[HttpGet]
+		public async Task<ActionResult> Details(int Id)
 		{
 			var trip = await _dbContext.Trip
 				.Include(t => t.Peak)

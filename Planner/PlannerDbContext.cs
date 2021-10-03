@@ -15,5 +15,9 @@ namespace Planner
         public DbSet<Peak> Peak { get; set; }
 
         public DbSet<Trip> Trip { get; set; }
+
+        public DbSet<TripViewModel> TripViewModel { get; set; }
+
+        public DbSet<HikerViewModel> HikerViewModel { get; set; }
     }
 }

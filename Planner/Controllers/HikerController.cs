@@ -36,7 +36,23 @@ namespace Planner.Controllers
 		/// </summary>
 		/// <param name="Id"></param>
 		/// <returns>ID of the hiker.</returns>
+		[HttpGet]
 		public async Task<ActionResult> Edit(int Id)
+		{
+			var hiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.Id == Id)
+				.ConfigureAwait(true);
+			var viewModel = new HikerViewModel(hiker);
+			return View(viewModel);
+		}
+
+		/// <summary>
+		/// Get a hiker by ID.
+		/// </summary>
+		/// <param name="Id"></param>
+		/// <returns>ID of the hiker.</returns>
+		[HttpGet]
+		public async Task<ActionResult> Details(int Id)
 		{
 			var hiker = await _dbContext.Hiker
 				.FirstOrDefaultAsync(h => h.Id == Id)
