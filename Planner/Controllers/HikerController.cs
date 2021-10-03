@@ -42,6 +42,12 @@ namespace Planner.Controllers
 			var hiker = await _dbContext.Hiker
 				.FirstOrDefaultAsync(h => h.Id == Id)
 				.ConfigureAwait(true);
+
+			if (hiker == null)
+			{
+				return NotFound();
+			}
+
 			var viewModel = new HikerViewModel(hiker);
 			return View(viewModel);
 		}
@@ -57,6 +63,12 @@ namespace Planner.Controllers
 			var hiker = await _dbContext.Hiker
 				.FirstOrDefaultAsync(h => h.Id == id)
 				.ConfigureAwait(true);
+
+			if (hiker == null)
+			{
+				return NotFound();
+			}
+
 			var viewModel = new HikerViewModel(hiker);
 			return View(viewModel);
 		}
@@ -118,6 +130,7 @@ namespace Planner.Controllers
 			var hiker = await _dbContext.Hiker
 				.FirstOrDefaultAsync(h => h.Id == id)
 				.ConfigureAwait(true);
+
 			if (hiker == null)
 			{
 				return NotFound();
@@ -140,6 +153,12 @@ namespace Planner.Controllers
 			var hiker = await _dbContext.Hiker
 				.FirstOrDefaultAsync(h => h.Id == id)
 				.ConfigureAwait(true);
+
+			if (hiker == null)
+			{
+				return NotFound();
+			}
+
 			_dbContext.Hiker.Remove(hiker);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 			return RedirectToAction(nameof(Index));

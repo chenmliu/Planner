@@ -47,6 +47,12 @@ namespace Planner.Controllers
 				.Include(t => t.Owner)
 				.FirstOrDefaultAsync(t => t.Id == Id)
 				.ConfigureAwait(true);
+
+			if (trip == null)
+			{
+				return NotFound();
+			}
+
 			var viewModel = new TripViewModel(trip);
 			return View(viewModel);
 		}
@@ -64,6 +70,12 @@ namespace Planner.Controllers
 				.Include(t => t.Owner)
 				.FirstOrDefaultAsync(t => t.Id == id)
 				.ConfigureAwait(true);
+
+			if (trip == null)
+			{
+				return NotFound();
+			}
+
 			var viewModel = new TripViewModel(trip);
 			return View(viewModel);
 		}
@@ -127,6 +139,7 @@ namespace Planner.Controllers
 				.Include(t => t.Owner)
 				.FirstOrDefaultAsync(t => t.Id == id)
 				.ConfigureAwait(true);
+
 			if (trip == null)
 			{
 				return NotFound();
@@ -151,6 +164,12 @@ namespace Planner.Controllers
 				.Include(t => t.Owner)
 				.FirstOrDefaultAsync(t => t.Id == id)
 				.ConfigureAwait(true);
+
+			if (trip == null)
+			{
+				return NotFound();
+			}
+
 			_dbContext.Trip.Remove(trip);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 			return RedirectToAction(nameof(Index));
