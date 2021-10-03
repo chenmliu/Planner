@@ -76,8 +76,8 @@ namespace Planner.Controllers
 		/// </summary>
 		/// <param name="hikerViewModel">Hiker information.</param>
 		/// <returns></returns>
-		[HttpPost]
-		public async Task<ActionResult> CreateSubmit(HikerViewModel hikerViewModel)
+		[HttpPost, ActionName("Create")]
+		public async Task<ActionResult> CreateSubmitted(HikerViewModel hikerViewModel)
 		{
 			var hiker = new Hiker(hikerViewModel);
 			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);

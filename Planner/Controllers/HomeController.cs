@@ -83,8 +83,8 @@ namespace Planner.Controllers
 		/// </summary>
 		/// <param name="tripViewModel">Trip information.</param>
 		/// <returns></returns>
-		[HttpPost]
-		public async Task<ActionResult> CreateSubmit(TripViewModel tripViewModel)
+		[HttpPost, ActionName("Create")]
+		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel)
 		{
 			var trip = new Trip(tripViewModel);
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
