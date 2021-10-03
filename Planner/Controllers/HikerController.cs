@@ -33,6 +33,7 @@ namespace Planner.Controllers
 
 		/// <summary>
 		/// Get a hiker by ID.
+		/// GET: Hiker/Edit/{id}
 		/// </summary>
 		/// <param name="Id"></param>
 		/// <returns>ID of the hiker.</returns>
@@ -54,6 +55,7 @@ namespace Planner.Controllers
 
 		/// <summary>
 		/// Get a hiker by ID.
+		/// GET: Hiker/Details/{id}
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns>ID of the hiker.</returns>
@@ -102,7 +104,7 @@ namespace Planner.Controllers
 		/// Update a hiker by ID.
 		/// </summary>
 		/// <param name="updatedHiker">Updated hiker information.</param>
-		/// <returns>Hiker with the given ID.</returns>
+		/// <returns></returns>
 		[HttpPost]
 		public async Task<ActionResult> Edit(HikerViewModel updatedHiker)
 		{
@@ -119,9 +121,9 @@ namespace Planner.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		// GET: Hiker/Delete/{id}
 		/// <summary>
 		/// Confirm deleting a hiker.
+		/// GET: Hiker/Delete/{id}
 		/// </summary>
 		/// <param name="id">ID of the hiker.</param>
 		/// <returns></returns>
@@ -140,9 +142,9 @@ namespace Planner.Controllers
 			return View(viewModel);
 		}
 
-		// POST: Hiker/Delete/{id}
 		/// <summary>
 		/// Delete a hiker by ID.
+		/// POST: Hiker/Delete/{id}
 		/// </summary>
 		/// <param name="id">ID of the hiker.</param>
 		/// <returns></returns>

@@ -36,6 +36,7 @@ namespace Planner.Controllers
 
 		/// <summary>
 		/// Get a trip by ID.
+		/// GET: Trip/Edit/{id}
 		/// </summary>
 		/// <param name="Id"></param>
 		/// <returns>ID of the trip.</returns>
@@ -59,6 +60,7 @@ namespace Planner.Controllers
 
 		/// <summary>
 		/// Get a trip by ID.
+		/// GET: Trip/Details/{id}
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns>ID of the trip.</returns>
@@ -109,7 +111,7 @@ namespace Planner.Controllers
 		/// Update a trip by ID.
 		/// </summary>
 		/// <param name="updatedTrip">Updated trip information.</param>
-		/// <returns>Trip with the given ID.</returns>
+		/// <returns></returns>
 		[HttpPost]
 		public async Task<ActionResult> Edit(TripViewModel updatedTrip)
 		{
@@ -126,9 +128,9 @@ namespace Planner.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		// GET: Trip/Delete/{id}
 		/// <summary>
 		/// Confirm deleting a trip.
+		/// GET: Trip/Delete/{id}
 		/// </summary>
 		/// <param name="id">ID of the trip.</param>
 		/// <returns></returns>
@@ -149,9 +151,9 @@ namespace Planner.Controllers
 			return View(viewModel);
 		}
 
-		// POST: Trip/Delete/{id}
 		/// <summary>
 		/// Delete a trip by ID.
+		/// POST: Trip/Delete/{id}
 		/// </summary>
 		/// <param name="id">ID of the trip.</param>
 		/// <returns></returns>
