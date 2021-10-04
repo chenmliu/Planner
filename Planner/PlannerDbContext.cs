@@ -3,7 +3,7 @@ using Planner.Models;
 
 namespace Planner
 {
-	public class PlannerDbContext : DbContext /* IdentityDbContext */
+	public class PlannerDbContext : DbContext
     {
         public PlannerDbContext(DbContextOptions<PlannerDbContext> options)
             : base(options)

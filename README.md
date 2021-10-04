@@ -21,43 +21,33 @@ When prompted, sign it to your Azure account.
 
 ## Folder structure
 
-Planner/
-├── Controllers/
-│   ├── HikerController.cs
-│   ├── HomeController.cs
-│   ├── ResourcesController.cs
-│   └── ...
-├── Models/
-│   ├── Hiker.cs
-│   ├── HikerViewModel.cs
-│   └── ...
-├── Scripts/
-│   ├── create_tables.sql
-│   ├── insert_hiker.sql
-│   └── ...
-├── Views/
-    ├── Hiker/
-    │   ├── Create.cshtml
-    │   ├── Delete.cshtml
-    │   ├── Details.cshtml
-    │   ├── Edit.cshtml
-    │   └── Index.cshtml
-    ├── Home/
-    │   └── ...
-    └── Resources/
-
-
 ```
-my-app/
-├─ node_modules/
-├─ public/
-│  ├─ favicon.ico
-│  ├─ index.html
-│  ├─ robots.txt
-├─ src/
-│  ├─ index.css
-│  ├─ index.js
-├─ .gitignore
-├─ package.json
+Planner/
+├─ Controllers/
+│  ├─ HikerController.cs
+│  ├─ HomeController.cs
+│  ├─ ResourcesController.cs
+│  ├─ ...
+├─ Models/
+│  ├─ Hiker.cs
+│  ├─ HikerViewModel.cs
+│  ├─ ...
+├─ Scripts/
+│  ├─ create_tables.sql
+│  ├─ insert_hiker.sql
+│  ├─ ...
+├─ Views/
+│  ├─ Hiker/
+│     ├─ Create.cshtml
+│     ├─ Delete.cshtml
+│     ├─ Details.cshtml
+│     ├─ Edit.cshtml
+│     ├─ Index.cshtml
+│  ├─ Home/
+│     ├─ ...
+│  ├─ Resources/
+│     ├─ ...
+├─ PlannerDbContext
 ├─ README.md
+├─ ...
 ```
