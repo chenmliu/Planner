@@ -47,7 +47,7 @@ Planner/
     └── Resources/
 
 
-
+```
 my-app/
 ├─ node_modules/
 ├─ public/
@@ -60,3 +60,4 @@ my-app/
 ├─ .gitignore
 ├─ package.json
 ├─ README.md
+```
