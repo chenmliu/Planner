@@ -2,7 +2,7 @@
 
 ## Database access
 
-Azure subscription: \<to be shared\>
+Azure subscription: \<to be shared separately\>
 Resource group: Hackathon2021
 SQL server name: `tahoma`
 SQL database name: `tahoma`
@@ -13,7 +13,7 @@ To view and edit the database locally, you can use [SQL Management Studio](https
 - Server name: `tcp:tahoma.database.windows.net,1433`
 - Authentication: SQL Server Authentication
 - Login: `tahoma`
-- Password: \<to be shared\>
+- Password: \<to be shared separately\>
 
 When prompted, sign it to your Azure account.
 
@@ -23,9 +23,21 @@ If you get an error message saying your IP addressed is not allowed, go to the S
 
 ## Local development
 
-Open appsettings.json file, and provide the value for `DB_CONNECTION_STRING` setting. The connection string for the "Tahoma" SQL Database can be found in the Azure portal. 
+Open appsettings.json file, and provide the value for `DB_CONNECTION_STRING` setting. You can find the connection string for the "Tahoma" SQL Database in the Azure portal, and replace the `{your_password}` placeholder with the password shared separately.
+
+Make sure to undo the changes to this file before checking in code changes.
 
 ## Folder structure
+
+Controllers folder defines the operations (e.g.: CRUD - Create, Read, Update, Delete) for the various entities (e.g.: hiker, trip).
+
+Models folder has the data structure for the SQL database table (e.g.: `Hiker`), and their corresponding model for the view (e.g.: `HikerViewModel`).
+
+Scripts folder has the SQL scripts for creating the database tables, and populating them with some sample values. They have been executed against the SQL database, and can be re-run manually to roll back to the initial state.
+
+Views folder has the web pages. 
+
+`PlannerDbContext` has the connection to the SQL database.
 
 ```
 Planner/
