@@ -21,6 +21,10 @@ If you get an error message saying your IP addressed is not allowed, go to the S
 
 ![SQL Server login](tahomadb.png)
 
+## Local development
+
+Open appsettings.json file, and provide the value for `DB_CONNECTION_STRING` setting. The connection string for the "Tahoma" SQL Database can be found in the Azure portal. 
+
 ## Folder structure
 
 ```
