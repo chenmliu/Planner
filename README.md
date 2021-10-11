@@ -17,6 +17,8 @@ To view and edit the database locally, you can use [SQL Management Studio](https
 
 When prompted, sign it to your Azure account.
 
+If you get an error message saying your IP addressed is not allowed, go to the SQL Database in the Azure portal. On the overview page, click "Set server firewall", and add your IP there. Give it any rule name, and you can use your same IP for Start IP and End IP.
+
 ![SQL Server login](tahomadb.png)
 
 ## Folder structure
