@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,12 +27,12 @@ namespace Planner.Controllers
 		public async Task<ActionResult> Index()
 		{
 			var trips = await _dbContext.Trip
-				.Include(t => t.Peak)
-				.Include(t => t.Owner)
-				.Select(t => new TripViewModel(t))
-				.ToListAsync()
-				.ConfigureAwait(true);
-			return View(trips.OrderBy(t => t.Name));
+							  .Include(t => t.Peak)
+							  .Include(t => t.Owner)
+							  .ToListAsync()
+							  .ConfigureAwait(true);
+
+			return View(trips.Select(t => new TripViewModel(t)).OrderBy(t => t.Name));
 		}
 
 		/// <summary>
@@ -76,10 +77,9 @@ namespace Planner.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel)
 		{
-			var trip = new Trip(tripViewModel);
+			var trip = CreateTripFromViewModel(tripViewModel);
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
-
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -96,8 +96,7 @@ namespace Planner.Controllers
 			{
 				_dbContext.Entry(local).State = EntityState.Detached;
 			}
-
-			var trip = new Trip(updatedTrip);
+			var trip = CreateTripFromViewModel(updatedTrip);
 			_dbContext.Entry(trip).State = EntityState.Modified;
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
@@ -146,6 +145,7 @@ namespace Planner.Controllers
 			var trip = await _dbContext.Trip
 				.Include(t => t.Peak)
 				.Include(t => t.Owner)
+				//.Include(t => t.Hikers)
 				.FirstOrDefaultAsync(t => t.Id == id)
 				.ConfigureAwait(true);
 
@@ -154,8 +154,30 @@ namespace Planner.Controllers
 				return NotFound();
 			}
 
-			var viewModel = new TripViewModel(trip);
+            var hikerTrips = await _dbContext.HikerTrip
+                .Where(ht => ht.TripId == trip.Id)
+                .Include(ht => ht.Hiker)
+                .ToListAsync()
+                .ConfigureAwait(true);
+
+            var viewModel = new TripViewModel(trip);
+
+			viewModel.Hikers = hikerTrips.Select(ht => new HikerViewModel(ht.Hiker)).ToList();
+
 			return View(viewModel);
+		}
+
+		private Trip CreateTripFromViewModel(TripViewModel tripViewModel) {
+			return new Trip
+			{
+				Id = tripViewModel.Id,
+				Name = tripViewModel.Name,
+				Days = tripViewModel.Days,
+				StartDate = tripViewModel.StartDate,
+				PeakId = tripViewModel.PeakId,
+				OwnerId = tripViewModel.OwnerId,
+				GroupSize = tripViewModel.GroupSize
+			};
 		}
 	}
 }

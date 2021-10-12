@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,17 +10,6 @@ namespace Planner.Models
 		public Trip()
 		{
 
-		}
-
-		public Trip(TripViewModel trip)
-		{
-			Id = trip.Id;
-			Name = trip.Name;
-			Days = trip.Days;
-			StartDate = trip.StartDate;
-			PeakId = trip.PeakId;
-			OwnerId = trip.OwnerId;
-			GroupSize = trip.GroupSize;
 		}
 
 		[Key]
@@ -85,6 +75,12 @@ namespace Planner.Models
 		[Column("group_size")]
 		[Required]
 		public int GroupSize
+		{
+			get;
+			set;
+		}
+
+		public IEnumerable<HikerTrip> HikerTrips
 		{
 			get;
 			set;
