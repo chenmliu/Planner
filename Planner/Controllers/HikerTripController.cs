@@ -63,8 +63,7 @@ namespace Planner.Controllers
 
             await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
-			return RedirectToAction("Details", "Home", new { Id = hikerTripViewModel.TripId });
-
+			return RedirectToAction("Details", "Trip", new { Id = hikerTripViewModel.TripId });
 		}
 	}
 }

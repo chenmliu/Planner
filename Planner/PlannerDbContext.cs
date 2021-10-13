@@ -31,8 +31,8 @@ namespace Planner
             modelBuilder.Entity<HikerTrip>()
                 .HasKey(ht => ht.Id);
 
-            modelBuilder.Entity<HikerTrip>()
-                .HasKey(ht => new { ht.HikerId, ht.TripId });
+            //modelBuilder.Entity<HikerTrip>()
+            //    .HasKey(ht => new { ht.HikerId, ht.TripId });
             
             modelBuilder.Entity<HikerTrip>()
                 .HasOne(ht => ht.Hiker)
