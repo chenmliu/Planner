@@ -43,12 +43,12 @@ CREATE TABLE carpool
 	FOREIGN KEY (hiker_id) REFERENCES hiker (id)
 );
 
-CREATE TABLE permits 
+CREATE TABLE permit
 (
 	id INT PRIMARY KEY IDENTITY (1, 1),
 	hiker_id INT NOT NULL,
 	permit_type VARCHAR(30) NOT NULL, -- have enum in code for that
-	expiry_date DATE NOT NULL,
+	expiration_date DATE NOT NULL,
 	FOREIGN KEY (hiker_id) REFERENCES hiker (id)
 );
 
