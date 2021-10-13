@@ -11,7 +11,7 @@ namespace Planner.ViewModels
 
 		}
 
-		public TripViewModel(Trip trip)
+		public TripViewModel(Trip trip, string weatherDesc = "", string iconCode = "")
 		{
 			Id = trip.Id;
 			Name = trip.Name;
@@ -98,16 +98,38 @@ namespace Planner.ViewModels
 			set;
 		}
 
-		public string WeatherLabel
+		public string Location
         {
 			get;
 			set;
         }
 
-		public string IconUrl
+		public bool HasSnow
         {
 			get;
 			set;
+        }
+
+		public bool NeedHighClearanceVehicle
+        {
+			get;
+			set;
+        }
+
+		public float TotalDistance
+        {
+			get;
+			set;
+        }
+
+		public string WeatherLabel
+        {
+			get;
+        }
+
+		public string IconUrl
+        {
+			get;
         }
 
 		public List<HikerTripViewModel> Hikers { get; set; }
