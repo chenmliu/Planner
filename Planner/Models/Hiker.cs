@@ -117,5 +117,13 @@ namespace Planner.Models
 			get;
 			set;
 		}
+
+		[NotMapped]
+		public string FullName
+		{
+			get {
+				return $"{this.FirstName} {this.LastName}";
+			}
+		}
 	}
 }

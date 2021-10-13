@@ -67,7 +67,7 @@
                   <ul class="list-group">
                         @foreach(var hiker in @Model.Hikers)
                         {
-                            <li class="list-group-item">@hiker.HackerName
+                            <li class="list-group-item">@hiker.HikerName
                                 <a asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a>
                             </li>
                         }

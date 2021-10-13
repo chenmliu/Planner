@@ -20,7 +20,7 @@
 			get;
 			set;
 		}
-		public string HackerName
+		public string HikerName
 		{
 			get;
 			set;

@@ -65,5 +65,33 @@ namespace Planner.Controllers
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 			return RedirectToAction("Details", "Trip", new { Id = hikerTripViewModel.TripId });
 		}
+
+		public ActionResult Remove(int hikerId, int tripId)
+		{
+			var hirekTrip = _dbContext.HikerTrip
+				.Where(t => t.TripId == tripId && t.HikerId == hikerId)
+				//.Include(t => t.Hiker)
+				//.Include(t => t.Trip)
+				//.Select(t => )
+				.FirstOrDefault();
+			if (hirekTrip == null)
+            {
+				return NotFound();
+            }
+
+			var hiker = _dbContext.Hiker
+				.Where(t => t.Id == hikerId)
+				.FirstOrDefault();
+			var trip = _dbContext.Trip
+				.Where(t => t.Id == tripId)
+				.FirstOrDefault();
+		
+			return View(
+				new HikerTripViewModel { HikerId = hiker.Id, TripId = trip.Id, TripName = trip.Name, HikerName = hiker.FullName }
+			);
+		}
+
+
+
 	}
 }

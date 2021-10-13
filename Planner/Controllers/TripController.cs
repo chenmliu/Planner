@@ -161,7 +161,7 @@ namespace Planner.Controllers
 				.Join(_dbContext.Hiker,
 						  m => m.HikerId,
 						  v => v.Id,
-						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId,  HackerName = $"{v.FirstName} {v.LastName}"   })
+						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName   })
 				.ToListAsync();
 
 			var viewModel = new TripViewModel(trip);
