@@ -21,6 +21,8 @@ namespace Planner.Models
 			EmergencyContactName = hiker.EmergencyContactName;
 			EmergencyContactPhone = hiker.EmergencyContactPhone;
 			FunScale = FunScale;
+			UserName = hiker.UserName;
+			Password = hiker.Password;
 		}
 
 		[Key]
@@ -87,6 +89,21 @@ namespace Planner.Models
 		[Column("fun_scale")]
 		[Range(1, 3)]
 		public int FunScale
+		{
+			get;
+			set;
+		}
+
+		[Column("user_name")]
+		[Required]
+		public string UserName
+		{
+			get;
+			set;
+		}
+
+		[Required]
+		public string Password
 		{
 			get;
 			set;
