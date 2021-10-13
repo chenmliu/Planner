@@ -104,6 +104,21 @@ namespace Planner.Controllers
 			return View();
 		}
 
+		/// <summary>
+		/// Submit a hiker.
+		/// </summary>
+		/// <param name="hikerViewModel">Hiker information.</param>
+		/// <returns></returns>
+		[HttpPost, ActionName("Create")]
+		public async Task<ActionResult> CreateSubmitted(HikerViewModel hikerViewModel)
+		{
+			var hiker = new Hiker(hikerViewModel);
+			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			return RedirectToAction(nameof(Details), new { id = hiker.Id });
+		}
+
 		private async Task<IActionResult> GetHikerViewModelByIdAsync(int id)
 		{
 			var hiker = await _dbContext.Hiker
