@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Planner.ViewModels.TripViewModel>
+
+@{
     ViewData["Title"] = "Trips";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -9,7 +11,7 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-@model IEnumerable<TripViewModel>
+
 <table class="table">
     <tr>
         <th>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Planner.Models;
+using Planner.ViewModels;
 
 namespace Planner.Controllers
 {
@@ -154,7 +155,17 @@ namespace Planner.Controllers
 				return NotFound();
 			}
 
+			var hikers = await _dbContext.HikerTrip
+				.Where(ht => ht.TripId == trip.Id)
+				//.Include(ht => ht.Hiker)
+				.Join(_dbContext.Hiker,
+						  m => m.HikerId,
+						  v => v.Id,
+						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId,  HackerName = $"{v.FirstName} {v.LastName}"   })
+				.ToListAsync();
+
 			var viewModel = new TripViewModel(trip);
+			viewModel.Hikers = hikers;
 			return View(viewModel);
 		}
 	}

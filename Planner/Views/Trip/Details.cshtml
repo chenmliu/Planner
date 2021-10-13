@@ -1,4 +1,4 @@
-﻿@model Planner.Models.TripViewModel
+﻿@model Planner.ViewModels.TripViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -51,7 +51,30 @@
             @Html.DisplayFor(model => model.Members)
         </dd>
     </dl>
+    <div class="row">
+        <div class = "col-sm-6">
+            <h4>Hikers</h4>
+            @if (@Model.Hikers.Count() == 0)
+            {
+                <div class="alert alert-primary" role="alert">
+                    This trip is looking for hikers! 
+                    <a asp-action="Create" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Click here</a> to invite someone.
+                </div>
+            }
+            else
+            {
+              <ul class="list-group">
+                    @foreach(var hiker in @Model.Hikers)
+                    {
+                        <li class="list-group-item">@hiker.HackerName <a class="btn btn-remove btn-danger" asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a></li>
+                    }
+              </ul>
+              @Html.RouteLink("Invite", "https://test.com")
+            }
+        </div>
+    </div>
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

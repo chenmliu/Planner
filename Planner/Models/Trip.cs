@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Planner.ViewModels;
 
 namespace Planner.Models
 {
@@ -92,6 +94,12 @@ namespace Planner.Models
 		}
 
 		public string Members
+		{
+			get;
+			set;
+		}
+
+		public IEnumerable<HikerTrip> HikerTrips
 		{
 			get;
 			set;

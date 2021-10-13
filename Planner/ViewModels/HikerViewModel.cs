@@ -1,4 +1,6 @@
-﻿namespace Planner.Models
+﻿using Planner.Models;
+
+namespace Planner.ViewModels
 {
 	public class HikerViewModel
 	{

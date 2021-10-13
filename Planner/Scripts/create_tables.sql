@@ -33,3 +33,13 @@ CREATE TABLE trip
 	FOREIGN KEY (owner_id) REFERENCES hiker (id),
 	members VARCHAR (100) NOT NULL
 );
+
+
+CREATE TABLE hikerTrip
+(
+    id INT PRIMARY KEY IDENTITY (1, 1),
+	hiker_id INT NOT NULL,
+	trip_id INT NOT NULL,
+	FOREIGN KEY (hiker_id) REFERENCES hiker (id),
+	FOREIGN KEY (trip_id) REFERENCES trip (id)
+);

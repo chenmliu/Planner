@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Planner.Models;
+using Planner.ViewModels;
 
 namespace Planner
 {
-	public class PlannerDbContext : DbContext
+    public class PlannerDbContext : DbContext
     {
+
         public PlannerDbContext(DbContextOptions<PlannerDbContext> options)
             : base(options)
         {
@@ -16,8 +20,31 @@ namespace Planner
 
         public DbSet<Trip> Trip { get; set; }
 
+        public DbSet<HikerTrip> HikerTrip { get; set; }
+
         public DbSet<TripViewModel> TripViewModel { get; set; }
 
         public DbSet<HikerViewModel> HikerViewModel { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<HikerTrip>()
+                .HasKey(ht => ht.Id);
+
+            modelBuilder.Entity<HikerTrip>()
+                .HasKey(ht => new { ht.HikerId, ht.TripId });
+            
+            modelBuilder.Entity<HikerTrip>()
+                .HasOne(ht => ht.Hiker)
+                .WithMany(h => h.HikerTrips)
+                .HasForeignKey(ht => ht.TripId);
+            
+            modelBuilder.Entity<HikerTrip>()
+                .HasOne(ht => ht.Trip)
+                .WithMany(t => t.HikerTrips)
+                .HasForeignKey(bc => bc.HikerId);
+
+        }
     }
 }
+
