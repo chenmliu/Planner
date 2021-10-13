@@ -85,7 +85,7 @@ namespace Planner.Controllers
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction(nameof(Index));
+			return RedirectToAction("Details", new { Id = trip.Id });
 		}
 
 		/// <summary>
