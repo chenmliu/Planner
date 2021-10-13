@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Planner.ViewModels.TripViewModel>
+
+@{
+    ViewData["Title"] = "Trips";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Trips</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PeakName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OwnerName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var trip in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => trip.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => trip.StartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => trip.PeakName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => trip.OwnerName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = trip.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = trip.Id  }) |
+            @Html.ActionLink("Delete", "Delete", new { id = trip.Id })
+        </td>
+    </tr>
+}
+</table>

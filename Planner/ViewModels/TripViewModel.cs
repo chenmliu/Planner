@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Planner.Models;
 
-namespace Planner.Models
+namespace Planner.ViewModels
 {
 	public class TripViewModel
 	{
@@ -21,8 +22,9 @@ namespace Planner.Models
 			OwnerId = trip.Owner.Id;
 			OwnerName = trip.Owner.FirstName;
 			GroupSize = trip.GroupSize;
-			Hikers = new List<HikerViewModel>();
-        }
+			Hikers = new List<HikerTripViewModel>();
+			Members = trip.Members;
+		}
 
 		public int Id
 		{
@@ -77,7 +79,15 @@ namespace Planner.Models
 			get;
 			set;
 		}
-        
-		public List<HikerViewModel> Hikers { get; set; }
-    }
+
+		public string Members
+		{
+			get;
+			set;
+		}
+
+
+		public List<HikerTripViewModel> Hikers { get; set; }
+	}
+    
 }

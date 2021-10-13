@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Planner.Models;
+using Planner.ViewModels;
 
 namespace Planner.Controllers
 {
@@ -59,7 +60,6 @@ namespace Planner.Controllers
                 TripId = hikerTripViewModel.TripId,
                 HikerId = hikerTripViewModel.HikerId
             };
-
 
             await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);

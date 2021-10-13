@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Planner.ViewModels;
 
 namespace Planner.Models
 {
@@ -10,6 +11,18 @@ namespace Planner.Models
 		public Trip()
 		{
 
+		}
+
+		public Trip(TripViewModel trip)
+		{
+			Id = trip.Id;
+			Name = trip.Name;
+			Days = trip.Days;
+			StartDate = trip.StartDate;
+			PeakId = trip.PeakId;
+			OwnerId = trip.OwnerId;
+			GroupSize = trip.GroupSize;
+			Members = trip.Members;
 		}
 
 		[Key]
@@ -75,6 +88,12 @@ namespace Planner.Models
 		[Column("group_size")]
 		[Required]
 		public int GroupSize
+		{
+			get;
+			set;
+		}
+
+		public string Members
 		{
 			get;
 			set;

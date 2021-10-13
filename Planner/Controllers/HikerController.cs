@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Planner.Models;
+using Planner.ViewModels;
 
 namespace Planner.Controllers
 {
@@ -32,7 +33,7 @@ namespace Planner.Controllers
 		}
 
 		/// <summary>
-		/// Get a hiker by ID.
+		/// Edit a hiker by ID.
 		/// GET: Hiker/Edit/{id}
 		/// </summary>
 		/// <param name="id"></param>
@@ -88,6 +89,14 @@ namespace Planner.Controllers
 		[HttpPost]
 		public async Task<ActionResult> Edit(HikerViewModel updatedHiker)
 		{
+			// Retrieve the existing user's credential to re-insert these required fields.
+			// For MVP, don't allow users to update credential.
+			var existingHiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.Id == updatedHiker.Id)
+				.ConfigureAwait(true);
+			updatedHiker.UserName = existingHiker.UserName;
+			updatedHiker.Password = existingHiker.Password;
+
 			var local = _dbContext.Hiker.Local.FirstOrDefault(entry => entry.Id == updatedHiker.Id);
             if (local != null)
             {

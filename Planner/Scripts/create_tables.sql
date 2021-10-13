@@ -1,6 +1,8 @@
 CREATE TABLE hiker
 (
 	id INT PRIMARY KEY IDENTITY (1, 1),
+	user_name VARCHAR (50) NOT NULL,
+	password VARCHAR(50) NOT NULL,
 	first_name VARCHAR (50) NOT NULL,
 	last_name VARCHAR (50) NOT NULL,
 	phone VARCHAR (50) NOT NULL,
@@ -28,7 +30,8 @@ CREATE TABLE trip
 	owner_id INT NOT NULL,
 	group_size INT NOT NULL CHECK (group_size > 0),
 	FOREIGN KEY (peak_id) REFERENCES peak (id),
-	FOREIGN KEY (owner_id) REFERENCES hiker (id)
+	FOREIGN KEY (owner_id) REFERENCES hiker (id),
+	members VARCHAR (100) NOT NULL
 );
 
 

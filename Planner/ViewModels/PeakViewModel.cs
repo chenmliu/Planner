@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Planner.Models;
 
-namespace Planner.Models
+namespace Planner.ViewModels
 {
 	public class PeakViewModel
 	{

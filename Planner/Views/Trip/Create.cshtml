@@ -1,4 +1,4 @@
-﻿@model Planner.Models.TripViewModel
+﻿@model Planner.ViewModels.TripViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -50,6 +50,12 @@
                 <label asp-for="GroupSize" class="control-label"></label>
                 <input asp-for="GroupSize" class="form-control" />
                 <span asp-validation-for="GroupSize" class="text-danger"></span>
+            </div>
+            <p>Temporary: Enter a semi-colon separated list of user ID, for example, '1;2;3'</p>
+            <div class="form-group">
+                <label asp-for="Members" class="control-label"></label>
+                <input asp-for="Members" class="form-control" />
+                <span asp-validation-for="Members" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

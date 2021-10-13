@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Planner.ViewModels;
 
 namespace Planner.Models
 {
@@ -23,6 +24,8 @@ namespace Planner.Models
 			EmergencyContactName = hiker.EmergencyContactName;
 			EmergencyContactPhone = hiker.EmergencyContactPhone;
 			FunScale = FunScale;
+			UserName = hiker.UserName;
+			Password = hiker.Password;
 		}
 
 		[Key]
@@ -94,13 +97,25 @@ namespace Planner.Models
 			set;
 		}
 
-
 		public IEnumerable<HikerTrip> HikerTrips
 		{
 			get;
 			set;
 		}
 
-		
+		[Column("user_name")]
+		[Required]
+		public string UserName
+		{
+			get;
+			set;
+		}
+
+		[Required]
+		public string Password
+		{
+			get;
+			set;
+		}
 	}
 }

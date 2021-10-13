@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using Planner.Models;
+using Planner.ViewModels;
 
 namespace Planner
 {

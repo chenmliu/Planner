@@ -1,4 +1,6 @@
-﻿namespace Planner.Models
+﻿using Planner.Models;
+
+namespace Planner.ViewModels
 {
 	public class HikerViewModel
 	{
@@ -76,6 +78,18 @@
 		}
 
 		public int FunScale
+		{
+			get;
+			set;
+		}
+
+		public string UserName
+		{
+			get;
+			set;
+		}
+
+		public string Password
 		{
 			get;
 			set;

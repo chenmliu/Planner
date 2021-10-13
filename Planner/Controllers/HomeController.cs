@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Planner.Models;
+using Planner.ViewModels;
 
 namespace Planner.Controllers
 {
@@ -20,188 +21,119 @@ namespace Planner.Controllers
 			_dbContext = dbContext;
 		}
 
-		/// <summary>
-		/// Get all the trips.
-		/// </summary>
-		/// <returns>All the trips.</returns>
 		public async Task<ActionResult> Index()
-		{
-			var trips = await _dbContext.Trip
-							  .Include(t => t.Peak)
-							  .Include(t => t.Owner)
-							  .ToListAsync()
-							  .ConfigureAwait(true);
-
-			return View(trips.Select(t => new TripViewModel(t)).OrderBy(t => t.Name));
-		}
-
-		/// <summary>
-		/// Get a trip by ID.
-		/// GET: Trip/Edit/{id}
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns>ID of the trip.</returns>
-		[HttpGet]
-		public async Task<IActionResult> Edit(int id)
-		{
-			return await GetTripViewModelByIdAsync(id);
-		}
-
-		/// <summary>
-		/// Get a trip by ID.
-		/// GET: Trip/Details/{id}
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns>ID of the trip.</returns>
-		[HttpGet]
-		public async Task<IActionResult> Details(int id)
-		{
-			return await GetTripViewModelByIdAsync(id);
-		}
-
-		/// <summary>
-		/// Fill in the details to add a trip.
-		/// </summary>
-		/// <returns></returns>
-		[HttpGet]
-		public ActionResult Create()
 		{
 			return View();
 		}
 
 		/// <summary>
-		/// Submit a trip.
+		/// Get a hiker by ID.
+		/// GET: Hiker/Details/{id}
 		/// </summary>
-		/// <param name="tripViewModel">Trip information.</param>
-		/// <returns></returns>
-		[HttpPost, ActionName("Create")]
-		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel)
+		/// <param name="id"></param>
+		/// <returns>ID of the hiker.</returns>
+		[HttpGet]
+		public async Task<IActionResult> Details(int id)
 		{
-			var trip = CreateTripFromViewModel(tripViewModel);
-			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
-			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
-			return RedirectToAction(nameof(Index));
+			return await GetHikerViewModelByIdAsync(id);
 		}
 
 		/// <summary>
-		/// Update a trip by ID.
+		/// Login and validate username and password.
 		/// </summary>
-		/// <param name="updatedTrip">Updated trip information.</param>
+		/// <param name="hikerViewModel">Hiker information.</param>
 		/// <returns></returns>
 		[HttpPost]
-		public async Task<ActionResult> Edit(TripViewModel updatedTrip)
+		public async Task<ActionResult> Login(HikerViewModel hikerViewModel)
 		{
-			var local = _dbContext.Trip.Local.FirstOrDefault(entry => entry.Id == updatedTrip.Id);
+			var hiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.UserName.Equals(hikerViewModel.UserName) &&
+										h.Password.Equals(hikerViewModel.Password))
+				.ConfigureAwait(true);
+
+			if (hiker == null)
+			{
+				return Content("Invalid user name or password.");
+			}
+
+			var viewModel = new HikerViewModel(hiker);
+			return View(viewModel);
+		}
+
+		/// <summary>
+		/// Edit a hiker by ID.
+		/// GET: Home/Edit/{id}
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>ID of the hiker.</returns>
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			return await GetHikerViewModelByIdAsync(id);
+		}
+
+		/// <summary>
+		/// Update a hiker by ID.
+		/// </summary>
+		/// <param name="updatedHiker">Updated hiker information.</param>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task<ActionResult> Edit(HikerViewModel updatedHiker)
+		{
+			// Retrieve the existing user's credential to re-insert these required fields.
+			// For MVP, don't allow users to update credential.
+			var existingHiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.Id == updatedHiker.Id)
+				.ConfigureAwait(true);
+			updatedHiker.UserName = existingHiker.UserName;
+			updatedHiker.Password = existingHiker.Password;
+
+			var local = _dbContext.Hiker.Local.FirstOrDefault(entry => entry.Id == updatedHiker.Id);
 			if (local != null)
 			{
 				_dbContext.Entry(local).State = EntityState.Detached;
 			}
-			var trip = CreateTripFromViewModel(updatedTrip);
-			_dbContext.Entry(trip).State = EntityState.Modified;
+
+			var hiker = new Hiker(updatedHiker);
+			_dbContext.Entry(hiker).State = EntityState.Modified;
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction(nameof(Index));
+			return RedirectToAction(nameof(Details), new { id = updatedHiker.Id });
+		}
+
+		public async Task<ActionResult> SignUp()
+		{
+			return View();
 		}
 
 		/// <summary>
-		/// Confirm deleting a trip.
-		/// GET: Trip/Delete/{id}
+		/// Submit a hiker.
 		/// </summary>
-		/// <param name="id">ID of the trip.</param>
+		/// <param name="hikerViewModel">Hiker information.</param>
 		/// <returns></returns>
-		public async Task<IActionResult> Delete(int id)
+		[HttpPost, ActionName("Create")]
+		public async Task<ActionResult> CreateSubmitted(HikerViewModel hikerViewModel)
 		{
-			return await GetTripViewModelByIdAsync(id);
+			var hiker = new Hiker(hikerViewModel);
+			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			return RedirectToAction(nameof(Details), new { id = hiker.Id });
 		}
 
-		/// <summary>
-		/// Delete a trip by ID.
-		/// POST: Trip/Delete/{id}
-		/// </summary>
-		/// <param name="id">ID of the trip.</param>
-		/// <returns></returns>
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
+		private async Task<IActionResult> GetHikerViewModelByIdAsync(int id)
 		{
-			var trip = await _dbContext.Trip
-				.Include(t => t.Peak)
-				.Include(t => t.Owner)
-				.FirstOrDefaultAsync(t => t.Id == id)
+			var hiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.Id == id)
 				.ConfigureAwait(true);
 
-			if (trip == null)
+			if (hiker == null)
 			{
 				return NotFound();
 			}
 
-			_dbContext.Trip.Remove(trip);
-			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
-			return RedirectToAction(nameof(Index));
-		}
-
-		private async Task<IActionResult> GetTripViewModelByIdAsync(int id)
-		{
-			var trip = await _dbContext.Trip
-				.Include(t => t.Peak)
-				.Include(t => t.Owner)
-				//.Include(t => t.Hikers)
-				.FirstOrDefaultAsync(t => t.Id == id)
-				.ConfigureAwait(true);
-
-			if (trip == null)
-			{
-				return NotFound();
-			}
-
-            var hikerTrips = await _dbContext.HikerTrip
-                .Where(ht => ht.TripId == trip.Id)
-                .Include(ht => ht.Hiker)
-                .ToListAsync()
-                .ConfigureAwait(true);
-
-			var hikers = _dbContext.Hiker
-				.Join(
-				   _dbContext.HikerTrip,
-				   hiker => hiker.Id,
-				   hikerTrip => hikerTrip.HikerId,
-				   (hiker, hikerTrip) => new HikerViewModel(hiker)
-				)
-				.ToList();
-
-			//var data = _dbContext.Hiker
-			//	wher
-			//	.Join(
-			//		_dbContext.Hiker,
-			//		ht => ht.HikerId,
-			//  hiker ),
-			//  (author, book) => new
-			//  {
-			//   BookId = book.BookId,
-			//   AuthorName = author.Name,
-			//   BookTitle = book.Title
-			//  }
-			// ).ToList();
-
-
-			var viewModel = new TripViewModel(trip);
-
-			viewModel.Hikers = hikers;
-
+			var viewModel = new HikerViewModel(hiker);
 			return View(viewModel);
-		}
-
-		private Trip CreateTripFromViewModel(TripViewModel tripViewModel) {
-			return new Trip
-			{
-				Id = tripViewModel.Id,
-				Name = tripViewModel.Name,
-				Days = tripViewModel.Days,
-				StartDate = tripViewModel.StartDate,
-				PeakId = tripViewModel.PeakId,
-				OwnerId = tripViewModel.OwnerId,
-				GroupSize = tripViewModel.GroupSize
-			};
 		}
 	}
 }
