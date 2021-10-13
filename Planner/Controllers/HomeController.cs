@@ -160,9 +160,33 @@ namespace Planner.Controllers
                 .ToListAsync()
                 .ConfigureAwait(true);
 
-            var viewModel = new TripViewModel(trip);
+			var hikers = _dbContext.Hiker
+				.Join(
+				   _dbContext.HikerTrip,
+				   hiker => hiker.Id,
+				   hikerTrip => hikerTrip.HikerId,
+				   (hiker, hikerTrip) => new HikerViewModel(hiker)
+				)
+				.ToList();
 
-			viewModel.Hikers = hikerTrips.Select(ht => new HikerViewModel(ht.Hiker)).ToList();
+			//var data = _dbContext.Hiker
+			//	wher
+			//	.Join(
+			//		_dbContext.Hiker,
+			//		ht => ht.HikerId,
+			//  hiker ),
+			//  (author, book) => new
+			//  {
+			//   BookId = book.BookId,
+			//   AuthorName = author.Name,
+			//   BookTitle = book.Title
+			//  }
+			// ).ToList();
+
+
+			var viewModel = new TripViewModel(trip);
+
+			viewModel.Hikers = hikers;
 
 			return View(viewModel);
 		}

@@ -28,6 +28,9 @@ namespace Planner
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HikerTrip>()
+                .HasKey(ht => ht.Id);
+
+            modelBuilder.Entity<HikerTrip>()
                 .HasKey(ht => new { ht.HikerId, ht.TripId });
             
             modelBuilder.Entity<HikerTrip>()
