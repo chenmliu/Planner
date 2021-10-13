@@ -1,4 +1,4 @@
-﻿@model Planner.ViewModels.TripViewModel
+@model Planner.ViewModels.TripViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -8,42 +8,52 @@
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Days)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Days)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WeatherLabel)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.IconUrl" width="50" height="50" />
+            @Html.DisplayFor(model => model.WeatherLabel)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PeakName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PeakName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.OwnerName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.OwnerName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.GroupSize)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.GroupSize)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Members)
+        </dt>
     </dl>
     <div class="row">
         <div class = "col-sm-12">

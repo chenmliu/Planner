@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Planner.Models;
 
@@ -11,7 +11,7 @@ namespace Planner.ViewModels
 
 		}
 
-		public TripViewModel(Trip trip)
+		public TripViewModel(Trip trip, string weatherDesc = "", string iconCode = "")
 		{
 			Id = trip.Id;
 			Name = trip.Name;
@@ -27,6 +27,15 @@ namespace Planner.ViewModels
 			HasSnow = trip.HasSnow;
 			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
 			TotalDistance = trip.TotalDistance;
+			WeatherLabel = weatherDesc;
+			if (iconCode != "")
+            {
+				IconUrl = $"http://openweathermap.org/img/wn/{iconCode}@2x.png";
+			} else
+            {
+				// TODO: Blank image
+				IconUrl = "";
+            }
 		}
 
 		public int Id
@@ -83,38 +92,45 @@ namespace Planner.ViewModels
 			set;
 		}
 
-		#region TripDetails
+		public string Members
+		{
+			get;
+			set;
+		}
+
 		public string Location
-		{
+        {
 			get;
 			set;
-		}
+        }
+
 		public bool HasSnow
-		{
+        {
 			get;
 			set;
-		}
+        }
+
 		public bool NeedHighClearanceVehicle
-		{
+        {
 			get;
 			set;
-		}
-		public bool BumpyRoad
-		{
+        }
+
+		public float TotalDistance
+        {
 			get;
 			set;
-		}
-		public int TotalDistance
-		{
+        }
+
+		public string WeatherLabel
+        {
 			get;
-			set;
-		}
-		public bool ElevationGain
-		{
+        }
+
+		public string IconUrl
+        {
 			get;
-			set;
-		}
-		#endregion
+        }
 
 		public List<HikerTripViewModel> Hikers { get; set; }
 	}
