@@ -29,7 +29,7 @@ namespace Planner.Controllers
 			var trip = _dbContext.Trip
 				.Where(t => t.Id == tripId)
 				.FirstOrDefault();
-			
+
 			if (trip == null) {
 				return NotFound();
 			}
@@ -37,7 +37,7 @@ namespace Planner.Controllers
 			return View(
 				new HikerTripViewModel {
 					TripId = trip.Id,
-					TripName= trip.Name 
+					TripName = trip.Name
 				}
 			);
 		}
@@ -50,18 +50,18 @@ namespace Planner.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<ActionResult> CreateSubmitted(HikerTripViewModel hikerTripViewModel)
 		{
-            //var hikerTrip = new HikerTrip
-            //{
-            //	Trip = await _dbContext.Trip.FindAsync(hikerTripViewModel.TripId),
-            //	Hiker = await _dbContext.Hiker.FindAsync(hikerTripViewModel.HikerId)
-            //};
-            var hikerTrip = new HikerTrip
+			//var hikerTrip = new HikerTrip
+			//{
+			//	Trip = await _dbContext.Trip.FindAsync(hikerTripViewModel.TripId),
+			//	Hiker = await _dbContext.Hiker.FindAsync(hikerTripViewModel.HikerId)
+			//};
+			var hikerTrip = new HikerTrip
 			{
-                TripId = hikerTripViewModel.TripId,
-                HikerId = hikerTripViewModel.HikerId
-            };
+				TripId = hikerTripViewModel.TripId,
+				HikerId = hikerTripViewModel.HikerId
+			};
 
-            await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
+			await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 			return RedirectToAction("Details", "Trip", new { Id = hikerTripViewModel.TripId });
 		}
@@ -75,9 +75,9 @@ namespace Planner.Controllers
 				//.Select(t => )
 				.FirstOrDefault();
 			if (hirekTrip == null)
-            {
+			{
 				return NotFound();
-            }
+			}
 
 			var hiker = _dbContext.Hiker
 				.Where(t => t.Id == hikerId)
@@ -85,12 +85,27 @@ namespace Planner.Controllers
 			var trip = _dbContext.Trip
 				.Where(t => t.Id == tripId)
 				.FirstOrDefault();
-		
+
 			return View(
 				new HikerTripViewModel { HikerId = hiker.Id, TripId = trip.Id, TripName = trip.Name, HikerName = hiker.FullName }
 			);
 		}
 
+		[HttpPost, ActionName("Remove")]
+		public async Task<ActionResult> RemoveHiker(int hikerId, int tripId)
+		{
+
+			var itemToRemove = _dbContext.HikerTrip.SingleOrDefault(ht => ht.HikerId == hikerId && ht.TripId == tripId);
+
+			if (itemToRemove == null)
+			{
+				return NotFound();	
+			}
+			_dbContext.HikerTrip.Remove(itemToRemove);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			return RedirectToAction("Details", "Trip", new { Id = itemToRemove.TripId });
+		}
 
 
 	}

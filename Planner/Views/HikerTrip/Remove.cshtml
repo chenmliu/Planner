@@ -11,11 +11,17 @@
         <h2>Are you sure you want to remove hiker @Model.HikerName from "@Model.TripName"?</h2>
     </div>
     <div class="col-md-4">
-        Yes = 
-        No
+         <form asp-action="Remove">
+             <input asp-for="TripId" type="hidden" class="form-control" />
+             <input asp-for="HikerId" type="hidden" class="form-control" />
+            <div class="form-group">
+                <input type="submit" value="Yes" class="btn btn-danger" />
+                 <a asp-controller="Trip" asp-action="Details" asp-route-id="@Model.TripId">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Trip" asp-action="Index">Back to Trips</a>
 </div>

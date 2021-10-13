@@ -106,6 +106,11 @@ namespace Planner.Controllers
 			return View();
 		}
 
+		public async Task<ActionResult> Login()
+		{
+			return View();
+		}
+
 		/// <summary>
 		/// Submit a hiker.
 		/// </summary>

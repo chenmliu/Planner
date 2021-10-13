@@ -47,13 +47,10 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Members)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Members)
-        </dd>
     </dl>
     <div class="row">
         <div class = "col-sm-12">
-            <h4>Hikers</h4>
+            <h4>Members</h4>
             @if (@Model.Hikers.Count() == 0)
             {
                 <div class="alert alert-primary" role="alert">
@@ -77,6 +74,8 @@
         </div>
     </div>
 </div>
+
+<hr />
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

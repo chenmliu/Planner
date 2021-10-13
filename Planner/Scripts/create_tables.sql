@@ -7,10 +7,58 @@ CREATE TABLE hiker
 	last_name VARCHAR (50) NOT NULL,
 	phone VARCHAR (50) NOT NULL,
 	city VARCHAR (50) NOT NULL,
-	awd BIT NOT NULL,
+	awd BIT NOT NULL, -- probably can be removed, keeping it here for now to not mess up with already created tables
 	emergency_contact_name VARCHAR (50) NOT NULL,
 	emergency_contact_phone VARCHAR (50) NOT NULL,
 	fun_scale INT NOT NULL
+);
+
+CREATE TABLE hiker_gear
+(
+	id INT PRIMARY KEY IDENTITY (1, 1),
+	hiker_id INT NOT NULL,
+	item VARCHAR(50) NOT NULL,
+	brand VARCHAR(50) NOT NULL,
+	model VARCHAR(50) NOT NULL,
+	intended_use INT NOT NULL, -- make an enum in code to parse int value
+	group_use BIT NOT NULL,
+	weight INT NOT NULL,
+	number_of_users INT NOT NULL,
+	specs VARCHAR(50) NOT NULL,
+	details VARCHAR(MAX) NULL, -- This is to cover Roberto idea of more details of the gear; ideally should be expanded into either separate table or extend that table to cover possibilities
+	FOREIGN KEY (hiker_id) REFERENCES hiker (id)
+);
+
+CREATE TABLE carpool
+(
+	id INT PRIMARY KEY IDENTITY (1, 1),
+	hiker_id INT NOT NULL,
+	car_brand VARCHAR(50) NOT NULL,
+	car_model VARCHAR(50) NOT NULL,
+	spaces INT NOT NULL,
+	preference INT NOT NULL, -- make enum in the code to parse that (Alone, Driver, Rider, etc.)
+	awd BIT NOT NULL,
+	snow_friendly BIT NOT NULL,
+	high_clearance BIT NOT NULL,
+	FOREIGN KEY (hiker_id) REFERENCES hiker (id)
+);
+
+CREATE TABLE permit
+(
+	id INT PRIMARY KEY IDENTITY (1, 1),
+	hiker_id INT NOT NULL,
+	permit_type VARCHAR(30) NOT NULL, -- have enum in code for that
+	expiration_date DATE NOT NULL,
+	FOREIGN KEY (hiker_id) REFERENCES hiker (id)
+);
+
+CREATE TABLE group_gear -- table to store group gear requirements by leader
+(
+	id INT PRIMARY KEY IDENTITY (1, 1),
+	trip_id INT NOT NULL,
+	item VARCHAR(50) NOT NULL,
+	number INT NOT NULL,
+	FOREIGN KEY (trip_id) REFERENCES trip (id)
 );
 
 CREATE TABLE peak

@@ -22,7 +22,6 @@ namespace Planner.Models
 			PeakId = trip.PeakId;
 			OwnerId = trip.OwnerId;
 			GroupSize = trip.GroupSize;
-			Members = trip.Members;
 		}
 
 		[Key]
@@ -88,12 +87,6 @@ namespace Planner.Models
 		[Column("group_size")]
 		[Required]
 		public int GroupSize
-		{
-			get;
-			set;
-		}
-
-		public string Members
 		{
 			get;
 			set;
