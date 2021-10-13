@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Planner.Models;
 using Planner.ViewModels;
 using GeoJSON.Net.Geometry;
@@ -18,10 +21,13 @@ namespace Planner.Controllers
 
 		private readonly PlannerDbContext _dbContext;
 
-		public TripController(ILogger<HomeController> logger, PlannerDbContext dbContext)
+		private readonly IConfiguration _configuration;
+
+		public TripController(ILogger<HomeController> logger, PlannerDbContext dbContext, IConfiguration configuration)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
+			_configuration = configuration;
 		}
 
 		/// <summary>
@@ -33,7 +39,7 @@ namespace Planner.Controllers
 			var trips = await _dbContext.Trip
 				.Include(t => t.Peak)
 				.Include(t => t.Owner)
-				.Select(t => new TripViewModel(t))
+				.Select(t => new TripViewModel(t, "", ""))
 				.ToListAsync()
 				.ConfigureAwait(true);
 			return View(trips.OrderBy(t => t.Name));
@@ -173,31 +179,32 @@ namespace Planner.Controllers
             // NWAC can use the lat/long for Day 1.
 			var coord = new Point(new Position(46.879967, -121.726906));
 
-			var weather = await GetWeatherForecast(coord: coord);
-			// FIXME: Re-enable and troubleshoot.
+			// See https://openweathermap.org/api/one-call-api#hist_parameter
+			// for fields available on forecast.
+			var forecast = await GetWeatherForecast(coord: coord);
+			string weatherDescription = forecast.weather.First.description;
+			string iconCode = forecast.weather.First.icon;
+
+			// FIXME: Re-enable and troubzleshoot.
 			//var nwacZone = GetNWACZone(coord: coord);
 
-			// TODO: Hook weather and nwacZone up to TripViewModel.
-			var viewModel = new TripViewModel(trip);
+			// TODO: Hook nwacZone up to TripViewModel.
+			var viewModel = new TripViewModel(trip, weatherDescription, iconCode);
 			viewModel.Hikers = hikers;
 			return View(viewModel);
 		}
 
 		/// <summary>
-        /// Returns the weather forecast as a JSON string.
-        /// </summary>
-        /// <param name="coord">The coordinate object to query.</param>
-        /// <returns>Weather forecast as JSON string.</returns>
-		private async Task<string> GetWeatherForecast(Point coord)
-        {
-			// TODO: How to retrieve this from appsettings?
-			// var api_key = this.Configuration.GetValue<string>("WEATHER_API_KEY");
-			var api_key = "";
-			if (api_key == "")
-            {
-				return "";
-            }
-			var url = $"https://api.openweathermap.org/data/2.5/onecall?lat={coord.Coordinates.Latitude}&lon={coord.Coordinates.Longitude}&exclude=hourly,minutely,current,alerts&appid={api_key}";
+		/// Returns the daily weather forecast as a dynamic JSON object.
+		/// </summary>
+		/// <param name="coord">Coordinate for which to retrieve the forecast.</param>
+		/// <param name="skip_days">Number of days to skip. Default: 0</param>
+		/// <param name="num_days">Number of days to return. Default: 1</param>
+		/// <returns></returns>
+		private async Task<dynamic> GetWeatherForecast(Point coord, int skip_days = 0, int num_days = 1)
+		{
+			var api_key = _configuration.GetValue<string>("WEATHER_API_KEY");
+			var url = $"https://api.openweathermap.org/data/2.5/onecall?units=imperial&lat={coord.Coordinates.Latitude}&lon={coord.Coordinates.Longitude}&exclude=hourly,minutely,current,alerts&appid={api_key}";
 
 			var client = new HttpClient();
 			var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -205,8 +212,18 @@ namespace Planner.Controllers
 			var response = await client.SendAsync(request);
 			response.EnsureSuccessStatusCode(); // Throw an exception if error
 
-			var body = await response.Content.ReadAsStringAsync();
-			return body;
+			var bodyString = await response.Content.ReadAsStringAsync();
+			dynamic weather = JsonConvert.DeserializeObject(bodyString);
+
+			var daily_forecast = weather.daily;
+
+			if (skip_days + num_days > 7)
+            {
+				// TODO: Throw some kind of error.
+            }
+			// FIXME: For now just return the first day. C# array slicing is
+			// hard :/
+			return daily_forecast.First;
 		}
 
 		private NWACZone? GetNWACZone(Point coord)
