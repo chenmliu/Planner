@@ -23,7 +23,6 @@ namespace Planner.ViewModels
 			OwnerName = trip.Owner.FirstName;
 			GroupSize = trip.GroupSize;
 			Hikers = new List<HikerTripViewModel>();
-			Members = trip.Members;
 			Location = trip.Location;
 			HasSnow = trip.HasSnow;
 			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
@@ -84,11 +83,6 @@ namespace Planner.ViewModels
 			set;
 		}
 
-		public string Members
-		{
-			get;
-			set;
-		}
 		#region TripDetails
 		public string Location
 		{

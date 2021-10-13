@@ -44,7 +44,7 @@ namespace Planner.Controllers
 		/// <param name="hikerViewModel">Hiker information.</param>
 		/// <returns></returns>
 		[HttpPost]
-		public async Task<ActionResult> Login(HikerViewModel hikerViewModel)
+		public async Task<ActionResult> LoginSubmitted(HikerViewModel hikerViewModel)
 		{
 			var hiker = await _dbContext.Hiker
 				.FirstOrDefaultAsync(h => h.UserName.Equals(hikerViewModel.UserName) &&
