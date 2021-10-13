@@ -24,6 +24,10 @@ namespace Planner.ViewModels
 			GroupSize = trip.GroupSize;
 			Hikers = new List<HikerTripViewModel>();
 			Members = trip.Members;
+			Location = trip.Location;
+			HasSnow = trip.HasSnow;
+			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
+			TotalDistance = trip.TotalDistance;
 		}
 
 		public int Id
@@ -85,7 +89,38 @@ namespace Planner.ViewModels
 			get;
 			set;
 		}
-
+		#region TripDetails
+		public string Location
+		{
+			get;
+			set;
+		}
+		public bool HasSnow
+		{
+			get;
+			set;
+		}
+		public bool NeedHighClearanceVehicle
+		{
+			get;
+			set;
+		}
+		public bool BumpyRoad
+		{
+			get;
+			set;
+		}
+		public int TotalDistance
+		{
+			get;
+			set;
+		}
+		public bool ElevationGain
+		{
+			get;
+			set;
+		}
+		#endregion
 
 		public List<HikerTripViewModel> Hikers { get; set; }
 	}

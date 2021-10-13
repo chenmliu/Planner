@@ -104,5 +104,48 @@ namespace Planner.Models
 			get;
 			set;
 		}
+
+
+		[Column("location")]
+		public string Location
+		{
+			get;
+			set;
+		}
+
+		[Column("hasSnow")]
+		public bool HasSnow
+		{
+			get;
+			set;
+		}
+
+		[Column("needHighClearanceVehicle")]
+		public bool NeedHighClearanceVehicle
+		{
+			get;
+			set;
+		}
+
+		[Column("isBumpyRoad")]
+		public bool BumpyRoad
+		{
+			get;
+			set;
+		}
+
+		[Column("totalDistance")]
+		public int TotalDistance
+		{
+			get;
+			set;
+		}
+
+		[Column("elevationGain")]
+		public int ElevationGain
+		{
+			get;
+			set;
+		}
 	}
 }

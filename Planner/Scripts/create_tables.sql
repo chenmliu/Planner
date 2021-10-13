@@ -31,7 +31,12 @@ CREATE TABLE trip
 	group_size INT NOT NULL CHECK (group_size > 0),
 	FOREIGN KEY (peak_id) REFERENCES peak (id),
 	FOREIGN KEY (owner_id) REFERENCES hiker (id),
-	members VARCHAR (100) NOT NULL
+	members VARCHAR (100) NOT NULL, -- this field should be removed, and members should come from lookup of TripHiker table
+	location VARCHAR(100) DEFAULT(''),
+	hasSnow BIT DEFAULT(0),
+	isBumpyRoad BIT DEFAULT(0),
+	needHighClearanceVehicle  BIT DEFAULT(0),
+	elevationGain INT DEFAULT(0)
 );
 
 
