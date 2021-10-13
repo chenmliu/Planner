@@ -22,21 +22,21 @@ CREATE TABLE hiker_gear
 	model VARCHAR(50) NOT NULL,
 	intended_use INT NOT NULL, -- make an enum in code to parse int value
 	group_use BIT NOT NULL,
-	weight VARCHAR(50) NOT NULL,
+	weight INT NOT NULL,
 	number_of_users INT NOT NULL,
 	specs VARCHAR(50) NOT NULL,
 	details VARCHAR(MAX) NULL, -- This is to cover Roberto idea of more details of the gear; ideally should be expanded into either separate table or extend that table to cover possibilities
 	FOREIGN KEY (hiker_id) REFERENCES hiker (id)
 );
 
-CREATE TABLE carpool_preference
+CREATE TABLE carpool
 (
 	id INT PRIMARY KEY IDENTITY (1, 1),
 	hiker_id INT NOT NULL,
 	car_brand VARCHAR(50) NOT NULL,
 	car_model VARCHAR(50) NOT NULL,
 	spaces INT NOT NULL,
-	carpool_preference INT NOT NULL, -- make enum in the code to parse that (Alone, Driver, Rider, etc.)
+	preference INT NOT NULL, -- make enum in the code to parse that (Alone, Driver, Rider, etc.)
 	awd BIT NOT NULL,
 	snow_friendly BIT NOT NULL,
 	high_clearance BIT NOT NULL,
