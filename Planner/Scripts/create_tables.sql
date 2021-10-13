@@ -30,5 +30,6 @@ CREATE TABLE trip
 	owner_id INT NOT NULL,
 	group_size INT NOT NULL CHECK (group_size > 0),
 	FOREIGN KEY (peak_id) REFERENCES peak (id),
-	FOREIGN KEY (owner_id) REFERENCES hiker (id)
+	FOREIGN KEY (owner_id) REFERENCES hiker (id),
+	members VARCHAR (100) NOT NULL
 );

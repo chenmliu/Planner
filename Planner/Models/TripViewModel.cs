@@ -20,6 +20,7 @@ namespace Planner.Models
 			OwnerId = trip.Owner.Id;
 			OwnerName = trip.Owner.FirstName;
 			GroupSize = trip.GroupSize;
+			Members = trip.Members;
 		}
 
 		public int Id
@@ -71,6 +72,12 @@ namespace Planner.Models
 		}
 
 		public int GroupSize
+		{
+			get;
+			set;
+		}
+
+		public string Members
 		{
 			get;
 			set;

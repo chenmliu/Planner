@@ -69,3 +69,16 @@ Planner/
 ├─ README.md
 ├─ ...
 ```
+
+## SQL queries
+
+```
+-- Add a new required column with default value
+ALTER TABLE dbo.hiker
+ADD user_name VARCHAR (50) NOT NULL DEFAULT '0';
+
+-- Update specific column(s) of a row
+UPDATE dbo.hiker
+SET password = 'password', user_name= 'jimmy'
+WHERE id = 2;
+```
