@@ -193,6 +193,10 @@ namespace Planner.Controllers
 			// TODO: How to retrieve this from appsettings?
 			// var api_key = this.Configuration.GetValue<string>("WEATHER_API_KEY");
 			var api_key = "";
+			if (api_key == "")
+            {
+				return "";
+            }
 			var url = $"https://api.openweathermap.org/data/2.5/onecall?lat={coord.Coordinates.Latitude}&lon={coord.Coordinates.Longitude}&exclude=hourly,minutely,current,alerts&appid={api_key}";
 
 			var client = new HttpClient();
