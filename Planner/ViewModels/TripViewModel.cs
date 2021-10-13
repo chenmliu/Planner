@@ -23,7 +23,6 @@ namespace Planner.ViewModels
 			OwnerName = trip.Owner.FirstName;
 			GroupSize = trip.GroupSize;
 			Hikers = new List<HikerTripViewModel>();
-			Members = trip.Members;
 		}
 
 		public int Id
