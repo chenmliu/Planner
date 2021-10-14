@@ -1,8 +1,9 @@
 ﻿@model Planner.ViewModels.HikerTripViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Invite";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<Hiker> allHikers = ViewData["allHikers"] as IEnumerable<Hiker>;
 }
 
 <hr />
@@ -12,14 +13,17 @@
     </div>
     <div class="col-md-4">
         
-        <form asp-action="Create">
+        <form asp-action="InviteHikerToTrip">
             <input type="hidden" asp-for="TripId" />
             <div class="form-group">
                 <label asp-for="HikerId" class="control-label"></label>
-                <input asp-for="HikerId" required type="number" class="form-control" />
+                @Html.DropDownList("hikerList",
+                    new SelectList(allHikers.Select(h => new { Name = h.FullName, Value = h.Id }), "Value", "Name"),
+                    "Select Hiker To add",
+                    new { @class = "form-control" })
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Invite Hiker" class="btn btn-primary" />
             </div>
         </form>
     </div>

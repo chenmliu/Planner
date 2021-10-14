@@ -21,7 +21,7 @@ namespace Planner.Controllers
 			_dbContext = dbContext;
 		}
 
-		public async Task<ActionResult> Index()
+		public ActionResult Index()
 		{
 			return View();
 		}
@@ -101,12 +101,12 @@ namespace Planner.Controllers
 			return RedirectToAction(nameof(Details), new { id = updatedHiker.Id });
 		}
 
-		public async Task<ActionResult> SignUp()
+		public ActionResult SignUp()
 		{
 			return View();
 		}
 
-		public async Task<ActionResult> Login()
+		public ActionResult Login()
 		{
 			return View();
 		}
