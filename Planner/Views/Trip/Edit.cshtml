@@ -59,13 +59,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="PeakId" class="control-label"></label>
-                <input asp-for="PeakId" class="form-control" />
+                @Html.DropDownListFor(
+                    model => model.PeakId,
+                    new SelectList(ViewBag.PeakList, "Value", "Text", 0), "-Select Peak-", new { @class = "form-control", @id = "PeakId" }
+                )
                 <span asp-validation-for="PeakId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PeakName" class="control-label"></label>
-                <input asp-for="PeakName" class="form-control" />
-                <span asp-validation-for="PeakName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GroupSize" class="control-label"></label>
