@@ -33,6 +33,14 @@ namespace Planner.Models
 			set;
 		}
 
+		[Required]
+		[Column("hiker_status")]
+		public string HikerStatus
+		{
+			get;
+			set;
+		}
+
 		[ForeignKey("HikerId")]
 		public Hiker Hiker
 		{
