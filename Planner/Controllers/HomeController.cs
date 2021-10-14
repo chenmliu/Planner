@@ -26,7 +26,7 @@ namespace Planner.Controllers
 
 		public ActionResult Index()
 		{
-			if (HttpContext.Session.GetString("username") != null)
+			if (!string.IsNullOrWhiteSpace(HttpContext.Session.GetString("username")))
 			{
 				return new RedirectToRouteResult(
 					new RouteValueDictionary{
@@ -151,6 +151,22 @@ namespace Planner.Controllers
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
 			return RedirectToAction(nameof(Details), new { id = hiker.Id });
+		}
+
+		public IActionResult SignOut()
+		{
+			HttpContext.Session.SetString("username", string.Empty);
+			HttpContext.Session.SetInt32("userid", int.MinValue);
+
+			var a = HttpContext.Session.GetString("username");
+
+			return new RedirectToRouteResult(
+				new RouteValueDictionary
+				{
+					{ "controller", "Home" },
+					{ "action", "Index" }
+				}
+				);
 		}
 
 		private async Task<IActionResult> GetHikerViewModelByIdAsync(int id)

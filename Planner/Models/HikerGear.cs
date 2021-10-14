@@ -9,6 +9,15 @@ namespace Planner.Models
 		Extra
 	}
 
+	public enum GroupGear
+	{
+		Rope,
+		Stove,
+		WaterFilter,
+		SatelliteMessenger,
+		Tent
+	}
+	
     public class HikerGear
     {
 		[Key]

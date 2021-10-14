@@ -9,7 +9,7 @@ namespace Planner.Controllers
 		public IActionResult Index()
 		{
 			// Rediect to login page if not logged in
-			if (HttpContext.Session.GetString("username") == null)
+			if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("username")))
 			{
 				return new RedirectToRouteResult(
 					new RouteValueDictionary{
