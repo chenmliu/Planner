@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h4>TripViewModel</h4>
+<h4>Create a Trip</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -48,6 +48,39 @@
                 <input asp-for="GroupSize" min="1" class="form-control" />
                 <span asp-validation-for="GroupSize" class="text-danger"></span>
             </div>
+
+            <span style="border:medium">Trail Details
+                <div class="form-group">
+                    <label asp-for="Location" class="control-label">Location</label>
+                    <input asp-for="Location" class="form-control"/>
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TotalDistance" class="control-label">Distance (mi)</label>
+                    <input asp-for="TotalDistance" class="form-control"/>
+                    <span asp-validation-for="TotalDistance" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ElevationGain" class="control-label">Elevation Gain (feet)</label>
+                    <input asp-for="ElevationGain" class="form-control"/>
+                    <span asp-validation-for="ElevationGain" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HasSnow" class="control-label">Snow?</label>
+                    <input asp-for="HasSnow" class="form-control" />
+                    <span asp-validation-for="HasSnow" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsBumpyRoad" class="control-label" />Bumpy Road?</label>
+                    <input asp-for="IsBumpyRoad" class="form-control" />
+                    <span asp-validation-for="IsBumpyRoad" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NeedHighClearanceVehicle" class="control-label" />High Clearance Vehicle?</label>
+                    <input asp-for="NeedHighClearanceVehicle" class="form-control" />
+                    <span asp-validation-for="NeedHighClearanceVehicle" class="text-danger"></span>
+                </div>
+            </span>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
