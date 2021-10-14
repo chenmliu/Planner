@@ -50,6 +50,9 @@
                 <span asp-validation-for="FunScale" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input type="hidden" name="id" id="tripId" value="@Model.Id" />
+                <input type="hidden" name="userName" id="tripId" value="@Model.UserName" />
+                <input type="hidden" name="password" id="tripId" value="@Model.Password" />
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
