@@ -5,6 +5,20 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var invitationLink = TempData["invitationLink"] as string;
+    var moreMembers = Model.GroupSize - Model.Hikers.Count;
+}
+
+@section Scripts
+{
+    <script>
+    function OnClick() {
+        var Url = document.getElementById("inviteLink");
+        navigator.clipboard.writeText(Url.innerHTML)
+        alert("Copied the link: " + Url.innerHTML);
+    }
+
+    </script>
 }
 
 <div>
@@ -60,11 +74,11 @@
     <div class="row">
         <div class="col-sm-12">
             <h4>Members</h4>
-            @if (@Model.Hikers.Count() == 0)
+            @if (@moreMembers > 0)
             {
                 <div class="alert alert-primary" role="alert">
-                    This trip is looking for hikers!
-                    <a asp-action="Create" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Click here</a> to invite someone.
+                    This trip is looking for @moreMembers more hikers!
+                    <a asp-action="Invite" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Click here</a> to invite someone.
                 </div>
             }
             else if (@Model.Hikers.Count >= @Model.GroupSize)
@@ -115,9 +129,17 @@
 <div>
     @if (@Model.OwnerId == @Context.Session.GetInt32("userid"))
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-        <a asp-action="Index">Back to List</a>
-        <a asp-action="Create" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Invite</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> @Html.Raw("|")
+        <a asp-action="Index">Back to List</a> @Html.Raw("|")
+
+        if (!string.IsNullOrEmpty(invitationLink))
+        {
+            <a id="inviteLink" style="background-color: rgb(255,255,0)" onclick="OnClick();">@invitationLink</a>
+        }
+        else
+        {
+            <a asp-action="InviteViaLink" asp-controller="HikerTrip" asp-route-tripId="@Model.Id">Invitation Link</a>
+        }
     }
     else
     {

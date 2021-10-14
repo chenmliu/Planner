@@ -7,7 +7,6 @@ namespace Planner.Models
 {
 	public class HikerTrip
 	{
-
 		[Key]
 		[Required]
 		public int Id
