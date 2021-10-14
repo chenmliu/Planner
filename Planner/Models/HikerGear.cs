@@ -9,7 +9,7 @@ namespace Planner.Models
 		Extra
 	}
 
-	public enum GroupGear
+	public enum GroupGearItems
 	{
 		Rope,
 		Stove,

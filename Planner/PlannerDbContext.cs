@@ -22,9 +22,13 @@ namespace Planner
 
         public DbSet<HikerTrip> HikerTrip { get; set; }
 
+        public DbSet<GroupGear> GroupGear { get; set; }
+
         public DbSet<TripViewModel> TripViewModel { get; set; }
 
         public DbSet<HikerViewModel> HikerViewModel { get; set; }
+
+        public DbSet<GroupGearViewModel> GroupGearModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,7 +47,6 @@ namespace Planner
                 .HasOne(ht => ht.Trip)
                 .WithMany(t => t.HikerTrips)
                 .HasForeignKey(bc => bc.HikerId);
-
         }
     }
 }

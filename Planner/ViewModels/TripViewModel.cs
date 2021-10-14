@@ -138,6 +138,8 @@ namespace Planner.ViewModels
         }
 
 		public List<HikerTripViewModel> Hikers { get; set; }
+
+		// public List<GroupGearViewModel> GroupGearList { get; set; }
 	}
     
 }
