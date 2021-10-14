@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Planner.Models;
@@ -23,6 +24,17 @@ namespace Planner.Controllers
 
 		public ActionResult Index()
 		{
+			if (HttpContext.Session.GetString("username") != null)
+			{
+				return new RedirectToRouteResult(
+					new RouteValueDictionary{
+						{ "controller", "Home" },
+						{ "action", "Details" },
+						{ "id", HttpContext.Session.GetString("userid") }
+					}
+					);
+			}
+			
 			return View();
 		}
 
@@ -44,17 +56,20 @@ namespace Planner.Controllers
 		/// <param name="hikerViewModel">Hiker information.</param>
 		/// <returns></returns>
 		[HttpPost]
-		public async Task<ActionResult> Login(HikerViewModel hikerViewModel)
+		public async Task<ActionResult> LoginSubmitted(HikerViewModel hikerViewModel)
 		{
 			var hiker = await _dbContext.Hiker
 				.FirstOrDefaultAsync(h => h.UserName.Equals(hikerViewModel.UserName) &&
-										h.Password.Equals(hikerViewModel.Password))
+										h.Password.Equals(Hiker.EncryptPassword(hikerViewModel.Password)))
 				.ConfigureAwait(true);
 
 			if (hiker == null)
 			{
 				return Content("Invalid user name or password.");
 			}
+
+			HttpContext.Session.SetString("username", hiker.UserName);
+			HttpContext.Session.SetInt32("userid", hiker.Id);
 
 			var viewModel = new HikerViewModel(hiker);
 			return View(viewModel);
@@ -94,7 +109,7 @@ namespace Planner.Controllers
 				_dbContext.Entry(local).State = EntityState.Detached;
 			}
 
-			var hiker = new Hiker(updatedHiker);
+			var hiker = new Hiker(updatedHiker, existingHiker.Password);
 			_dbContext.Entry(hiker).State = EntityState.Modified;
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
@@ -119,10 +134,20 @@ namespace Planner.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<ActionResult> CreateSubmitted(HikerViewModel hikerViewModel)
 		{
+			var existingHiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.UserName.Equals(hikerViewModel.UserName))
+				.ConfigureAwait(true);
+
+			if (existingHiker != null)
+			{
+				return Content("User already exist");
+			}
+
 			var hiker = new Hiker(hikerViewModel);
 			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
+			// TODO: Details doesnt exist??
 			return RedirectToAction(nameof(Details), new { id = hiker.Id });
 		}
 

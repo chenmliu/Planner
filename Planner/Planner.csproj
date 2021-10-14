@@ -16,6 +16,7 @@
     <PackageReference Include="GeoJSON.Net.Contrib.EntityFramework" Version="0.1.7" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="GeoJSON.Net.Contrib.Wkb" Version="0.1.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +27,8 @@
     <None Remove="GeoJSON.Net.Contrib.EntityFramework" />
     <None Remove="EntityFramework" />
     <None Remove="GeoJSON.Net.Contrib.Wkb" />
+    <None Remove="Json.Net" />
+    <None Remove="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />

@@ -2,7 +2,7 @@ CREATE TABLE hiker
 (
 	id INT PRIMARY KEY IDENTITY (1, 1),
 	user_name VARCHAR (50) NOT NULL,
-	password VARCHAR(50) NOT NULL,
+	password VARCHAR(500) NOT NULL,
 	first_name VARCHAR (50) NOT NULL,
 	last_name VARCHAR (50) NOT NULL,
 	phone VARCHAR (50) NOT NULL,
@@ -43,12 +43,12 @@ CREATE TABLE carpool
 	FOREIGN KEY (hiker_id) REFERENCES hiker (id)
 );
 
-CREATE TABLE permits 
+CREATE TABLE permit
 (
 	id INT PRIMARY KEY IDENTITY (1, 1),
 	hiker_id INT NOT NULL,
 	permit_type VARCHAR(30) NOT NULL, -- have enum in code for that
-	expiry_date DATE NOT NULL,
+	expiration_date DATE NOT NULL,
 	FOREIGN KEY (hiker_id) REFERENCES hiker (id)
 );
 
@@ -79,7 +79,12 @@ CREATE TABLE trip
 	group_size INT NOT NULL CHECK (group_size > 0),
 	FOREIGN KEY (peak_id) REFERENCES peak (id),
 	FOREIGN KEY (owner_id) REFERENCES hiker (id),
-	members VARCHAR (100) NOT NULL 
+	members VARCHAR (100) NOT NULL, -- this field should be removed, and members should come from lookup of TripHiker table
+	location VARCHAR(100) DEFAULT(''),
+	hasSnow BIT DEFAULT(0),
+	isBumpyRoad BIT DEFAULT(0),
+	needHighClearanceVehicle  BIT DEFAULT(0),
+	elevationGain INT DEFAULT(0)
 );
 
 

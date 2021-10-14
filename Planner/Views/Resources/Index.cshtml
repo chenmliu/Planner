@@ -6,3 +6,5 @@
 
 <h1>Resources</h1>
 
+@using Microsoft.AspNetCore.Http;
+Welcome @Context.Session.GetString("username")

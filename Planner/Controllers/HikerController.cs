@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Planner.Models;
@@ -25,6 +27,17 @@ namespace Planner.Controllers
 		/// <returns>All the hikers.</returns>
 		public async Task<ActionResult> Index()
 		{
+			// Rediect to login page if not logged in
+			if (HttpContext.Session.GetString("username") == null)
+			{
+				return new RedirectToRouteResult(
+					new RouteValueDictionary{
+						{ "controller", "Home" },
+						{ "action", "Index" }
+					}
+					);
+			}
+
 			var hikers = await _dbContext.Hiker
 				.Select(h => new HikerViewModel(h))
 				.ToListAsync()
@@ -98,15 +111,15 @@ namespace Planner.Controllers
 			updatedHiker.Password = existingHiker.Password;
 
 			var local = _dbContext.Hiker.Local.FirstOrDefault(entry => entry.Id == updatedHiker.Id);
-            if (local != null)
-            {
+			if (local != null)
+			{
 				_dbContext.Entry(local).State = EntityState.Detached;
-            }
+			}
 
 			var hiker = new Hiker(updatedHiker);
 			_dbContext.Entry(hiker).State = EntityState.Modified;
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
-			
+
 			return RedirectToAction(nameof(Index));
 		}
 
