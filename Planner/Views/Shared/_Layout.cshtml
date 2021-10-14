@@ -11,6 +11,10 @@
 
 @using Microsoft.AspNetCore.Http;
 
+@{
+    var username = Context.Session.GetString("username");
+}
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -22,7 +26,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        @if(@Context.Session.GetString("username") != null || @Context.Session.GetString("username") != "")
+                        @if(username != null)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Trip" asp-action="Index">Trips</a>
@@ -36,12 +40,17 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Podcast" asp-action="Index">Podcasts</a>
                             </li>     
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SignOut">Sign out</a>
-                            </li>  
+                     
                         }
                     </ul>
                 </div>
+                <form class="form-inline my-2 my-lg-0">
+                    @if(username == null) {
+                        <a class="btn btn-default text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                    } else {
+                        <a class="btn btn-default text-dark" asp-area="" asp-controller="Home" asp-action="SignOut">Sign out</a>
+                    }
+                </form>
             </div>
         </nav>
     </header>

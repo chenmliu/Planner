@@ -5,8 +5,26 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var sessionId = Context.Session.GetInt32("userid");
     var invitationLink = TempData["invitationLink"] as string;
     var moreMembers = Model.GroupSize - Model.Hikers.Count;
+    var isUserOrganizer = Model.OwnerId == sessionId;
+
+    // Carpooling calculations
+    // Need to be enhanced to take car type and ppl preferences into account
+    var spacesInACar = Model.Hikers.Where(h => h.Hiker.HasCar).Sum(h => h.Hiker.Spaces);
+    var needARide = Model.Hikers.Count();
+
+    var allHikers = Model.Hikers;
+    bool alreadyUser = false;
+    foreach (var hiker in allHikers)
+    {
+        if (sessionId == hiker.HikerId)
+        {
+            alreadyUser = true;
+        }
+    }
+
 }
 
 @section Scripts
@@ -23,54 +41,74 @@
 
 <div>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Days)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Days)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WeatherLabel)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Model.IconUrl" width="50" height="50" />
-            @Html.DisplayFor(model => model.WeatherLabel)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PeakName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PeakName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OwnerName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.OwnerName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.GroupSize)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.GroupSize)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Members)
-        </dt>
-    </dl>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Trip Details</h4>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Days)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Days)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.StartDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.WeatherLabel)
+                </dt>
+                <dd class="col-sm-10">
+                    <img src="@Model.IconUrl" width="50" height="50" />
+                    @Html.DisplayFor(model => model.WeatherLabel)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PeakName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PeakName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OwnerName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.OwnerName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.GroupSize)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.GroupSize)
+                </dd>
+            </dl>
+            @if (isUserOrganizer)
+            {
+                <form asp-action="Edit" method="get">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <input type="submit" value="Edit" class="btn btn-danger" />
+                </form>
+            }
+
+            @if (!isUserOrganizer && !alreadyUser)
+            {
+                <form asp-action="RequestToJoin" method="post">
+                    <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
+                    <input type="hidden" name="hikerId" id="hikerId" value="@sessionId" />
+                    <input type="submit" value="Request To Join" class="btn btn-danger" />
+                </form>
+            }
+
+        </div>
+    </div>
+    <hr />
     <div class="row">
         <div class="col-sm-12">
             <h4>Members</h4>
@@ -80,33 +118,115 @@
                     This trip is looking for @moreMembers more hikers!
                     <a asp-action="Invite" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Click here</a> to invite someone.
                 </div>
-
-                <h5>Current Participants</h5>
-                <div>
-                    <ul class="list-group">
-                        @foreach (var hiker in @Model.Hikers)
-                        {
-                            <li class="list-group-item">
-                                @hiker.HikerName
-                                @if (hiker.HikerId == @Context.Session.GetInt32("userid"))
-                                {
-                                    <a asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a>
-                                }
-                            </li>
-                        }
-                    </ul>
+            }
+            else if (@Model.Hikers.Count >= @Model.GroupSize)
+            {
+                <p></p>
+                <div class="alert alert-success" role="alert">
+                    This trip is full!
                 </div>
             }
             else
             {
                 <p>This trip is full!</p>
             }
+
+            @if (Model.Hikers.Count > 0)
+            {
+                <div class="row">
+                    <table class="table">
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            @if (isUserOrganizer)
+                            {
+                                <th></th>
+                            }
+                        </tr>
+                        @foreach (var hiker in @Model.Hikers)
+                        {
+                            <tr>
+                                <td>@hiker.Hiker.FullName</td>
+                                <td>@hiker.Hiker.Phone</td>
+                                <td>@hiker.HikerStatus</td>
+
+                                @if (isUserOrganizer)
+                                {
+                                    if (hiker.HikerStatus == "ACCEPTED" || hiker.HikerStatus == "PENDING-HIKER")
+                                    {
+                                        <td><a asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a></td>
+                                    }
+                                    else if (hiker.HikerStatus == "PENDING-LEADER")
+                                    {
+                                        <td>
+                                            <a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Accept </a> |
+                                            <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Reject </a>
+                                        </td>
+                                    }
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Carpool Drivers</h4>
+            @if (spacesInACar < needARide)
+            {
+                <div class="alert alert-primary" role="alert">
+                    Looks like this trip doesn't have enough cars to get to trailhead!
+                </div>
+            }
+
+            @if (@Model.Hikers.Where(h => h.Hiker.HasCar).Count() > 0)
+            {
+                <div class="row">
+                    <table class="table">
+                        <tr>
+                            <th>Name</th>
+                            <th>Car brand</th>
+                            <th>Car Model</th>
+                            <th>Number of spots</th>
+                        </tr>
+                        @foreach (var hiker in @Model.Hikers.Where(h => h.Hiker.HasCar))
+                        {
+                            <tr>
+                                <td>@hiker.Hiker.FullName</td>
+                                <td>@hiker.Hiker.CarBrand</td>
+                                <td>@hiker.Hiker.CarModel</td>
+                                <td>@hiker.Hiker.Spaces</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+            <hr />
         </div>
     </div>
 </div>
 
-<hr />
-
 <div>
-    <a asp-action="Index">Back to List</a>
+    @if (isUserOrganizer)
+    {
+        
+        <a asp-action="Index">Back to List</a> @Html.Raw("|")
+
+        if (!string.IsNullOrEmpty(invitationLink))
+        {
+            <a id="inviteLink" style="background-color: rgb(255,255,0)" onclick="OnClick();">@invitationLink</a>
+        }
+        else
+        {
+            <a asp-action="InviteViaLink" asp-controller="HikerTrip" asp-route-tripId="@Model.Id">Invitation Link</a>
+        }
+    }
+    else
+    {
+        <a asp-action="Index">Back to List</a>
+    }
 </div>
