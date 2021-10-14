@@ -13,6 +13,7 @@
 
 @{
     var username = Context.Session.GetString("username");
+    var userId = Context.Session.GetInt32("userid");
 }
 
 <body>
@@ -28,6 +29,9 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if(username != null)
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Hiker" asp-action="Details" asp-route-id="@userId">Profile</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Trip" asp-action="Index">Trips</a>
                             </li>

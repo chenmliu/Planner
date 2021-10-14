@@ -94,6 +94,30 @@ namespace Planner.Controllers
 		}
 
 		/// <summary>
+		/// Get a trip by ID from the leaders perspective
+		/// GET: Trip/Details/{id}
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>ID of the trip.</returns>
+		[HttpGet]
+		public async Task<IActionResult> DetailsLeader(int id)
+		{
+			return await GetTripViewModelByIdAsync(id);
+		}
+
+		/// <summary>
+		/// Get a trip by ID from the leaders perspective
+		/// GET: Trip/Summary/{id}
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<IActionResult> SummaryLeader(int id)
+		{
+			return await GetTripViewModelByIdAsync(id);
+		}
+
+		/// <summary>
 		/// Fill in the details to add a trip.
 		/// </summary>
 		/// <returns></returns>
@@ -125,8 +149,24 @@ namespace Planner.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel)
 		{
+			// Add trip
 			var trip = new Trip(tripViewModel);
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			// Add trip-organizer relationship
+			var currentUserId = HttpContext.Session.GetInt32("userid");
+			var currentUser = await _dbContext.Hiker
+				.Where(h => h.Id == currentUserId.Value)
+				.FirstOrDefaultAsync();
+
+			var hikerTrip = new HikerTrip()
+			{
+				HikerId = currentUserId.Value,
+				TripId = trip.Id,
+				HikerStatus = "CONFIRMED"
+			};
+			await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
 			return RedirectToAction("Details", new { Id = trip.Id });
@@ -262,7 +302,7 @@ namespace Planner.Controllers
 				//var nwacZone = GetNWACZone(coord: coord);
 
 				// We only have trailhead info, so only send Weather forecast for Day 1.
-				var weatherDescription = forecast.Count > 1 ? DescriptionForForecast(forecast[0]) : "Too Soon To Tell";
+				var weatherDescription = forecast.Count > 1 ? DescriptionForForecast(forecast[0]) : "Check Back Later";
 				var weatherIcon = forecast.Count > 1 ? IconForForecast(forecast[0]) : "";
 				viewModel = new TripViewModel(trip, weatherDescription, weatherIcon);
 			}

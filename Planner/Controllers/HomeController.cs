@@ -32,7 +32,7 @@ namespace Planner.Controllers
 					new RouteValueDictionary{
 						{ "controller", "Home" },
 						{ "action", "Details" },
-						{ "id", HttpContext.Session.GetString("userid") }
+						{ "id", HttpContext.Session.GetInt32("userid") }
 					}
 					);
 			}

@@ -1,0 +1,124 @@
+﻿@model Planner.ViewModels.TripViewModel
+
+@using Microsoft.AspNetCore.Http;
+
+@{
+    ViewData["Title"] = "SummaryLeader";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts
+{
+    <script>
+    function OnClick() {
+        var Url = document.getElementById("inviteLink");
+        navigator.clipboard.writeText(Url.innerHTML)
+        alert("Copied the link: " + Url.innerHTML);
+    }
+    </script>
+}
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Days)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Days)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WeatherLabel)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.IconUrl" width="50" height="50" />
+            @Html.DisplayFor(model => model.WeatherLabel)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PeakName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PeakName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OwnerName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OwnerName)
+        </dd>
+    </dl>
+    <h4>Trip Roster:</h4>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Emergency contact name</th>
+                <th>Emergency contact phone</th>
+            </tr>
+            @foreach (var hiker in @Model.Hikers)
+            {
+                <tr>
+                    <td>@hiker.Hiker.FullName</td>
+                    <td>@hiker.Hiker.Phone</td>
+                    <td>@hiker.Hiker.EmergencyContactName</td>
+                    <td>@hiker.Hiker.EmergencyContactPhone</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <h4>Carpool information:</h4>
+    <h5>Drivers</h5>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Car brand</th>
+                <th>Car Model</th>
+                <th>Number of spots</th>
+            </tr>
+            @foreach (var hiker in @Model.Hikers.Where(h => h.Hiker.HasCar))
+            {
+                <tr>
+                    <td>@hiker.Hiker.FullName</td>
+                    <td>@hiker.Hiker.CarBrand</td>
+                    <td>@hiker.Hiker.CarModel</td>
+                    <td>@hiker.Hiker.Spaces</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <br />
+    <h5>Need a ride:</h5>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+            </tr>
+            @foreach (var hiker in @Model.Hikers.Where(h => !h.Hiker.HasCar))
+            {
+                <tr>
+                    <td>@hiker.Hiker.FullName</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<hr />
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
