@@ -42,8 +42,56 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HasCar" /> @Html.DisplayNameFor(model => model.HasCar)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarBrand" class="control-label"></label>
+                <input asp-for="CarBrand" class="form-control" />
+                <span asp-validation-for="CarBrand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarModel" class="control-label"></label>
+                <input asp-for="CarModel" class="form-control" />
+                <span asp-validation-for="CarModel" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
                     <input class="form-check-input" asp-for="Awd" /> @Html.DisplayNameFor(model => model.Awd)
                 </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="SnowFriendly" /> @Html.DisplayNameFor(model => model.SnowFriendly)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HighClearance" /> @Html.DisplayNameFor(model => model.HighClearance)
+                </label>
+            </div>
+            <div class="form-group dropdown">
+                <label asp-for="Spaces">How many spaces available in your car:</label>
+                <select asp-for="Spaces" class="dropdown" />
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8+">8+</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <label asp-for="Preference">carpool preferences:</label>
+                <select asp-for="Preference" class="dropdown" />
+                <option value="Alone">Alone</option>
+                <option value="drive">drive</option>
+                <option value="ride">ride</option>
+                <option value="drive or ride">drive or ride</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="EmergencyContactName" class="control-label"></label>
@@ -61,6 +109,9 @@
                 <span asp-validation-for="FunScale" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input type="hidden" name="id" id="tripId" value="@Model.Id" />
+                <input type="hidden" name="userName" id="tripId" value="@Model.UserName" />
+                <input type="hidden" name="password" id="tripId" value="@Model.Password" />
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
