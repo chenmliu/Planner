@@ -10,6 +10,8 @@ namespace Planner.ViewModels
 			Id = peak.Id;
 			Name = peak.Name;
 			Routes = peak.Routes.Split(";");
+			TrailheadLatitude = peak.TrailheadLatitude;
+			TrailheadLongitude = peak.TrailheadLongitude;
 		}
 
 		public int Id
@@ -25,6 +27,18 @@ namespace Planner.ViewModels
 		}
 
 		public IEnumerable<string> Routes
+		{
+			get;
+			set;
+		}
+
+		public decimal TrailheadLatitude
+		{
+			get;
+			set;
+		}
+
+		public decimal TrailheadLongitude
 		{
 			get;
 			set;

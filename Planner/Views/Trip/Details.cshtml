@@ -10,6 +10,11 @@
     var moreMembers = Model.GroupSize - Model.Hikers.Count;
     var isUserOrganizer = Model.OwnerId == sessionId;
 
+    // Carpooling calculations
+    // Need to be enhanced to take car type and ppl preferences into account
+    var spacesInACar = Model.Hikers.Where(h => h.Hiker.HasCar).Sum(h => h.Hiker.Spaces);
+    var needARide = Model.Hikers.Count();
+
     var allHikers = Model.Hikers;
     bool alreadyUser = false;
     foreach (var hiker in allHikers)
@@ -121,47 +126,88 @@
                     This trip is full!
                 </div>
             }
+            else
+            {
+                <p>This trip is full!</p>
+            }
+
+            @if (Model.Hikers.Count > 0)
+            {
+                <div class="row">
+                    <table class="table">
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            @if (isUserOrganizer)
+                            {
+                                <th></th>
+                            }
+                        </tr>
+                        @foreach (var hiker in @Model.Hikers)
+                        {
+                            <tr>
+                                <td>@hiker.Hiker.FullName</td>
+                                <td>@hiker.Hiker.Phone</td>
+                                <td>@hiker.HikerStatus</td>
+
+                                @if (isUserOrganizer)
+                                {
+                                    if (hiker.HikerStatus == "ACCEPTED" || hiker.HikerStatus == "PENDING-HIKER")
+                                    {
+                                        <td><a asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a></td>
+                                    }
+                                    else if (hiker.HikerStatus == "PENDING-LEADER")
+                                    {
+                                        <td>
+                                            <a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Accept </a> |
+                                            <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Reject </a>
+                                        </td>
+                                    }
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
         </div>
     </div>
-
-    @if (Model.Hikers.Count > 0)
-    {
-        <div class="row">
-            <table class="table">
-                <tr>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Status</th>
-                    @if (isUserOrganizer)
-                    {
-                        <th></th>
-                    }
-                </tr>
-                @foreach (var hiker in @Model.Hikers)
-                {
-            <tr>
-                <td>@hiker.Hiker.FullName</td>
-                <td>@hiker.Hiker.Phone</td>
-                <td>@hiker.HikerStatus</td>
-
-                @if (isUserOrganizer)
-                {
-                    if (hiker.HikerStatus == "ACCEPTED" || hiker.HikerStatus == "PENDING-HIKER")
-                    {
-                        <td><a asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a></td>
-                    }
-                    else if (hiker.HikerStatus == "PENDING-LEADER")
-                    {
-                        <td><a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Accept </a> | 
-                            <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Reject </a></td>
-                    }
-                }
-            </tr>
-                }
-            </table>
-        </div>
-    }
     <hr />
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Carpool Drivers</h4>
+            @if (spacesInACar < needARide)
+            {
+                <div class="alert alert-primary" role="alert">
+                    Looks like this trip doesn't have enough cars to get to trailhead!
+                </div>
+            }
+
+            @if (@Model.Hikers.Where(h => h.Hiker.HasCar).Count() > 0)
+            {
+                <div class="row">
+                    <table class="table">
+                        <tr>
+                            <th>Name</th>
+                            <th>Car brand</th>
+                            <th>Car Model</th>
+                            <th>Number of spots</th>
+                        </tr>
+                        @foreach (var hiker in @Model.Hikers.Where(h => h.Hiker.HasCar))
+                        {
+                            <tr>
+                                <td>@hiker.Hiker.FullName</td>
+                                <td>@hiker.Hiker.CarBrand</td>
+                                <td>@hiker.Hiker.CarModel</td>
+                                <td>@hiker.Hiker.Spaces</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+            <hr />
+        </div>
+    </div>
 </div>
 
 <div>

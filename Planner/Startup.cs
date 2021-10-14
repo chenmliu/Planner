@@ -35,7 +35,7 @@ namespace Planner
 			services.AddMvc();
 			services.AddSession(options =>
 			{
-				options.IdleTimeout = TimeSpan.FromSeconds(900);
+				options.IdleTimeout = TimeSpan.FromMinutes(30);
 				options.Cookie.HttpOnly = true;
 				options.Cookie.IsEssential = true;
 			});

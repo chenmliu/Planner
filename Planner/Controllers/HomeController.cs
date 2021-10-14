@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +26,7 @@ namespace Planner.Controllers
 
 		public ActionResult Index()
 		{
-			if (HttpContext.Session.GetString("username") != null)
+			if (!string.IsNullOrWhiteSpace(HttpContext.Session.GetString("username")))
 			{
 				return new RedirectToRouteResult(
 					new RouteValueDictionary{
@@ -72,6 +74,7 @@ namespace Planner.Controllers
 			HttpContext.Session.SetInt32("userid", hiker.Id);
 
 			var viewModel = new HikerViewModel(hiker);
+			await AddTripsAsync(viewModel);
 			return View(viewModel);
 		}
 
@@ -147,8 +150,23 @@ namespace Planner.Controllers
 			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			// TODO: Details doesnt exist??
 			return RedirectToAction(nameof(Details), new { id = hiker.Id });
+		}
+
+		public IActionResult SignOut()
+		{
+			HttpContext.Session.SetString("username", string.Empty);
+			HttpContext.Session.SetInt32("userid", int.MinValue);
+
+			var a = HttpContext.Session.GetString("username");
+
+			return new RedirectToRouteResult(
+				new RouteValueDictionary
+				{
+					{ "controller", "Home" },
+					{ "action", "Index" }
+				}
+				);
 		}
 
 		private async Task<IActionResult> GetHikerViewModelByIdAsync(int id)
@@ -163,7 +181,26 @@ namespace Planner.Controllers
 			}
 
 			var viewModel = new HikerViewModel(hiker);
+			await AddTripsAsync(viewModel);
+
 			return View(viewModel);
+		}
+
+		private async Task<HikerViewModel> AddTripsAsync(HikerViewModel hiker)
+		{
+			var trips = await _dbContext.HikerTrip
+				.Where(ht => ht.HikerId == hiker.Id)
+				.Join(_dbContext.Trip,
+						  m => m.TripId,
+						  v => v.Id,
+						  (m, v) => new TripViewModel() { Name = v.Name, StartDate = v.StartDate, Id = v.Id })
+				.ToListAsync();
+			var pastTrips = trips.Where(t => t.StartDate < DateTime.Today);
+			var upcomingTrips = trips.Except(pastTrips);
+			hiker.pastTrips = pastTrips;
+			hiker.upcomingTrips = upcomingTrips;
+
+			return hiker;
 		}
 	}
 }

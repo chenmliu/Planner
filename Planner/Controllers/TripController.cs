@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GeoJSON.Net.Contrib.EntityFramework;
@@ -7,6 +8,7 @@ using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -41,7 +43,7 @@ namespace Planner.Controllers
 		public async Task<ActionResult> Index()
 		{
 			// Rediect to login page if not logged in
-			if (HttpContext.Session.GetString("username") == null)
+			if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("username")))
 			{
 				return new RedirectToRouteResult(
 					new RouteValueDictionary{
@@ -69,6 +71,13 @@ namespace Planner.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
+			IEnumerable<SelectListItem> PeakList = from peak in _dbContext.Peak
+												   select new SelectListItem
+												   {
+													   Value = Convert.ToString(peak.Id),
+													   Text = peak.Name
+												   };
+			ViewBag.PeakList = new SelectList(PeakList, "Value", "Text");
 			return await GetTripViewModelByIdAsync(id);
 		}
 
@@ -91,6 +100,20 @@ namespace Planner.Controllers
 		[HttpGet]
 		public ActionResult Create()
 		{
+			IEnumerable<SelectListItem> PeakList = from peak in _dbContext.Peak
+												   select new SelectListItem
+												   { 
+													   Value = Convert.ToString(peak.Id),
+													   Text = peak.Name
+												   };
+			IEnumerable<SelectListItem> UserList = from user in _dbContext.Hiker
+												   select new SelectListItem
+												   {
+													   Value = Convert.ToString(user.Id),
+													   Text = $"{user.FirstName} {user.LastName}"
+												   };
+			ViewBag.PeakList = new SelectList(PeakList, "Value", "Text");
+			ViewBag.UserList = new SelectList(UserList, "Value", "Text");
 			return View();
 		}
 
@@ -215,27 +238,22 @@ namespace Planner.Controllers
 						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v, HikerStatus = m.HikerStatus })
 				.ToListAsync();
 
-			var viewModel = new TripViewModel(trip);
+			var viewModel = new TripViewModel(trip, "", "");
 			if (_shouldQueryWeatherApi)
             {
-				// FIXME: Remove this hard-coded coord for Mount Rainier.
 				// Should query for weather based on representative lat/lon per day.
 				// NWAC can use the lat/long for Day 1.
-				var coord = new Point(new Position(46.879967, -121.726906));
-
-				// See https://openweathermap.org/api/one-call-api#hist_parameter
-				// for fields available on forecast.
-				var forecast = await GetWeatherForecast(coord: coord);
-				string weatherDescription = forecast.weather.First.description;
-				string iconCode = forecast.weather.First.icon;
+				var coord = new Point(new Position((double) trip.Peak.TrailheadLatitude, (double) trip.Peak.TrailheadLongitude));
+				var forecast = await GetWeatherForecast(coord: coord, startDate: trip.StartDate, numDays: trip.Days);
 
 				// FIXME: Re-enable and troubzleshoot.
 				//var nwacZone = GetNWACZone(coord: coord);
 
-				// TODO: Hook nwacZone up to TripViewModel.
-				viewModel = new TripViewModel(trip, weatherDescription, iconCode);
+				// We only have trailhead info, so only send Weather forecast for Day 1.
+				var weatherDescription = forecast.Count > 1 ? DescriptionForForecast(forecast[0]) : "Too Soon To Tell";
+				var weatherIcon = forecast.Count > 1 ? IconForForecast(forecast[0]) : "";
+				viewModel = new TripViewModel(trip, weatherDescription, weatherIcon);
 			}
-			
 			viewModel.Hikers = hikers;
 			return View(viewModel);
 		}
@@ -244,10 +262,10 @@ namespace Planner.Controllers
 		/// Returns the daily weather forecast as a dynamic JSON object.
 		/// </summary>
 		/// <param name="coord">Coordinate for which to retrieve the forecast.</param>
-		/// <param name="skip_days">Number of days to skip. Default: 0</param>
-		/// <param name="num_days">Number of days to return. Default: 1</param>
+		/// <param name="startDate">Start date for weather forecast to retrieve.</param>
+		/// <param name="numDays">Number of days to return.</param>
 		/// <returns></returns>
-		private async Task<dynamic> GetWeatherForecast(Point coord, int skip_days = 0, int num_days = 1)
+		private async Task<dynamic> GetWeatherForecast(Point coord, DateTime startDate, int numDays)
 		{
 			var api_key = _configuration.GetValue<string>("WEATHER_API_KEY");
 			var url = $"https://api.openweathermap.org/data/2.5/onecall?units=imperial&lat={coord.Coordinates.Latitude}&lon={coord.Coordinates.Longitude}&exclude=hourly,minutely,current,alerts&appid={api_key}";
@@ -263,14 +281,60 @@ namespace Planner.Controllers
 
 			var daily_forecast = weather.daily;
 
-			if (skip_days + num_days > 7)
+			// retrieve the forecasts relevant to the days of the trip
+			List<dynamic> forecasts = new List<dynamic>();
+			foreach (dynamic forecast in daily_forecast)
             {
-				// TODO: Throw some kind of error.
+                var date = DateTimeFromUnix((double)forecast.dt);
+                var difference = (date.Date - startDate.Date).Days;
+                if (difference < 0 || difference >= numDays)
+                {
+                    continue;
+                }
+                forecasts.Add(forecast);
             }
-			// FIXME: For now just return the first day. C# array slicing is
-			// hard :/
-			return daily_forecast.First;
+            return forecasts;
 		}
+
+		private DateTime DateTimeFromUnix(double unixTime)
+        {
+			var unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+			long unixTimeStampInTicks = (long)(unixTime * TimeSpan.TicksPerSecond);
+			return new DateTime(unixStart.Ticks + unixTimeStampInTicks, DateTimeKind.Local);
+		}
+
+		private string IconForForecast(dynamic forecast)
+        {
+			return forecast.weather.First.icon;
+		}
+
+		private string DescriptionForForecast(dynamic forecast)
+        {
+			// See https://openweathermap.org/api/one-call-api#hist_parameter
+			// for fields available on forecast.
+			double? mmRain = forecast.rain;
+			double? mmSnow = forecast.snow;
+
+			double maxTemp = Math.Round((double)forecast.temp.max, 0);
+			double minTemp = Math.Round((double)forecast.temp.min, 0);
+			double windSpeed = Math.Round((double)forecast.wind_speed, 0);
+
+			var description = new System.Text.StringBuilder($"{forecast.weather.First.description}. ");
+			description.Append($"High of {maxTemp} F. ");
+			description.Append($"Low of {minTemp} F. ");
+			description.Append($"Wind speed {windSpeed} mph. ");
+			if (mmRain != null)
+            {
+				var inchesRain = Math.Round((double)mmRain * 0.03937008, 2);
+				description.Append($"Expected rain {inchesRain} inches. ");
+            }
+			if (mmSnow != null)
+            {
+				var inchesSnow = Math.Round((double)mmSnow * 0.03937008, 2);
+				description.Append($"Expected snowfall {inchesSnow} inches.");
+            }
+			return description.ToString();
+        }
 
 		private NWACZone? GetNWACZone(Point coord)
 		{

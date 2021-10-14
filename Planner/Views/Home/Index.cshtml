@@ -11,7 +11,7 @@
     <hr class="my-4">
     <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
     <p class="lead">
-        @if (! @Context.Session.Keys.Contains("username"))
+        @if (! @Context.Session.Keys.Contains("username") || @Context.Session.GetString("username") == "")
         {
             <a class="btn btn-primary btn-lg" href="/Home/SignUp" role="button">Register</a>
             <a class="btn btn-primary btn-lg" href="/Home/Login" role="button">Login</a>

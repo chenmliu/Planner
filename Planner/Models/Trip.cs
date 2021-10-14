@@ -22,6 +22,12 @@ namespace Planner.Models
 			PeakId = trip.PeakId;
 			OwnerId = trip.OwnerId;
 			GroupSize = trip.GroupSize;
+			ElevationGain = trip.ElevationGain;
+			TotalDistance = trip.TotalDistance;
+			HasSnow = trip.HasSnow;
+			IsBumpyRoad = trip.IsBumpyRoad;
+			Location = trip.Location;
+			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
 		}
 
 		[Key]
@@ -40,6 +46,7 @@ namespace Planner.Models
 		}
 
 		[Required]
+		[Column("days")]
 		public int Days
 		{
 			get;
@@ -121,14 +128,14 @@ namespace Planner.Models
 		}
 
 		[Column("isBumpyRoad")]
-		public bool BumpyRoad
+		public bool IsBumpyRoad
 		{
 			get;
 			set;
 		}
 
 		[Column("totalDistance")]
-		public int TotalDistance
+		public double TotalDistance
 		{
 			get;
 			set;

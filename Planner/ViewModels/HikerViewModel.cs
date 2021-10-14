@@ -1,4 +1,5 @@
-﻿using Planner.Models;
+﻿using System.Collections.Generic;
+using Planner.Models;
 
 namespace Planner.ViewModels
 {
@@ -21,6 +22,10 @@ namespace Planner.ViewModels
 			EmergencyContactName = hiker.EmergencyContactName;
 			EmergencyContactPhone = hiker.EmergencyContactPhone;
 			FunScale = hiker.FunScale;
+			HasCar = hiker.HasCar;
+			CarBrand = hiker.CarBrand;
+			CarModel = hiker.CarModel;
+			Spaces = hiker.Spaces;
 		}
 
 		public int Id
@@ -90,6 +95,41 @@ namespace Planner.ViewModels
 		}
 
 		public string Password
+		{
+			get;
+			set;
+		}
+
+		public bool HasCar
+        {
+			get;
+			set;
+        }
+
+		public string CarBrand
+        {
+			get;
+			set;
+        }
+		public string CarModel
+		{
+			get;
+			set;
+		}
+
+		public int? Spaces
+        {
+			get;
+			set;
+        }
+
+		public IEnumerable<TripViewModel> pastTrips
+		{
+			get;
+			set;
+		}
+
+		public IEnumerable<TripViewModel> upcomingTrips
 		{
 			get;
 			set;

@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Planner.Controllers
 {
-	public class ResourcesController : Controller
+	public class PodcastController : Controller
 	{
 		public IActionResult Index()
 		{
 			// Rediect to login page if not logged in
-			if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("username")))
+			if (HttpContext.Session.GetString("username") == null)
 			{
 				return new RedirectToRouteResult(
 					new RouteValueDictionary{
