@@ -224,28 +224,22 @@ namespace Planner.Controllers
 						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v })
 				.ToListAsync();
 
-			var viewModel = new TripViewModel(trip);
+			var viewModel = new TripViewModel(trip, "", "");
 			if (_shouldQueryWeatherApi)
             {
 				// Should query for weather based on representative lat/lon per day.
 				// NWAC can use the lat/long for Day 1.
 				var coord = new Point(new Position((double) trip.Peak.TrailheadLatitude, (double) trip.Peak.TrailheadLongitude));
-
-				// See https://openweathermap.org/api/one-call-api#hist_parameter
-				// for fields available on forecast.
-				var forecast = await GetWeatherForecast(coord: coord);
-
-				string iconCode = forecast.weather.First.icon;
-				var inchesRain = Math.Round((double) forecast.rain * 0.03937008, 2);
-				string weatherDescription = $"{forecast.weather.First.description}. High of {forecast.temp.max} F. Low of {forecast.temp.min} F. Winds {forecast.wind_speed} mph. Expected rain {inchesRain} inches.";
+				var forecast = await GetWeatherForecast(coord: coord, startDate: trip.StartDate, numDays: trip.Days);
 
 				// FIXME: Re-enable and troubzleshoot.
 				//var nwacZone = GetNWACZone(coord: coord);
 
-				// TODO: Hook nwacZone up to TripViewModel.
-				viewModel = new TripViewModel(trip, weatherDescription, iconCode);
+				// We only have trailhead info, so only send Weather forecast for Day 1.
+				var weatherDescription = forecast.Count > 1 ? DescriptionForForecast(forecast[0]) : "Too Soon To Tell";
+				var weatherIcon = forecast.Count > 1 ? IconForForecast(forecast[0]) : "";
+				viewModel = new TripViewModel(trip, weatherDescription, weatherIcon);
 			}
-			
 			viewModel.Hikers = hikers;
 			return View(viewModel);
 		}
@@ -254,10 +248,10 @@ namespace Planner.Controllers
 		/// Returns the daily weather forecast as a dynamic JSON object.
 		/// </summary>
 		/// <param name="coord">Coordinate for which to retrieve the forecast.</param>
-		/// <param name="skip_days">Number of days to skip. Default: 0</param>
-		/// <param name="num_days">Number of days to return. Default: 1</param>
+		/// <param name="startDate">Start date for weather forecast to retrieve.</param>
+		/// <param name="numDays">Number of days to return.</param>
 		/// <returns></returns>
-		private async Task<dynamic> GetWeatherForecast(Point coord, int skip_days = 0, int num_days = 1)
+		private async Task<dynamic> GetWeatherForecast(Point coord, DateTime startDate, int numDays)
 		{
 			var api_key = _configuration.GetValue<string>("WEATHER_API_KEY");
 			var url = $"https://api.openweathermap.org/data/2.5/onecall?units=imperial&lat={coord.Coordinates.Latitude}&lon={coord.Coordinates.Longitude}&exclude=hourly,minutely,current,alerts&appid={api_key}";
@@ -273,14 +267,60 @@ namespace Planner.Controllers
 
 			var daily_forecast = weather.daily;
 
-			if (skip_days + num_days > 7)
+			// retrieve the forecasts relevant to the days of the trip
+			List<dynamic> forecasts = new List<dynamic>();
+			foreach (dynamic forecast in daily_forecast)
             {
-				// TODO: Throw some kind of error.
+                var date = DateTimeFromUnix((double)forecast.dt);
+                var difference = (date.Date - startDate.Date).Days;
+                if (difference < 0 || difference >= numDays)
+                {
+                    continue;
+                }
+                forecasts.Add(forecast);
             }
-			// FIXME: For now just return the first day. C# array slicing is
-			// hard :/
-			return daily_forecast.First;
+            return forecasts;
 		}
+
+		private DateTime DateTimeFromUnix(double unixTime)
+        {
+			var unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+			long unixTimeStampInTicks = (long)(unixTime * TimeSpan.TicksPerSecond);
+			return new DateTime(unixStart.Ticks + unixTimeStampInTicks, DateTimeKind.Local);
+		}
+
+		private string IconForForecast(dynamic forecast)
+        {
+			return forecast.weather.First.icon;
+		}
+
+		private string DescriptionForForecast(dynamic forecast)
+        {
+			// See https://openweathermap.org/api/one-call-api#hist_parameter
+			// for fields available on forecast.
+			double? mmRain = forecast.rain;
+			double? mmSnow = forecast.snow;
+
+			double maxTemp = Math.Round((double)forecast.temp.max, 0);
+			double minTemp = Math.Round((double)forecast.temp.min, 0);
+			double windSpeed = Math.Round((double)forecast.wind_speed, 0);
+
+			var description = new System.Text.StringBuilder($"{forecast.weather.First.description}. ");
+			description.Append($"High of {maxTemp} F. ");
+			description.Append($"Low of {minTemp} F. ");
+			description.Append($"Wind speed {windSpeed} mph. ");
+			if (mmRain != null)
+            {
+				var inchesRain = Math.Round((double)mmRain * 0.03937008, 2);
+				description.Append($"Expected rain {inchesRain} inches. ");
+            }
+			if (mmSnow != null)
+            {
+				var inchesSnow = Math.Round((double)mmSnow * 0.03937008, 2);
+				description.Append($"Expected snowfall {inchesSnow} inches.");
+            }
+			return description.ToString();
+        }
 
 		private NWACZone? GetNWACZone(Point coord)
 		{
