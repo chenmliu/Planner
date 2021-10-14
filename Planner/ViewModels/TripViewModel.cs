@@ -11,7 +11,7 @@ namespace Planner.ViewModels
 
 		}
 
-		public TripViewModel(Trip trip, string weatherDesc = "light rain", string iconCode = "10n")
+		public TripViewModel(Trip trip, string weatherDesc, string iconCode)
 		{
 			Id = trip.Id;
 			Name = trip.Name;
@@ -31,7 +31,7 @@ namespace Planner.ViewModels
 			ElevationGain = trip.ElevationGain;
 			
 			WeatherLabel = weatherDesc;
-			IconUrl = $"http://openweathermap.org/img/wn/{iconCode}@2x.png";
+			IconUrl = iconCode != "" ? $"http://openweathermap.org/img/wn/{iconCode}@2x.png" : "";
 		}
 
 		public int Id
