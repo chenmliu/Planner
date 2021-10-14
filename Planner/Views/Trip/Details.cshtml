@@ -1,5 +1,7 @@
 @model Planner.ViewModels.TripViewModel
 
+@using Microsoft.AspNetCore.Http;
+
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -56,26 +58,34 @@
         </dt>
     </dl>
     <div class="row">
-        <div class = "col-sm-12">
+        <div class="col-sm-12">
             <h4>Members</h4>
             @if (@Model.Hikers.Count() == 0)
             {
                 <div class="alert alert-primary" role="alert">
-                    This trip is looking for hikers! 
+                    This trip is looking for hikers!
                     <a asp-action="Create" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Click here</a> to invite someone.
                 </div>
+            }
+            else if (@Model.Hikers.Count >= @Model.GroupSize)
+            {
+                <p>This trip is full!</p>
             }
             else
             {
                 <div>
-                  <ul class="list-group">
-                        @foreach(var hiker in @Model.Hikers)
+                    <ul class="list-group">
+                        @foreach (var hiker in @Model.Hikers)
                         {
-                            <li class="list-group-item">@hiker.HikerName
+                        <li class="list-group-item">
+                            @hiker.HikerName
+                            @if (@Model.OwnerId == @Context.Session.GetInt32("userid") || hiker.HikerId == @Context.Session.GetInt32("userid"))
+                            {
                                 <a asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a>
-                            </li>
-                        }
-                  </ul>
+                            }
+                        </li>
+                    }
+                    </ul>
                 </div>
             }
         </div>
@@ -85,7 +95,14 @@
 <hr />
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a> |
-    <a asp-action="Create" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Invite</a>
+    @if (@Model.OwnerId == @Context.Session.GetInt32("userid"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a asp-action="Index">Back to List</a>
+        <a asp-action="Create" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Invite</a>
+    }
+    else
+    {
+        <a asp-action="Index">Back to List</a>
+    }
 </div>
