@@ -173,6 +173,12 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		public IEnumerable<TripViewModel> PendingInvitations
+        {
+			get;
+			set;
+        }
+
 		[Display(Name = "Upcoming Trips")]
 		public IEnumerable<TripViewModel> upcomingTrips
 		{
