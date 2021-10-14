@@ -94,6 +94,30 @@ namespace Planner.Controllers
 		}
 
 		/// <summary>
+		/// Get a trip by ID from the leaders perspective
+		/// GET: Trip/Details/{id}
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>ID of the trip.</returns>
+		[HttpGet]
+		public async Task<IActionResult> DetailsLeader(int id)
+		{
+			return await GetTripViewModelByIdAsync(id);
+		}
+
+		/// <summary>
+		/// Get a trip by ID from the leaders perspective
+		/// GET: Trip/Summary/{id}
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<IActionResult> SummaryLeader(int id)
+		{
+			return await GetTripViewModelByIdAsync(id);
+		}
+
+		/// <summary>
 		/// Fill in the details to add a trip.
 		/// </summary>
 		/// <returns></returns>
@@ -250,7 +274,7 @@ namespace Planner.Controllers
 				//var nwacZone = GetNWACZone(coord: coord);
 
 				// We only have trailhead info, so only send Weather forecast for Day 1.
-				var weatherDescription = forecast.Count > 1 ? DescriptionForForecast(forecast[0]) : "Too Soon To Tell";
+				var weatherDescription = forecast.Count > 1 ? DescriptionForForecast(forecast[0]) : "Check Back Later";
 				var weatherIcon = forecast.Count > 1 ? IconForForecast(forecast[0]) : "";
 				viewModel = new TripViewModel(trip, weatherDescription, weatherIcon);
 			}
