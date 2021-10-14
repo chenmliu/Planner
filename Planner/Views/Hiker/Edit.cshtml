@@ -9,6 +9,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => @Model.Id)
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -96,6 +97,45 @@
                 <label asp-for="FunScale" class="control-label"></label>
                 <input asp-for="FunScale" class="form-control" />
                 <span asp-validation-for="FunScale" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Awd" /> @Html.DisplayNameFor(model => model.Awd)
+                </label>
+            </div>
+            <h3>Gear</h3>
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th>Intended Use</th>
+                        <th>Group Use?</th>
+                        <th>Weight</th>
+                        <th>Number of Users</th>
+                        <th>Specs</th>
+                        <th>Details</th>
+                    </tr>
+                    @foreach (var item in Model.HikerGearList)
+                    {
+                        // TODO: Fill in other gear info
+                        <tr>
+                            <td>@item.Item</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div>
+                <a asp-controller="Gear" asp-action="Create">Add Gear</a>
             </div>
             <div class="form-group">
                 <input type="hidden" name="id" id="tripId" value="@Model.Id" />
