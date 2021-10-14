@@ -32,9 +32,8 @@ namespace Planner.Controllers
 					new RouteValueDictionary{
 						{ "controller", "Home" },
 						{ "action", "Details" },
-						{ "id", HttpContext.Session.GetString("userid") }
-					}
-					);
+						{ "id", HttpContext.Session.GetInt32("userid") }
+					});
 			}
 			
 			return View();
@@ -49,6 +48,15 @@ namespace Planner.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Details(int id)
 		{
+			if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("username")))
+			{
+				return new RedirectToRouteResult(
+					new RouteValueDictionary{
+						{ "controller", "Home" },
+						{ "action", "Index" },
+					});
+			}
+
 			return await GetHikerViewModelByIdAsync(id);
 		}
 
@@ -73,9 +81,12 @@ namespace Planner.Controllers
 			HttpContext.Session.SetString("username", hiker.UserName);
 			HttpContext.Session.SetInt32("userid", hiker.Id);
 
-			var viewModel = new HikerViewModel(hiker);
-			await AddTripsAsync(viewModel);
-			return View(viewModel);
+			return new RedirectToRouteResult(
+					new RouteValueDictionary{
+						{ "controller", "Home" },
+						{ "action", "Details" },
+						{ "id", hiker.Id }
+					});
 		}
 
 		/// <summary>
@@ -182,8 +193,23 @@ namespace Planner.Controllers
 
 			var viewModel = new HikerViewModel(hiker);
 			await AddTripsAsync(viewModel);
-
+			await AddPendingTripInvitations(viewModel);
 			return View(viewModel);
+		}
+
+		private async Task<HikerViewModel> AddPendingTripInvitations(HikerViewModel hiker)
+        {
+			var pendingInvitations = await _dbContext.HikerTrip
+				.Where(ht => ht.HikerId == hiker.Id)
+				.Where(ht => ht.HikerStatus == "PENDING-HIKER")
+				.Join(_dbContext.Trip,
+						m => m.TripId,
+						v => v.Id,
+						(m, v) => new TripViewModel() { Name = v.Name, OwnerName = v.Owner.FullName, Id = v.Id })
+				.ToListAsync();
+
+			hiker.PendingInvitations = pendingInvitations;
+			return hiker;
 		}
 
 		private async Task<HikerViewModel> AddTripsAsync(HikerViewModel hiker)

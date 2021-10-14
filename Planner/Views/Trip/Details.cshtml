@@ -153,15 +153,15 @@
 
                                 @if (isUserOrganizer)
                                 {
-                                    if (hiker.HikerStatus == "ACCEPTED" || hiker.HikerStatus == "PENDING-HIKER")
+                                    if (hiker.HikerStatus == "CONFIRMED" || hiker.HikerStatus == "PENDING-HIKER")
                                     {
                                         <td><a asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a></td>
                                     }
                                     else if (hiker.HikerStatus == "PENDING-LEADER")
                                     {
                                         <td>
-                                            <a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Accept </a> |
-                                            <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Reject </a>
+                                            <a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-view="organizer" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Accept </a> |
+                                            <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-view="organizer" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Reject </a>
                                         </td>
                                     }
                                 }
@@ -172,13 +172,13 @@
             }
         </div>
     </div>
-    <hr />
+    <br />
     <div class="row">
         <div class="col-sm-12">
             <h4>Carpool Drivers</h4>
-            @if (spacesInACar < needARide)
+            @if (spacesInACar < needARide || needARide == 0)
             {
-                <div class="alert alert-primary" role="alert">
+                <div class="alert alert-warning" role="alert">
                     Looks like this trip doesn't have enough cars to get to trailhead!
                 </div>
             }

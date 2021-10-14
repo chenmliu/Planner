@@ -129,6 +129,12 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		public IEnumerable<TripViewModel> PendingInvitations
+        {
+			get;
+			set;
+        }
+
 		public IEnumerable<TripViewModel> upcomingTrips
 		{
 			get;
