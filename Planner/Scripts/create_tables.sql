@@ -7,10 +7,17 @@ CREATE TABLE hiker
 	last_name VARCHAR (50) NOT NULL,
 	phone VARCHAR (50) NOT NULL,
 	city VARCHAR (50) NOT NULL,
-	awd BIT NOT NULL, -- probably can be removed, keeping it here for now to not mess up with already created tables
 	emergency_contact_name VARCHAR (50) NOT NULL,
 	emergency_contact_phone VARCHAR (50) NOT NULL,
-	fun_scale INT NOT NULL
+	fun_scale INT NOT NULL,
+	has_car BIT NOT NULL,
+	car_brand VARCHAR(50),
+	car_model VARCHAR(50),
+	awd BIT,
+	snow_friendly BIT,
+	high_clearance BIT,
+	spaces INT,
+	preference INT, -- make enum in the code to parse that (Alone, Driver, Rider, etc.)
 );
 
 CREATE TABLE hiker_gear
@@ -29,6 +36,8 @@ CREATE TABLE hiker_gear
 	FOREIGN KEY (hiker_id) REFERENCES hiker (id)
 );
 
+-- We decided we don't need separate table for that now
+-- I am keeping it in the schema for now if we decide to support more that 1 car per user
 CREATE TABLE carpool
 (
 	id INT PRIMARY KEY IDENTITY (1, 1),
