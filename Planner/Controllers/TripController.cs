@@ -183,7 +183,7 @@ namespace Planner.Controllers
 				.Join(_dbContext.Hiker,
 						  m => m.HikerId,
 						  v => v.Id,
-						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName   })
+						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v })
 				.ToListAsync();
 
 			// FIXME: Remove this hard-coded coord for Mount Rainier.

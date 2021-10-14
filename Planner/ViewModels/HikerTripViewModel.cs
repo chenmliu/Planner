@@ -1,4 +1,6 @@
-﻿namespace Planner.ViewModels
+﻿using Planner.Models;
+
+namespace Planner.ViewModels
 {
 	public class HikerTripViewModel
 	{
@@ -27,6 +29,12 @@
 		}
 
 		public string TripName
+		{
+			get;
+			set;
+		}
+
+		public Hiker Hiker
 		{
 			get;
 			set;
