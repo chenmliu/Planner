@@ -130,7 +130,7 @@ namespace Planner.Controllers
 				.FirstOrDefault();
 
 			return View(
-				new HikerTripViewModel { HikerId = hiker.Id, TripId = trip.Id, TripName = trip.Name, HikerName = hiker.FullName }
+				new HikerTripViewModel { HikerId = hiker.Id, TripId = trip.Id, TripName = trip.Name, HikerName = hiker.FullName, Hiker = hiker }
 			);
 		}
 

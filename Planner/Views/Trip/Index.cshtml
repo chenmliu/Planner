@@ -14,7 +14,6 @@ Welcome @Context.Session.GetString("username")
     @Html.ActionLink("Create New", "Create")
 </p>
 
-
 <table class="table">
     <tr>
         <th>
@@ -46,11 +45,20 @@ Welcome @Context.Session.GetString("username")
         <td>
             @Html.DisplayFor(modelItem => trip.OwnerName)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = trip.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = trip.Id  }) |
-            @Html.ActionLink("Delete", "Delete", new { id = trip.Id })
-        </td>
+        @if (@Context.Session.GetInt32("userid") == trip.OwnerId)
+        {
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = trip.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = trip.Id  }) |
+                @Html.ActionLink("Delete", "Delete", new { id = trip.Id })
+            </td>
+        }
+        else
+        {
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = trip.Id  })
+            </td>
+        }
     </tr>
 }
 </table>
