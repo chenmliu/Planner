@@ -50,6 +50,11 @@
                     <input asp-for="IsBumpyRoad" class="form-control" />
                     <span asp-validation-for="IsBumpyRoad" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <label asp-for="NeedHighClearanceVehicle" class="control-label" />High Clearance Vehicle?</label>
+                    <input asp-for="NeedHighClearanceVehicle" class="form-control" />
+                    <span asp-validation-for="NeedHighClearanceVehicle" class="text-danger"></span>
+                </div>
             </span>
 
             <div class="form-group">
@@ -58,7 +63,7 @@
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PeakId" class="control-label"></label>
+                <label asp-for="PeakId" class="control-label">Peak</label>
                 @Html.DropDownListFor(
                     model => model.PeakId,
                     new SelectList(ViewBag.PeakList, "Value", "Text", 0), "-Select Peak-", new { @class = "form-control", @id = "PeakId" }

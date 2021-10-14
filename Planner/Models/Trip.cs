@@ -22,6 +22,12 @@ namespace Planner.Models
 			PeakId = trip.PeakId;
 			OwnerId = trip.OwnerId;
 			GroupSize = trip.GroupSize;
+			ElevationGain = trip.ElevationGain;
+			TotalDistance = trip.TotalDistance;
+			HasSnow = trip.HasSnow;
+			IsBumpyRoad = trip.IsBumpyRoad;
+			Location = trip.Location;
+			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
 		}
 
 		[Key]
