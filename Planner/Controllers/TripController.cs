@@ -302,8 +302,8 @@ namespace Planner.Controllers
 				//var nwacZone = GetNWACZone(coord: coord);
 
 				// We only have trailhead info, so only send Weather forecast for Day 1.
-				var weatherDescription = forecast.Count > 1 ? DescriptionForForecast(forecast[0]) : "Check Back Later";
-				var weatherIcon = forecast.Count > 1 ? IconForForecast(forecast[0]) : "";
+				var weatherDescription = forecast.Count > 0 ? DescriptionForForecast(forecast[0]) : "Check Back Later";
+				var weatherIcon = forecast.Count > 0 ? IconForForecast(forecast[0]) : "";
 				viewModel = new TripViewModel(trip, weatherDescription, weatherIcon);
 			}
 
