@@ -5,6 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using Microsoft.AspNetCore.Http;
+Welcome @Context.Session.GetString("user")
+
 <div>
     <hr />
     <dl class="row">

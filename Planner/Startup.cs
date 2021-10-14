@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,16 @@ namespace Planner
 			});
 
 			services.AddControllersWithViews();
+			services.AddDistributedMemoryCache();
+
+			services.AddMvc();
+			services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromSeconds(10);
+				options.Cookie.HttpOnly = true;
+				options.Cookie.IsEssential = true;
+			});
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,11 +59,13 @@ namespace Planner
 
 			app.UseAuthorization();
 
+			app.UseSession();
+			
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
 					name: "default",
-					pattern: "{controller=Home}/{action=Index}/{id?}");
+					pattern: "{controller=Home}/{action=Index}");
 			});
 		}
 	}
