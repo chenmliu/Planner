@@ -25,8 +25,11 @@ namespace Planner.ViewModels
 			Hikers = new List<HikerTripViewModel>();
 			Location = trip.Location;
 			HasSnow = trip.HasSnow;
+			IsBumpyRoad = trip.IsBumpyRoad;
 			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
 			TotalDistance = trip.TotalDistance;
+			ElevationGain = trip.ElevationGain;
+			
 			WeatherLabel = weatherDesc;
 			IconUrl = $"http://openweathermap.org/img/wn/{iconCode}@2x.png";
 		}
@@ -102,19 +105,28 @@ namespace Planner.ViewModels
 			get;
 			set;
         }
-
+		public bool IsBumpyRoad
+		{
+			get;
+			set;
+		}
 		public bool NeedHighClearanceVehicle
         {
 			get;
 			set;
         }
 
-		public float TotalDistance
+		public double TotalDistance
         {
 			get;
 			set;
         }
 
+		public int ElevationGain
+		{
+			get;
+			set;
+		}
 		public string WeatherLabel
         {
 			get;

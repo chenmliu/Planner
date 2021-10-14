@@ -122,14 +122,14 @@ namespace Planner.Models
 		}
 
 		[Column("isBumpyRoad")]
-		public bool BumpyRoad
+		public bool IsBumpyRoad
 		{
 			get;
 			set;
 		}
 
 		[Column("totalDistance")]
-		public int TotalDistance
+		public double TotalDistance
 		{
 			get;
 			set;
