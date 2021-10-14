@@ -175,6 +175,41 @@
     <br />
     <div class="row">
         <div class="col-sm-12">
+            <h4>Gear</h4>
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <th>Hiker</th>
+                        @foreach (var gear in @Model.GroupGearList)
+                        {
+                            <th>@gear.Item</th>
+                        }
+                    </tr>
+                    @foreach (var hiker in @Model.Hikers)
+                    {
+                        <tr>
+                            <td>@hiker.Hiker.FullName</td>
+                            @foreach (var gear in @Model.GroupGearList)
+                            {
+                                <!-- Doesn't handle properly multiple gear of the same type -->
+                                @if (hiker.Hiker.HikerGear.Any(g => g.Item.ToString().Equals(gear.Item.ToString(), StringComparison.InvariantCultureIgnoreCase)))
+                                {
+                                    <td>I have it!</td>
+                                }
+                                else
+                                {
+                                    <td>Don't have</td>
+                                }
+                            }
+                        </tr>
+                    }
+                </table>
+            </div>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
             <h4>Carpool Drivers</h4>
             @if (spacesInACar < needARide || needARide == 0)
             {

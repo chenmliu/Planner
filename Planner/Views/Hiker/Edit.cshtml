@@ -9,6 +9,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => @Model.Id)
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -31,8 +32,56 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HasCar" /> @Html.DisplayNameFor(model => model.HasCar)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarBrand" class="control-label"></label>
+                <input asp-for="CarBrand" class="form-control" />
+                <span asp-validation-for="CarBrand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarModel" class="control-label"></label>
+                <input asp-for="CarModel" class="form-control" />
+                <span asp-validation-for="CarModel" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
                     <input class="form-check-input" asp-for="Awd" /> @Html.DisplayNameFor(model => model.Awd)
                 </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="SnowFriendly" /> @Html.DisplayNameFor(model => model.SnowFriendly)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HighClearance" /> @Html.DisplayNameFor(model => model.HighClearance)
+                </label>
+            </div>
+            <div class="dropdown">
+                <label asp-for="Spaces">How many spaces available in your car:</label>
+                <select asp-for="Spaces" class="dropdown" />
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8+">8+</option>
+                </select>
+            </div>
+            <div class="dropdown">
+                <label asp-for="Preference">Carpool preferences:</label>
+                <select asp-for="Preference" class="dropdown" />
+                <option value="Alone">Alone</option>
+                <option value="Drive">Drive</option>
+                <option value="Ride">Ride</option>
+                <option value="Drive or Ride">Drive or Ride</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="EmergencyContactName" class="control-label"></label>
@@ -49,7 +98,49 @@
                 <input asp-for="FunScale" class="form-control" />
                 <span asp-validation-for="FunScale" class="text-danger"></span>
             </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Awd" /> @Html.DisplayNameFor(model => model.Awd)
+                </label>
+            </div>
+            <h3>Gear</h3>
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th>Intended Use</th>
+                        <th>Group Use?</th>
+                        <th>Weight</th>
+                        <th>Number of Users</th>
+                        <th>Specs</th>
+                        <th>Details</th>
+                    </tr>
+                    @foreach (var item in Model.HikerGearList)
+                    {
+                        // TODO: Fill in other gear info
+                        <tr>
+                            <td>@item.Item</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div>
+                <a asp-controller="Gear" asp-action="Create">Add Gear</a>
+            </div>
             <div class="form-group">
+                <input type="hidden" name="id" id="tripId" value="@Model.Id" />
+                <input type="hidden" name="userName" id="tripId" value="@Model.UserName" />
+                <input type="hidden" name="password" id="tripId" value="@Model.Password" />
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

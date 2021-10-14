@@ -3,15 +3,8 @@
 @using Microsoft.AspNetCore.Http;
 
 @{
-    ViewData["Title"] = "DetailsLeader";
+    ViewData["Title"] = "SummaryLeader";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var invitationLink = TempData["invitationLink"] as string;
-    var moreMembers = Model.GroupSize - Model.Hikers.Count;
-
-    // Carpooling calculations
-    // Need to be enhanced to take car type and ppl preferences into account
-    var spacesInACar = Model.Hikers.Where(h => h.Hiker.HasCar).Sum(h => h.Hiker.Spaces);
-    var needARide = Model.Hikers.Count();
 }
 
 @section Scripts
@@ -22,7 +15,6 @@
         navigator.clipboard.writeText(Url.innerHTML)
         alert("Copied the link: " + Url.innerHTML);
     }
-
     </script>
 }
 
@@ -66,26 +58,8 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.OwnerName)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.GroupSize)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.GroupSize)
-        </dd>
     </dl>
-    <div class="row">
-        <div class="col-sm-12">
-            <h4>Members</h4>
-            @if (@moreMembers > 0)
-            {
-                <div class="alert alert-primary" role="alert">
-                    This trip is looking for @moreMembers more hikers!
-                    <a asp-action="Invite" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Click here</a> to invite someone.
-                </div>
-            }
-        </div>
-    </div>
-    <h4>Emergency contacts:</h4>
+    <h4>Trip Roster:</h4>
     <div class="row">
         <table class="table">
             <tr>
@@ -106,13 +80,6 @@
         </table>
     </div>
     <h4>Carpool information:</h4>
-    @if (spacesInACar < needARide)
-    {
-        <div class="alert alert-primary" role="alert">
-            Looks like this trip doesn't have enough cars to get to trailhead!
-        </div>
-    }
-
     <h5>Drivers</h5>
     <div class="row">
         <table class="table">
@@ -153,22 +120,5 @@
 <hr />
 
 <div>
-    @if (@Model.OwnerId == @Context.Session.GetInt32("userid"))
-    {
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> @Html.Raw("|")
-        <a asp-action="Index">Back to List</a> @Html.Raw("|")
-
-        if (!string.IsNullOrEmpty(invitationLink))
-        {
-            <a id="inviteLink" style="background-color: rgb(255,255,0)" onclick="OnClick();">@invitationLink</a>
-        }
-        else
-        {
-            <a asp-action="InviteViaLink" asp-controller="HikerTrip" asp-route-tripId="@Model.Id">Invitation Link</a>
-        }
-    }
-    else
-    {
-        <a asp-action="Index">Back to List</a>
-    }
+    <a asp-action="Index">Back to List</a>
 </div>
