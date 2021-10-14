@@ -8,6 +8,7 @@ using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -70,6 +71,13 @@ namespace Planner.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
+			IEnumerable<SelectListItem> PeakList = from peak in _dbContext.Peak
+												   select new SelectListItem
+												   {
+													   Value = Convert.ToString(peak.Id),
+													   Text = peak.Name
+												   };
+			ViewBag.PeakList = new SelectList(PeakList, "Value", "Text");
 			return await GetTripViewModelByIdAsync(id);
 		}
 
@@ -104,6 +112,20 @@ namespace Planner.Controllers
 		[HttpGet]
 		public ActionResult Create()
 		{
+			IEnumerable<SelectListItem> PeakList = from peak in _dbContext.Peak
+												   select new SelectListItem
+												   { 
+													   Value = Convert.ToString(peak.Id),
+													   Text = peak.Name
+												   };
+			IEnumerable<SelectListItem> UserList = from user in _dbContext.Hiker
+												   select new SelectListItem
+												   {
+													   Value = Convert.ToString(user.Id),
+													   Text = $"{user.FirstName} {user.LastName}"
+												   };
+			ViewBag.PeakList = new SelectList(PeakList, "Value", "Text");
+			ViewBag.UserList = new SelectList(UserList, "Value", "Text");
 			return View();
 		}
 
