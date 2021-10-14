@@ -34,6 +34,12 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		public string HikerStatus
+        {
+			get;
+			set;
+        }
+
 		public Hiker Hiker
 		{
 			get;

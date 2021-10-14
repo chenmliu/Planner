@@ -93,6 +93,7 @@ CREATE TABLE hikerTrip
     id INT PRIMARY KEY IDENTITY (1, 1),
 	hiker_id INT NOT NULL,
 	trip_id INT NOT NULL,
+	state VARCHAR (50) NOT NULL,
 	FOREIGN KEY (hiker_id) REFERENCES hiker (id),
 	FOREIGN KEY (trip_id) REFERENCES trip (id)
 );
