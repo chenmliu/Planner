@@ -27,6 +27,9 @@ namespace Planner.Models
 			FunScale = hiker.FunScale;
 			UserName = hiker.UserName;
 			HasCar = hiker.HasCar;
+			CarBrand = hiker.CarBrand;
+			CarModel = hiker.CarModel;
+			Spaces = hiker.Spaces;
 
 			if (encryptedPassword == null)
             {
@@ -131,6 +134,27 @@ namespace Planner.Models
 		[Column("has_car")]
 		[Required]
 		public bool HasCar
+		{
+			get;
+			set;
+		}
+
+		[Column("car_brand")]
+		public string CarBrand
+		{
+			get;
+			set;
+		}
+
+		[Column("car_model")]
+		public string CarModel
+		{
+			get;
+			set;
+		}
+
+		[Column("spaces")]
+		public int? Spaces
 		{
 			get;
 			set;

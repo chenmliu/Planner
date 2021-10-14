@@ -23,6 +23,9 @@ namespace Planner.ViewModels
 			EmergencyContactPhone = hiker.EmergencyContactPhone;
 			FunScale = hiker.FunScale;
 			HasCar = hiker.HasCar;
+			CarBrand = hiker.CarBrand;
+			CarModel = hiker.CarModel;
+			Spaces = hiker.Spaces;
 		}
 
 		public int Id
@@ -98,6 +101,23 @@ namespace Planner.ViewModels
 		}
 
 		public bool HasCar
+        {
+			get;
+			set;
+        }
+
+		public string CarBrand
+        {
+			get;
+			set;
+        }
+		public string CarModel
+		{
+			get;
+			set;
+		}
+
+		public int? Spaces
         {
 			get;
 			set;

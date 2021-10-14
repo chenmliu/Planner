@@ -7,6 +7,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var invitationLink = TempData["invitationLink"] as string;
     var moreMembers = Model.GroupSize - Model.Hikers.Count;
+
+    // Carpooling calculations
+    // Need to be enhanced to take car type and ppl preferences into account
+    var spacesInACar = Model.Hikers.Where(h => h.Hiker.HasCar).Sum(h => h.Hiker.Spaces);
+    var needARide = Model.Hikers.Count();
 }
 
 @section Scripts
@@ -101,8 +106,7 @@
         </table>
     </div>
     <h4>Carpool information:</h4>
-    <!-- The condition below need to be obviously more enhanced to actually count number of spaces in the carr -->
-    @if (@Model.Hikers.Count(h => !h.Hiker.HasCar) > @Model.Hikers.Count(h => h.Hiker.HasCar))
+    @if (spacesInACar < needARide)
     {
         <div class="alert alert-primary" role="alert">
             Looks like this trip doesn't have enough cars to get to trailhead!
@@ -116,15 +120,15 @@
                 <th>Name</th>
                 <th>Car brand</th>
                 <th>Car Model</th>
-                <th>Number of passengers</th>
+                <th>Number of spots</th>
             </tr>
             @foreach (var hiker in @Model.Hikers.Where(h => h.Hiker.HasCar))
             {
                 <tr>
                     <td>@hiker.Hiker.FullName</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>@hiker.Hiker.CarBrand</td>
+                    <td>@hiker.Hiker.CarModel</td>
+                    <td>@hiker.Hiker.Spaces</td>
                 </tr>
             }
         </table>
@@ -135,13 +139,11 @@
         <table class="table">
             <tr>
                 <th>Name</th>
-                <th></th>
             </tr>
             @foreach (var hiker in @Model.Hikers.Where(h => !h.Hiker.HasCar))
             {
                 <tr>
                     <td>@hiker.Hiker.FullName</td>
-                    <td></td>
                 </tr>
             }
         </table>
