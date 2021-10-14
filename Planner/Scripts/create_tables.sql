@@ -74,7 +74,9 @@ CREATE TABLE peak
 (
 	id INT PRIMARY KEY IDENTITY (1, 1),
 	name VARCHAR (50) NOT NULL,
-	routes VARCHAR (1000)
+	routes VARCHAR (1000),
+	trailhead_latitude DECIMAL (8,6),
+	trailhead_longtitude DECIMAL (9,6)
 );
 
 CREATE TABLE trip
