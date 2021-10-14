@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GeoJSON.Net.Contrib.EntityFramework;
@@ -204,16 +205,17 @@ namespace Planner.Controllers
 			var viewModel = new TripViewModel(trip);
 			if (_shouldQueryWeatherApi)
             {
-				// FIXME: Remove this hard-coded coord for Mount Rainier.
 				// Should query for weather based on representative lat/lon per day.
 				// NWAC can use the lat/long for Day 1.
-				var coord = new Point(new Position(46.879967, -121.726906));
+				var coord = new Point(new Position((double) trip.Peak.TrailheadLatitude, (double) trip.Peak.TrailheadLongitude));
 
 				// See https://openweathermap.org/api/one-call-api#hist_parameter
 				// for fields available on forecast.
 				var forecast = await GetWeatherForecast(coord: coord);
-				string weatherDescription = forecast.weather.First.description;
+
 				string iconCode = forecast.weather.First.icon;
+				var inchesRain = Math.Round((double) forecast.rain * 0.03937008, 2);
+				string weatherDescription = $"{forecast.weather.First.description}. High of {forecast.temp.max} F. Low of {forecast.temp.min} F. Winds {forecast.wind_speed} mph. Expected rain {inchesRain} inches.";
 
 				// FIXME: Re-enable and troubzleshoot.
 				//var nwacZone = GetNWACZone(coord: coord);
