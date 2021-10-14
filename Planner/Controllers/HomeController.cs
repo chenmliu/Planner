@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Planner.Models;
@@ -23,6 +24,17 @@ namespace Planner.Controllers
 
 		public async Task<ActionResult> Index()
 		{
+			if (HttpContext.Session.GetString("username") != null)
+			{
+				return new RedirectToRouteResult(
+					new RouteValueDictionary{
+						{ "controller", "Home" },
+						{ "action", "Details" },
+						{ "id", HttpContext.Session.GetString("userid") }
+					}
+					);
+			}
+			
 			return View();
 		}
 
@@ -56,7 +68,8 @@ namespace Planner.Controllers
 				return Content("Invalid user name or password.");
 			}
 
-			HttpContext.Session.SetString("user", hikerViewModel.UserName);
+			HttpContext.Session.SetString("username", hiker.UserName);
+			HttpContext.Session.SetString("userid", hiker.Id.ToString());
 
 			var viewModel = new HikerViewModel(hiker);
 			return View(viewModel);

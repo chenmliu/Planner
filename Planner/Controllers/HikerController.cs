@@ -28,7 +28,7 @@ namespace Planner.Controllers
 		public async Task<ActionResult> Index()
 		{
 			// Rediect to login page if not logged in
-			if (HttpContext.Session.GetString("user") == null)
+			if (HttpContext.Session.GetString("username") == null)
 			{
 				return new RedirectToRouteResult(
 					new RouteValueDictionary{
