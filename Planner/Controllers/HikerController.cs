@@ -74,6 +74,15 @@ namespace Planner.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<ActionResult> CreateSubmitted(HikerViewModel hikerViewModel)
 		{
+			var existingHiker = await _dbContext.Hiker
+				.FirstOrDefaultAsync(h => h.UserName.Equals(hikerViewModel.UserName))
+				.ConfigureAwait(true);
+
+			if (existingHiker != null)
+            {
+				return Content("User already exist");
+            }
+
 			var hiker = new Hiker(hikerViewModel);
 			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);

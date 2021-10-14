@@ -20,6 +20,7 @@ namespace Planner
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+
 			var dbConnectionString = this.Configuration.GetValue<string>("DB_CONNECTION_STRING");
 			services.AddDbContext<PlannerDbContext>(c =>
 			{
@@ -27,6 +28,8 @@ namespace Planner
 			});
 
 			services.AddControllersWithViews();
+
+			services.AddSingleton<IConfiguration>(Configuration);
 			services.AddDistributedMemoryCache();
 
 			services.AddMvc();

@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Planner.ViewModels;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Planner.Models
 {
@@ -13,7 +14,7 @@ namespace Planner.Models
 
 		}
 
-		public Hiker(HikerViewModel hiker)
+		public Hiker(HikerViewModel hiker, string encryptedPassword = null)
 		{
 			Id = hiker.Id;
 			FirstName = hiker.FirstName;
@@ -25,7 +26,15 @@ namespace Planner.Models
 			EmergencyContactPhone = hiker.EmergencyContactPhone;
 			FunScale = FunScale;
 			UserName = hiker.UserName;
-			Password = hiker.Password;
+
+			if (encryptedPassword == null)
+            {
+				Password = EncryptPassword(hiker.Password);
+			}
+			else
+            {
+				Password = encryptedPassword;
+            }
 		}
 
 		[Key]
@@ -124,6 +133,21 @@ namespace Planner.Models
 			get {
 				return $"{this.FirstName} {this.LastName}";
 			}
+		}
+
+		public static string EncryptPassword(string password)
+        {
+			var salt = new byte[1];
+			salt[0] = 0;
+
+			// derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
+			// TODO: Add salt management
+			return Convert.ToBase64String(KeyDerivation.Pbkdf2(
+				password: password,
+				salt: salt,
+				prf: KeyDerivationPrf.HMACSHA256,
+				iterationCount: 100000,
+				numBytesRequested: 256 / 8));
 		}
 	}
 }
