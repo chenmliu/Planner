@@ -40,6 +40,7 @@ namespace Planner.Models
 		}
 
 		[Required]
+		[Column("days")]
 		public int Days
 		{
 			get;

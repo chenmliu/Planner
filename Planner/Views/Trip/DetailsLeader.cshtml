@@ -1,9 +1,9 @@
-@model Planner.ViewModels.TripViewModel
+﻿@model Planner.ViewModels.TripViewModel
 
 @using Microsoft.AspNetCore.Http;
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "DetailsLeader";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var invitationLink = TempData["invitationLink"] as string;
     var moreMembers = Model.GroupSize - Model.Hikers.Count;
@@ -67,9 +67,6 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.GroupSize)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Members)
-        </dt>
     </dl>
     <div class="row">
         <div class="col-sm-12">
@@ -80,33 +77,50 @@
                     This trip is looking for @moreMembers more hikers!
                     <a asp-action="Invite" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Click here</a> to invite someone.
                 </div>
-
-                <h5>Current Participants</h5>
-                <div>
-                    <ul class="list-group">
-                        @foreach (var hiker in @Model.Hikers)
-                        {
-                            <li class="list-group-item">
-                                @hiker.HikerName
-                                @if (hiker.HikerId == @Context.Session.GetInt32("userid"))
-                                {
-                                    <a asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a>
-                                }
-                            </li>
-                        }
-                    </ul>
-                </div>
-            }
-            else
-            {
-                <p>This trip is full!</p>
             }
         </div>
+    </div>
+    <h4>Emergency contacts:</h4>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Emergency contact name</th>
+                <th>Emergency contact phone</th>
+            </tr>
+            @foreach (var hiker in @Model.Hikers)
+            {
+                <tr>
+                    <td>@hiker.Hiker.FullName</td>
+                    <td>@hiker.Hiker.Phone</td>
+                    <td>@hiker.Hiker.EmergencyContactName</td>
+                    <td>@hiker.Hiker.EmergencyContactPhone</td>
+                </tr>
+            }
+        </table>
     </div>
 </div>
 
 <hr />
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @if (@Model.OwnerId == @Context.Session.GetInt32("userid"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> @Html.Raw("|")
+        <a asp-action="Index">Back to List</a> @Html.Raw("|")
+
+        if (!string.IsNullOrEmpty(invitationLink))
+        {
+            <a id="inviteLink" style="background-color: rgb(255,255,0)" onclick="OnClick();">@invitationLink</a>
+        }
+        else
+        {
+            <a asp-action="InviteViaLink" asp-controller="HikerTrip" asp-route-tripId="@Model.Id">Invitation Link</a>
+        }
+    }
+    else
+    {
+        <a asp-action="Index">Back to List</a>
+    }
 </div>

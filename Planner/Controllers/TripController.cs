@@ -85,6 +85,18 @@ namespace Planner.Controllers
 		}
 
 		/// <summary>
+		/// Get a trip by ID from the leaders perspective
+		/// GET: Trip/Details/{id}
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>ID of the trip.</returns>
+		[HttpGet]
+		public async Task<IActionResult> DetailsLeader(int id)
+		{
+			return await GetTripViewModelByIdAsync(id);
+		}
+
+		/// <summary>
 		/// Fill in the details to add a trip.
 		/// </summary>
 		/// <returns></returns>
@@ -106,7 +118,7 @@ namespace Planner.Controllers
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction("Details", new { Id = trip.Id });
+			return RedirectToAction("DetailsLeader", new { Id = trip.Id });
 		}
 
 		/// <summary>
