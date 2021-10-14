@@ -1,0 +1,126 @@
+﻿@model Planner.ViewModels.TripViewModel
+
+@using Microsoft.AspNetCore.Http;
+
+@{
+    ViewData["Title"] = "DetailsLeader";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var invitationLink = TempData["invitationLink"] as string;
+    var moreMembers = Model.GroupSize - Model.Hikers.Count;
+}
+
+@section Scripts
+{
+    <script>
+    function OnClick() {
+        var Url = document.getElementById("inviteLink");
+        navigator.clipboard.writeText(Url.innerHTML)
+        alert("Copied the link: " + Url.innerHTML);
+    }
+
+    </script>
+}
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Days)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Days)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WeatherLabel)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.IconUrl" width="50" height="50" />
+            @Html.DisplayFor(model => model.WeatherLabel)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PeakName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PeakName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OwnerName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OwnerName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GroupSize)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GroupSize)
+        </dd>
+    </dl>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Members</h4>
+            @if (@moreMembers > 0)
+            {
+                <div class="alert alert-primary" role="alert">
+                    This trip is looking for @moreMembers more hikers!
+                    <a asp-action="Invite" asp-controller="HikerTrip" asp-route-tripId="@Model.Id"> Click here</a> to invite someone.
+                </div>
+            }
+        </div>
+    </div>
+    <h4>Emergency contacts:</h4>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Emergency contact name</th>
+                <th>Emergency contact phone</th>
+            </tr>
+            @foreach (var hiker in @Model.Hikers)
+            {
+                <tr>
+                    <td>@hiker.Hiker.FullName</td>
+                    <td>@hiker.Hiker.Phone</td>
+                    <td>@hiker.Hiker.EmergencyContactName</td>
+                    <td>@hiker.Hiker.EmergencyContactPhone</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<hr />
+
+<div>
+    @if (@Model.OwnerId == @Context.Session.GetInt32("userid"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> @Html.Raw("|")
+        <a asp-action="Index">Back to List</a> @Html.Raw("|")
+
+        if (!string.IsNullOrEmpty(invitationLink))
+        {
+            <a id="inviteLink" style="background-color: rgb(255,255,0)" onclick="OnClick();">@invitationLink</a>
+        }
+        else
+        {
+            <a asp-action="InviteViaLink" asp-controller="HikerTrip" asp-route-tripId="@Model.Id">Invitation Link</a>
+        }
+    }
+    else
+    {
+        <a asp-action="Index">Back to List</a>
+    }
+</div>
