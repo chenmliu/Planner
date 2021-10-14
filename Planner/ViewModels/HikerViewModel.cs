@@ -22,6 +22,7 @@ namespace Planner.ViewModels
 			EmergencyContactName = hiker.EmergencyContactName;
 			EmergencyContactPhone = hiker.EmergencyContactPhone;
 			FunScale = hiker.FunScale;
+			HasCar = hiker.HasCar;
 		}
 
 		public int Id
@@ -95,6 +96,12 @@ namespace Planner.ViewModels
 			get;
 			set;
 		}
+
+		public bool HasCar
+        {
+			get;
+			set;
+        }
 
 		public IEnumerable<TripViewModel> pastTrips
 		{

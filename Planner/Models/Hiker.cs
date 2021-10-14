@@ -24,8 +24,9 @@ namespace Planner.Models
 			Awd = hiker.Awd;
 			EmergencyContactName = hiker.EmergencyContactName;
 			EmergencyContactPhone = hiker.EmergencyContactPhone;
-			FunScale = FunScale;
+			FunScale = hiker.FunScale;
 			UserName = hiker.UserName;
+			HasCar = hiker.HasCar;
 
 			if (encryptedPassword == null)
             {
@@ -122,6 +123,14 @@ namespace Planner.Models
 
 		[Required]
 		public string Password
+		{
+			get;
+			set;
+		}
+
+		[Column("has_car")]
+		[Required]
+		public bool HasCar
 		{
 			get;
 			set;

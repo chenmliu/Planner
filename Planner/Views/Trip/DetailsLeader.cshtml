@@ -100,6 +100,52 @@
             }
         </table>
     </div>
+    <h4>Carpool information:</h4>
+    <!-- The condition below need to be obviously more enhanced to actually count number of spaces in the carr -->
+    @if (@Model.Hikers.Count(h => !h.Hiker.HasCar) > @Model.Hikers.Count(h => h.Hiker.HasCar))
+    {
+        <div class="alert alert-primary" role="alert">
+            Looks like this trip doesn't have enough cars to get to trailhead!
+        </div>
+    }
+
+    <h5>Drivers</h5>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Car brand</th>
+                <th>Car Model</th>
+                <th>Number of passengers</th>
+            </tr>
+            @foreach (var hiker in @Model.Hikers.Where(h => h.Hiker.HasCar))
+            {
+                <tr>
+                    <td>@hiker.Hiker.FullName</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+        </table>
+    </div>
+    <br />
+    <h5>Need a ride:</h5>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+            @foreach (var hiker in @Model.Hikers.Where(h => !h.Hiker.HasCar))
+            {
+                <tr>
+                    <td>@hiker.Hiker.FullName</td>
+                    <td></td>
+                </tr>
+            }
+        </table>
+    </div>
 </div>
 
 <hr />
