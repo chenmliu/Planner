@@ -1,12 +1,14 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Planner.ViewModels;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Planner.Models
 {
-	public class HikerTrip
-	{
+    public class GroupGear
+    {
 		[Key]
 		[Required]
 		public int Id
@@ -15,38 +17,16 @@ namespace Planner.Models
 			set;
 		}
 
-		[Key]
-		[Required]
-		[Column("hiker_id")]
-		public int HikerId
-		{
+		[Column("item")]
+		public string Item
+        {
 			get;
 			set;
-		}
+        }
 
-		[Key]
 		[Required]
 		[Column("trip_id")]
 		public int TripId
-		{
-			get;
-			set;
-		}
-
-		// Possible values:
-		// CONFIRMED
-		// PENDING-LEADER
-		// PENDING-HIKER
-		[Required]
-		[Column("hiker_status")]
-		public string HikerStatus
-		{
-			get;
-			set;
-		}
-
-		[ForeignKey("HikerId")]
-		public Hiker Hiker
 		{
 			get;
 			set;
@@ -58,6 +38,5 @@ namespace Planner.Models
 			get;
 			set;
 		}
-
 	}
 }

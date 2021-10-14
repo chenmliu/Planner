@@ -32,7 +32,7 @@ namespace Planner.Controllers
 					new RouteValueDictionary{
 						{ "controller", "Home" },
 						{ "action", "Details" },
-						{ "id", HttpContext.Session.GetString("userid") }
+						{ "id", HttpContext.Session.GetInt32("userid") }
 					}
 					);
 			}
@@ -155,18 +155,8 @@ namespace Planner.Controllers
 
 		public IActionResult SignOut()
 		{
-			HttpContext.Session.SetString("username", string.Empty);
-			HttpContext.Session.SetInt32("userid", int.MinValue);
-
-			var a = HttpContext.Session.GetString("username");
-
-			return new RedirectToRouteResult(
-				new RouteValueDictionary
-				{
-					{ "controller", "Home" },
-					{ "action", "Index" }
-				}
-				);
+			HttpContext.Session.Clear();
+			return RedirectToAction("Index"); 
 		}
 
 		private async Task<IActionResult> GetHikerViewModelByIdAsync(int id)

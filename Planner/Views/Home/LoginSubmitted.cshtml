@@ -67,7 +67,7 @@ Welcome @Context.Session.GetString("username")
         </dd>
     </dl>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a asp-controller="Hiker" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
     </div>
 
     <h3>Upcoming trips</h3>

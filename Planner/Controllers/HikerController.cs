@@ -169,7 +169,14 @@ namespace Planner.Controllers
 				return NotFound();
 			}
 
+			var hikerGear = await _dbContext.HikerGear
+				.Where(hg => hg.HikerId == hiker.Id)
+				.Select(h => new HikerGearViewModel() { HikerId = h.HikerId })
+				.ToListAsync();
+
 			var viewModel = new HikerViewModel(hiker);
+			viewModel.HikerGearList = hikerGear;
+
 			return View(viewModel);
 		}
 	}

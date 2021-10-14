@@ -101,7 +101,8 @@ namespace Planner.Controllers
 			var hikerTrip = new HikerTrip
 			{
 				TripId = hikerTripViewModel.TripId,
-				HikerId = int.Parse(form["hikerList"])
+				HikerId = int.Parse(form["hikerList"]),
+				HikerStatus = "PENDING-HIKER"
 			};
 
 			await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);

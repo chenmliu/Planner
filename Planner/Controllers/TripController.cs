@@ -95,12 +95,12 @@ namespace Planner.Controllers
 
 		/// <summary>
 		/// Get a trip by ID from the leaders perspective
-		/// GET: Trip/Details/{id}
+		/// GET: Trip/Summary/{id}
 		/// </summary>
 		/// <param name="id"></param>
-		/// <returns>ID of the trip.</returns>
+		/// <returns></returns>
 		[HttpGet]
-		public async Task<IActionResult> DetailsLeader(int id)
+		public async Task<IActionResult> SummaryLeader(int id)
 		{
 			return await GetTripViewModelByIdAsync(id);
 		}
@@ -137,11 +137,53 @@ namespace Planner.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel)
 		{
+			// Add trip
 			var trip = new Trip(tripViewModel);
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction("DetailsLeader", new { Id = trip.Id });
+			// Add trip-organizer relationship
+			var currentUserId = HttpContext.Session.GetInt32("userid");
+			var currentUser = await _dbContext.Hiker
+				.Where(h => h.Id == currentUserId.Value)
+				.FirstOrDefaultAsync();
+
+			var hikerTrip = new HikerTrip()
+			{
+				HikerId = currentUserId.Value,
+				TripId = trip.Id,
+				HikerStatus = "CONFIRMED"
+			};
+			await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			return RedirectToAction("Details", new { Id = trip.Id });
+		}
+
+		/// <summary>
+		/// Request to join the trip.
+		/// </summary>
+		/// <param name="tripViewModel">Trip information.</param>
+		/// <returns></returns>
+		[HttpPost, ActionName("RequestToJoin")]
+        public async Task<ActionResult> RequestToJoin(string tripId, string hikerId)
+		{
+			var trip = _dbContext.Trip.SingleOrDefault(t => t.Id == int.Parse(tripId));
+
+			if (trip != null)
+            {
+				var hikerTrip = new HikerTrip
+				{
+					TripId = int.Parse(tripId),
+					HikerId = int.Parse(hikerId),
+					HikerStatus = "PENDING-LEADER"
+				};
+
+				await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
+				await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			}
+
+			return RedirectToAction("Details", new { Id = trip.Id });
 		}
 
 		/// <summary>
@@ -221,8 +263,20 @@ namespace Planner.Controllers
 				.Join(_dbContext.Hiker,
 						  m => m.HikerId,
 						  v => v.Id,
-						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v })
+						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v, HikerStatus = m.HikerStatus })
 				.ToListAsync();
+
+			// Can we make it smarter using lync in the hikers query above?
+			foreach (var hiker in hikers)
+			{
+				var hikerGear = await _dbContext.HikerGear
+					.Where(hg => hg.HikerId == hiker.Hiker.Id).ToListAsync();
+
+				hiker.Hiker.HikerGear = hikerGear;
+			}
+
+			var groupGear = await _dbContext.GroupGear
+				.Where(gg => gg.TripId == trip.Id).Select(g => new GroupGearViewModel(g)).ToListAsync();
 
 			var viewModel = new TripViewModel(trip, "", "");
 			if (_shouldQueryWeatherApi)
@@ -236,11 +290,13 @@ namespace Planner.Controllers
 				//var nwacZone = GetNWACZone(coord: coord);
 
 				// We only have trailhead info, so only send Weather forecast for Day 1.
-				var weatherDescription = forecast.Count > 1 ? DescriptionForForecast(forecast[0]) : "Too Soon To Tell";
-				var weatherIcon = forecast.Count > 1 ? IconForForecast(forecast[0]) : "";
+				var weatherDescription = forecast.Count > 0 ? DescriptionForForecast(forecast[0]) : "Check Back Later";
+				var weatherIcon = forecast.Count > 0 ? IconForForecast(forecast[0]) : "";
 				viewModel = new TripViewModel(trip, weatherDescription, weatherIcon);
 			}
+
 			viewModel.Hikers = hikers;
+			viewModel.GroupGearList = groupGear;
 			return View(viewModel);
 		}
 

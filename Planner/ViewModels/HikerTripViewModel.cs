@@ -34,6 +34,16 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		// Possible values:
+		// CONFIRMED
+		// PENDING-LEADER
+		// PENDING-HIKER
+		public string HikerStatus
+        {
+			get;
+			set;
+        }
+
 		public Hiker Hiker
 		{
 			get;

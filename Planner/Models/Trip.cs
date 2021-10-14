@@ -105,6 +105,11 @@ namespace Planner.Models
 			set;
 		}
 
+		public IEnumerable<GroupGear> GroupGear
+		{
+			get;
+			set;
+		}
 
 		[Column("location")]
 		public string Location
