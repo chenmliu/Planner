@@ -123,6 +123,12 @@ namespace Planner.ViewModels
 			set;
         }
 
+		public IEnumerable<HikerGearViewModel> HikerGearList
+        {
+			get;
+			set;
+        }
+
 		public IEnumerable<TripViewModel> pastTrips
 		{
 			get;

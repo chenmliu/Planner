@@ -28,7 +28,6 @@ namespace Planner.Models
 			set;
 		}
 
-		[Key]
 		[Required]
 		[Column("hiker_id")]
 		public int HikerId
@@ -45,6 +44,7 @@ namespace Planner.Models
 			set;
 		}
 
+		/*
 		[Required]
 		[Column("brand")]
 		public string Brand
@@ -104,6 +104,14 @@ namespace Planner.Models
 		[Required]
 		[Column("details")]
 		public string Details
+		{
+			get;
+			set;
+		}
+		*/
+
+		[ForeignKey("HikerId")]
+		public Hiker Hiker
 		{
 			get;
 			set;

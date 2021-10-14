@@ -24,11 +24,15 @@ namespace Planner
 
         public DbSet<GroupGear> GroupGear { get; set; }
 
+        public DbSet<HikerGear> HikerGear { get; set; }
+
         public DbSet<TripViewModel> TripViewModel { get; set; }
 
         public DbSet<HikerViewModel> HikerViewModel { get; set; }
 
         public DbSet<GroupGearViewModel> GroupGearModel { get; set; }
+
+        public DbSet<HikerGearViewModel> HikerGearModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

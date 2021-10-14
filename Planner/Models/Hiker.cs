@@ -160,6 +160,12 @@ namespace Planner.Models
 			set;
 		}
 
+		public IEnumerable<HikerGear> HikerGear
+        {
+			get;
+			set;
+        }
+
 		[NotMapped]
 		public string FullName
 		{
