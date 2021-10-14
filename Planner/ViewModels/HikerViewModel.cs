@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Planner.Models;
 
 namespace Planner.ViewModels
@@ -34,12 +35,14 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		[Display(Name = "First Name")]
 		public string FirstName
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "Last Name")]
 		public string LastName
 		{
 			get;
@@ -52,42 +55,49 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		[Display(Name = "Phone")]
 		public string Phone
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "City")]
 		public string City
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "Awd")]
 		public bool Awd
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "Emergency Contact Name")]
 		public string EmergencyContactName
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "Emergency Contact Phone")]
 		public string EmergencyContactPhone
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "Fun Scale")]
 		public int FunScale
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "Username")]
 		public string UserName
 		{
 			get;
@@ -100,41 +110,49 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		[Display(Name = "Has a car")]
 		public bool HasCar
         {
 			get;
 			set;
         }
 
+		[Display(Name = "Car Brand")]
 		public string CarBrand
         {
 			get;
 			set;
         }
+
+		[Display(Name = "Car Model")]
 		public string CarModel
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "Spaces")]
 		public int? Spaces
         {
 			get;
 			set;
         }
 
+		[Display(Name = "Gear")]
 		public IEnumerable<HikerGearViewModel> HikerGearList
         {
 			get;
 			set;
         }
 
+		[Display(Name = "Past Trips")]
 		public IEnumerable<TripViewModel> pastTrips
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "Upcoming Trips")]
 		public IEnumerable<TripViewModel> upcomingTrips
 		{
 			get;
