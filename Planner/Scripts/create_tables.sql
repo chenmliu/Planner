@@ -87,7 +87,6 @@ CREATE TABLE trip
 	elevationGain INT DEFAULT(0)
 );
 
-
 CREATE TABLE hikerTrip
 (
     id INT PRIMARY KEY IDENTITY (1, 1),
@@ -95,4 +94,11 @@ CREATE TABLE hikerTrip
 	trip_id INT NOT NULL,
 	FOREIGN KEY (hiker_id) REFERENCES hiker (id),
 	FOREIGN KEY (trip_id) REFERENCES trip (id)
+);
+
+CREATE TABLE rangerStation
+(
+    id INT PRIMARY KEY IDENTITY (1, 1),
+	name VARCHAR(200) NOT NULL,
+	phone VARCHAR(50) NOT NULL,
 );
