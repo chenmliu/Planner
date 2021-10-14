@@ -3,14 +3,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using Microsoft.AspNetCore.Http;
+
 <div class="home jumbotron">
     <h1 class="display-4">Happy hiking!</h1>
     <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
     <hr class="my-4">
     <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
     <p class="lead">
-        <a class="btn btn-primary btn-lg" href="/Home/SignUp" role="button">Register</a>
-        <a class="btn btn-primary btn-lg" href="/Home/Login" role="button">Login</a>
+        @if (@Context.Session.Keys.Contains("username"))
+        {
+            <a class="btn btn-primary btn-lg" href="/Home/SignUp" role="button">Register</a>
+            <a class="btn btn-primary btn-lg" href="/Home/Login" role="button">Login</a>
+        }
     </p>
 </div>
 

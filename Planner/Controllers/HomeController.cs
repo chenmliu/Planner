@@ -69,7 +69,7 @@ namespace Planner.Controllers
 			}
 
 			HttpContext.Session.SetString("username", hiker.UserName);
-			HttpContext.Session.SetString("userid", hiker.Id.ToString());
+			HttpContext.Session.SetInt32("userid", hiker.Id);
 
 			var viewModel = new HikerViewModel(hiker);
 			return View(viewModel);
