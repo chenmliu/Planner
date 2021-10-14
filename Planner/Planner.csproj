@@ -29,11 +29,6 @@
     <None Remove="GeoJSON.Net.Contrib.Wkb" />
     <None Remove="Json.Net" />
     <None Remove="Newtonsoft.Json" />
-    <None Remove="Scripts\insert_rangerStation.sql" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Scripts\insert_rangerStation.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
