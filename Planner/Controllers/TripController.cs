@@ -24,11 +24,14 @@ namespace Planner.Controllers
 
 		private readonly IConfiguration _configuration;
 
+		private readonly bool _shouldQueryWeatherApi;
+
 		public TripController(ILogger<HomeController> logger, PlannerDbContext dbContext, IConfiguration configuration)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
 			_configuration = configuration;
+			_shouldQueryWeatherApi = configuration.GetValue<bool>("SHOULD_QUERY_WEATHER");
 		}
 
 		/// <summary>
@@ -186,22 +189,27 @@ namespace Planner.Controllers
 						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v })
 				.ToListAsync();
 
-			// FIXME: Remove this hard-coded coord for Mount Rainier.
-            // Should query for weather based on representative lat/lon per day.
-            // NWAC can use the lat/long for Day 1.
-			var coord = new Point(new Position(46.879967, -121.726906));
+			var viewModel = new TripViewModel(trip);
+			if (_shouldQueryWeatherApi)
+            {
+				// FIXME: Remove this hard-coded coord for Mount Rainier.
+				// Should query for weather based on representative lat/lon per day.
+				// NWAC can use the lat/long for Day 1.
+				var coord = new Point(new Position(46.879967, -121.726906));
 
-			// See https://openweathermap.org/api/one-call-api#hist_parameter
-			// for fields available on forecast.
-			var forecast = await GetWeatherForecast(coord: coord);
-			string weatherDescription = forecast.weather.First.description;
-			string iconCode = forecast.weather.First.icon;
+				// See https://openweathermap.org/api/one-call-api#hist_parameter
+				// for fields available on forecast.
+				var forecast = await GetWeatherForecast(coord: coord);
+				string weatherDescription = forecast.weather.First.description;
+				string iconCode = forecast.weather.First.icon;
 
-			// FIXME: Re-enable and troubzleshoot.
-			//var nwacZone = GetNWACZone(coord: coord);
+				// FIXME: Re-enable and troubzleshoot.
+				//var nwacZone = GetNWACZone(coord: coord);
 
-			// TODO: Hook nwacZone up to TripViewModel.
-			var viewModel = new TripViewModel(trip, weatherDescription, iconCode);
+				// TODO: Hook nwacZone up to TripViewModel.
+				viewModel = new TripViewModel(trip, weatherDescription, iconCode);
+			}
+			
 			viewModel.Hikers = hikers;
 			return View(viewModel);
 		}
