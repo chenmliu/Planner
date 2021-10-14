@@ -32,7 +32,7 @@ namespace Planner.Controllers
 					new RouteValueDictionary{
 						{ "controller", "Home" },
 						{ "action", "Details" },
-						{ "id", HttpContext.Session.GetString("userid") }
+						{ "id", HttpContext.Session.GetInt32("userid") }
 					}
 					);
 			}
@@ -72,6 +72,10 @@ namespace Planner.Controllers
 
 			HttpContext.Session.SetString("username", hiker.UserName);
 			HttpContext.Session.SetInt32("userid", hiker.Id);
+
+			var a = HttpContext.Session.GetString("username");
+
+			var ba = HttpContext.Session.GetInt32("userid");
 
 			var viewModel = new HikerViewModel(hiker);
 			await AddTripsAsync(viewModel);
