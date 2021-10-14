@@ -1,17 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GeoJSON.Net.Contrib.EntityFramework;
+using GeoJSON.Net.Geometry;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Planner.Models;
 using Planner.ViewModels;
-using GeoJSON.Net.Geometry;
-using GeoJSON.Net.Contrib.EntityFramework;
 
 namespace Planner.Controllers
 {
@@ -36,6 +37,17 @@ namespace Planner.Controllers
 		/// <returns>All the trips.</returns>
 		public async Task<ActionResult> Index()
 		{
+			// Rediect to login page if not logged in
+			if (HttpContext.Session.GetString("user") == null)
+			{
+				return new RedirectToRouteResult(
+					new RouteValueDictionary{
+						{ "controller", "Home" },
+						{ "action", "Index" }
+					}
+					);
+			}
+
 			var trips = await _dbContext.Trip
 				.Include(t => t.Peak)
 				.Include(t => t.Owner)
