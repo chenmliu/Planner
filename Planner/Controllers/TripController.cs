@@ -238,6 +238,18 @@ namespace Planner.Controllers
 						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v, HikerStatus = m.HikerStatus })
 				.ToListAsync();
 
+			// Can we make it smarter using lync in the hikers query above?
+			foreach (var hiker in hikers)
+			{
+				var hikerGear = await _dbContext.HikerGear
+					.Where(hg => hg.HikerId == hiker.Hiker.Id).ToListAsync();
+
+				hiker.Hiker.HikerGear = hikerGear;
+			}
+
+			var groupGear = await _dbContext.GroupGear
+				.Where(gg => gg.TripId == trip.Id).Select(g => new GroupGearViewModel(g)).ToListAsync();
+
 			var viewModel = new TripViewModel(trip, "", "");
 			if (_shouldQueryWeatherApi)
             {
@@ -254,7 +266,9 @@ namespace Planner.Controllers
 				var weatherIcon = forecast.Count > 1 ? IconForForecast(forecast[0]) : "";
 				viewModel = new TripViewModel(trip, weatherDescription, weatherIcon);
 			}
+
 			viewModel.Hikers = hikers;
+			viewModel.GroupGearList = groupGear;
 			return View(viewModel);
 		}
 

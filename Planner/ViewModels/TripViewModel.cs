@@ -23,6 +23,7 @@ namespace Planner.ViewModels
 			OwnerName = trip.Owner.FirstName;
 			GroupSize = trip.GroupSize;
 			Hikers = new List<HikerTripViewModel>();
+			GroupGearList = new List<GroupGearViewModel>();
 			Location = trip.Location;
 			HasSnow = trip.HasSnow;
 			IsBumpyRoad = trip.IsBumpyRoad;
@@ -139,7 +140,7 @@ namespace Planner.ViewModels
 
 		public List<HikerTripViewModel> Hikers { get; set; }
 
-		// public List<GroupGearViewModel> GroupGearList { get; set; }
+		public List<GroupGearViewModel> GroupGearList { get; set; }
 	}
     
 }

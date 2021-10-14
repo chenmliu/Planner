@@ -160,7 +160,7 @@ namespace Planner.Models
 			set;
 		}
 
-		public IEnumerable<HikerGear> HikerGear
+		public List<HikerGear> HikerGear
         {
 			get;
 			set;
