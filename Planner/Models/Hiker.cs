@@ -30,6 +30,9 @@ namespace Planner.Models
 			CarBrand = hiker.CarBrand;
 			CarModel = hiker.CarModel;
 			Spaces = hiker.Spaces;
+			Preference = hiker.Preference;
+			SnowFriendly = hiker.SnowFriendly;
+			HighClearance = hiker.HighClearance;
 
 			if (encryptedPassword == null)
             {
@@ -160,7 +163,28 @@ namespace Planner.Models
 			set;
 		}
 
-		[NotMapped]
+        [Column("preference")]
+        public CarpoolPreference Preference
+        {
+            get;
+            set;
+        }
+
+        [Column("snow_friendly")]
+        public bool SnowFriendly
+        {
+            get;
+            set;
+        }
+
+        [Column("high_clearance")]
+        public bool HighClearance
+        {
+            get;
+            set;
+        }
+
+        [NotMapped]
 		public string FullName
 		{
 			get {

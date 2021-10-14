@@ -26,6 +26,9 @@ namespace Planner.ViewModels
 			CarBrand = hiker.CarBrand;
 			CarModel = hiker.CarModel;
 			Spaces = hiker.Spaces;
+			Preference = hiker.Preference;
+			SnowFriendly = hiker.SnowFriendly;
+			HighClearance = hiker.HighClearance;
 		}
 
 		public int Id
@@ -122,6 +125,24 @@ namespace Planner.ViewModels
 			get;
 			set;
         }
+
+		public CarpoolPreference Preference
+		{
+			get;
+			set;
+		}
+
+		public bool SnowFriendly
+		{
+			get;
+			set;
+		}
+
+		public bool HighClearance
+		{
+			get;
+			set;
+		}
 
 		public IEnumerable<TripViewModel> pastTrips
 		{
