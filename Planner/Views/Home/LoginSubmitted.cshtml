@@ -66,7 +66,43 @@ Welcome @Context.Session.GetString("username")
             @Html.DisplayFor(model => model.FunScale)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    </div>
+
+    <h3>Upcoming trips</h3>
+    <div class="row">       
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Link</th>
+            </tr>
+        @foreach(var trip in Model.upcomingTrips) {
+            <tr>
+                <td>@trip.Name</td>
+                <td>@trip.StartDate</td>
+                <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
+            </tr>
+        }
+        </table>
+    </div>
+    <br />
+    <h3>Past trips</h3>
+    <div class="row">       
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Link</th>
+            </tr>
+        @foreach(var trip in Model.pastTrips) {
+            <tr>
+                <td>@trip.Name</td>
+                <td>@trip.StartDate</td>
+                <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
+            </tr>
+        }
+        </table>
+    </div>
 </div>

@@ -1,4 +1,5 @@
-﻿using Planner.Models;
+﻿using System.Collections.Generic;
+using Planner.Models;
 
 namespace Planner.ViewModels
 {
@@ -90,6 +91,18 @@ namespace Planner.ViewModels
 		}
 
 		public string Password
+		{
+			get;
+			set;
+		}
+
+		public IEnumerable<TripViewModel> pastTrips
+		{
+			get;
+			set;
+		}
+
+		public IEnumerable<TripViewModel> upcomingTrips
 		{
 			get;
 			set;
