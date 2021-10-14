@@ -125,8 +125,24 @@ namespace Planner.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel)
 		{
+			// Add trip
 			var trip = new Trip(tripViewModel);
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			// Add trip-organizer relationship
+			var currentUserId = HttpContext.Session.GetInt32("userid");
+			var currentUser = await _dbContext.Hiker
+				.Where(h => h.Id == currentUserId.Value)
+				.FirstOrDefaultAsync();
+
+			var hikerTrip = new HikerTrip()
+			{
+				HikerId = currentUserId.Value,
+				TripId = trip.Id,
+				HikerStatus = "CONFIRMED"
+			};
+			await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
 			return RedirectToAction("Details", new { Id = trip.Id });
