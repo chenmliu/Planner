@@ -185,6 +185,14 @@ namespace Planner.Models
         }
 
         [NotMapped]
+		public List<HikerGear> HikerGear
+        {
+			get;
+			set;
+        }
+
+		[NotMapped]
+
 		public string FullName
 		{
 			get {

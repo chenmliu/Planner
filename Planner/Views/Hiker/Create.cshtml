@@ -11,6 +11,16 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
@@ -99,6 +109,9 @@
                 <span asp-validation-for="FunScale" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input type="hidden" name="id" id="tripId" value="@Model.Id" />
+                <input type="hidden" name="userName" id="tripId" value="@Model.UserName" />
+                <input type="hidden" name="password" id="tripId" value="@Model.Password" />
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

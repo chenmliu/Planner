@@ -11,7 +11,7 @@ namespace Planner.ViewModels
 
 		}
 
-		public TripViewModel(Trip trip, string weatherDesc = "light rain", string iconCode = "10n")
+		public TripViewModel(Trip trip, string weatherDesc, string iconCode)
 		{
 			Id = trip.Id;
 			Name = trip.Name;
@@ -23,6 +23,7 @@ namespace Planner.ViewModels
 			OwnerName = trip.Owner.FirstName;
 			GroupSize = trip.GroupSize;
 			Hikers = new List<HikerTripViewModel>();
+			GroupGearList = new List<GroupGearViewModel>();
 			Location = trip.Location;
 			HasSnow = trip.HasSnow;
 			IsBumpyRoad = trip.IsBumpyRoad;
@@ -31,7 +32,7 @@ namespace Planner.ViewModels
 			ElevationGain = trip.ElevationGain;
 			
 			WeatherLabel = weatherDesc;
-			IconUrl = $"http://openweathermap.org/img/wn/{iconCode}@2x.png";
+			IconUrl = iconCode != "" ? $"http://openweathermap.org/img/wn/{iconCode}@2x.png" : "";
 		}
 
 		public int Id
@@ -138,6 +139,8 @@ namespace Planner.ViewModels
         }
 
 		public List<HikerTripViewModel> Hikers { get; set; }
+
+		public List<GroupGearViewModel> GroupGearList { get; set; }
 	}
     
 }

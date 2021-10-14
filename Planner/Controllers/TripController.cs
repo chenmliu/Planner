@@ -43,7 +43,7 @@ namespace Planner.Controllers
 		public async Task<ActionResult> Index()
 		{
 			// Rediect to login page if not logged in
-			if (HttpContext.Session.GetString("username") == null)
+			if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("username")))
 			{
 				return new RedirectToRouteResult(
 					new RouteValueDictionary{
@@ -106,6 +106,18 @@ namespace Planner.Controllers
 		}
 
 		/// <summary>
+		/// Get a trip by ID from the leaders perspective
+		/// GET: Trip/Summary/{id}
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<IActionResult> SummaryLeader(int id)
+		{
+			return await GetTripViewModelByIdAsync(id);
+		}
+
+		/// <summary>
 		/// Fill in the details to add a trip.
 		/// </summary>
 		/// <returns></returns>
@@ -137,11 +149,53 @@ namespace Planner.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel)
 		{
+			// Add trip
 			var trip = new Trip(tripViewModel);
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction("DetailsLeader", new { Id = trip.Id });
+			// Add trip-organizer relationship
+			var currentUserId = HttpContext.Session.GetInt32("userid");
+			var currentUser = await _dbContext.Hiker
+				.Where(h => h.Id == currentUserId.Value)
+				.FirstOrDefaultAsync();
+
+			var hikerTrip = new HikerTrip()
+			{
+				HikerId = currentUserId.Value,
+				TripId = trip.Id,
+				HikerStatus = "CONFIRMED"
+			};
+			await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			return RedirectToAction("Details", new { Id = trip.Id });
+		}
+
+		/// <summary>
+		/// Request to join the trip.
+		/// </summary>
+		/// <param name="tripViewModel">Trip information.</param>
+		/// <returns></returns>
+		[HttpPost, ActionName("RequestToJoin")]
+        public async Task<ActionResult> RequestToJoin(string tripId, string hikerId)
+		{
+			var trip = _dbContext.Trip.SingleOrDefault(t => t.Id == int.Parse(tripId));
+
+			if (trip != null)
+            {
+				var hikerTrip = new HikerTrip
+				{
+					TripId = int.Parse(tripId),
+					HikerId = int.Parse(hikerId),
+					HikerStatus = "PENDING-LEADER"
+				};
+
+				await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
+				await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			}
+
+			return RedirectToAction("Details", new { Id = trip.Id });
 		}
 
 		/// <summary>
@@ -221,32 +275,40 @@ namespace Planner.Controllers
 				.Join(_dbContext.Hiker,
 						  m => m.HikerId,
 						  v => v.Id,
-						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v })
+						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v, HikerStatus = m.HikerStatus })
 				.ToListAsync();
 
-			var viewModel = new TripViewModel(trip);
+			// Can we make it smarter using lync in the hikers query above?
+			foreach (var hiker in hikers)
+			{
+				var hikerGear = await _dbContext.HikerGear
+					.Where(hg => hg.HikerId == hiker.Hiker.Id).ToListAsync();
+
+				hiker.Hiker.HikerGear = hikerGear;
+			}
+
+			var groupGear = await _dbContext.GroupGear
+				.Where(gg => gg.TripId == trip.Id).Select(g => new GroupGearViewModel(g)).ToListAsync();
+
+			var viewModel = new TripViewModel(trip, "", "");
 			if (_shouldQueryWeatherApi)
             {
 				// Should query for weather based on representative lat/lon per day.
 				// NWAC can use the lat/long for Day 1.
 				var coord = new Point(new Position((double) trip.Peak.TrailheadLatitude, (double) trip.Peak.TrailheadLongitude));
-
-				// See https://openweathermap.org/api/one-call-api#hist_parameter
-				// for fields available on forecast.
-				var forecast = await GetWeatherForecast(coord: coord);
-
-				string iconCode = forecast.weather.First.icon;
-				var inchesRain = Math.Round((double) forecast.rain * 0.03937008, 2);
-				string weatherDescription = $"{forecast.weather.First.description}. High of {forecast.temp.max} F. Low of {forecast.temp.min} F. Winds {forecast.wind_speed} mph. Expected rain {inchesRain} inches.";
+				var forecast = await GetWeatherForecast(coord: coord, startDate: trip.StartDate, numDays: trip.Days);
 
 				// FIXME: Re-enable and troubzleshoot.
 				//var nwacZone = GetNWACZone(coord: coord);
 
-				// TODO: Hook nwacZone up to TripViewModel.
-				viewModel = new TripViewModel(trip, weatherDescription, iconCode);
+				// We only have trailhead info, so only send Weather forecast for Day 1.
+				var weatherDescription = forecast.Count > 0 ? DescriptionForForecast(forecast[0]) : "Check Back Later";
+				var weatherIcon = forecast.Count > 0 ? IconForForecast(forecast[0]) : "";
+				viewModel = new TripViewModel(trip, weatherDescription, weatherIcon);
 			}
-			
+
 			viewModel.Hikers = hikers;
+			viewModel.GroupGearList = groupGear;
 			return View(viewModel);
 		}
 
@@ -254,10 +316,10 @@ namespace Planner.Controllers
 		/// Returns the daily weather forecast as a dynamic JSON object.
 		/// </summary>
 		/// <param name="coord">Coordinate for which to retrieve the forecast.</param>
-		/// <param name="skip_days">Number of days to skip. Default: 0</param>
-		/// <param name="num_days">Number of days to return. Default: 1</param>
+		/// <param name="startDate">Start date for weather forecast to retrieve.</param>
+		/// <param name="numDays">Number of days to return.</param>
 		/// <returns></returns>
-		private async Task<dynamic> GetWeatherForecast(Point coord, int skip_days = 0, int num_days = 1)
+		private async Task<dynamic> GetWeatherForecast(Point coord, DateTime startDate, int numDays)
 		{
 			var api_key = _configuration.GetValue<string>("WEATHER_API_KEY");
 			var url = $"https://api.openweathermap.org/data/2.5/onecall?units=imperial&lat={coord.Coordinates.Latitude}&lon={coord.Coordinates.Longitude}&exclude=hourly,minutely,current,alerts&appid={api_key}";
@@ -273,14 +335,60 @@ namespace Planner.Controllers
 
 			var daily_forecast = weather.daily;
 
-			if (skip_days + num_days > 7)
+			// retrieve the forecasts relevant to the days of the trip
+			List<dynamic> forecasts = new List<dynamic>();
+			foreach (dynamic forecast in daily_forecast)
             {
-				// TODO: Throw some kind of error.
+                var date = DateTimeFromUnix((double)forecast.dt);
+                var difference = (date.Date - startDate.Date).Days;
+                if (difference < 0 || difference >= numDays)
+                {
+                    continue;
+                }
+                forecasts.Add(forecast);
             }
-			// FIXME: For now just return the first day. C# array slicing is
-			// hard :/
-			return daily_forecast.First;
+            return forecasts;
 		}
+
+		private DateTime DateTimeFromUnix(double unixTime)
+        {
+			var unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+			long unixTimeStampInTicks = (long)(unixTime * TimeSpan.TicksPerSecond);
+			return new DateTime(unixStart.Ticks + unixTimeStampInTicks, DateTimeKind.Local);
+		}
+
+		private string IconForForecast(dynamic forecast)
+        {
+			return forecast.weather.First.icon;
+		}
+
+		private string DescriptionForForecast(dynamic forecast)
+        {
+			// See https://openweathermap.org/api/one-call-api#hist_parameter
+			// for fields available on forecast.
+			double? mmRain = forecast.rain;
+			double? mmSnow = forecast.snow;
+
+			double maxTemp = Math.Round((double)forecast.temp.max, 0);
+			double minTemp = Math.Round((double)forecast.temp.min, 0);
+			double windSpeed = Math.Round((double)forecast.wind_speed, 0);
+
+			var description = new System.Text.StringBuilder($"{forecast.weather.First.description}. ");
+			description.Append($"High of {maxTemp} F. ");
+			description.Append($"Low of {minTemp} F. ");
+			description.Append($"Wind speed {windSpeed} mph. ");
+			if (mmRain != null)
+            {
+				var inchesRain = Math.Round((double)mmRain * 0.03937008, 2);
+				description.Append($"Expected rain {inchesRain} inches. ");
+            }
+			if (mmSnow != null)
+            {
+				var inchesSnow = Math.Round((double)mmSnow * 0.03937008, 2);
+				description.Append($"Expected snowfall {inchesSnow} inches.");
+            }
+			return description.ToString();
+        }
 
 		private NWACZone? GetNWACZone(Point coord)
 		{
