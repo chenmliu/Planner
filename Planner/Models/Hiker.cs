@@ -205,6 +205,12 @@ namespace Planner.Models
 			var salt = new byte[1];
 			salt[0] = 0;
 
+			// handling NullException for password
+			if (salt.Length == 1)
+            {
+				return null;
+            }
+
 			// derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
 			// TODO: Add salt management
 			return Convert.ToBase64String(KeyDerivation.Pbkdf2(
