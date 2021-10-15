@@ -206,7 +206,7 @@ namespace Planner.Models
 			salt[0] = 0;
 
 			// handling NullException for password
-			if (salt.Length == 1)
+			if (password == null)
             {
 				return null;
             }
