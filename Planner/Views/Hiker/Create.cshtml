@@ -85,12 +85,12 @@
                 </select>
             </div>
             <div class="dropdown">
-                <label asp-for="Preference">carpool preferences:</label>
+                <label asp-for="Preference">Carpool preferences:</label>
                 <select asp-for="Preference" class="dropdown" />
-                <option value="Alone">Alone</option>
-                <option value="drive">drive</option>
-                <option value="ride">ride</option>
-                <option value="drive or ride">drive or ride</option>
+                <option value=0>Alone</option>
+                <option value=1>Drive</option>
+                <option value=2>Ride</option>
+                <option value=3>Drive or Ride</option>
                 </select>
             </div>
             <div class="form-group">
@@ -109,9 +109,6 @@
                 <span asp-validation-for="FunScale" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="hidden" name="id" id="tripId" value="@Model.Id" />
-                <input type="hidden" name="userName" id="tripId" value="@Model.UserName" />
-                <input type="hidden" name="password" id="tripId" value="@Model.Password" />
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

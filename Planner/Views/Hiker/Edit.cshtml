@@ -77,10 +77,10 @@
             <div class="dropdown">
                 <label asp-for="Preference">Carpool preferences:</label>
                 <select asp-for="Preference" class="dropdown" />
-                <option value="Alone">Alone</option>
-                <option value="Drive">Drive</option>
-                <option value="Ride">Ride</option>
-                <option value="Drive or Ride">Drive or Ride</option>
+                <option value=0>Alone</option>
+                <option value=1>Drive</option>
+                <option value=2>Ride</option>
+                <option value=3>Drive or Ride</option>
                 </select>
             </div>
             <div class="form-group">
@@ -97,11 +97,6 @@
                 <label asp-for="FunScale" class="control-label"></label>
                 <input asp-for="FunScale" class="form-control" />
                 <span asp-validation-for="FunScale" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Awd" /> @Html.DisplayNameFor(model => model.Awd)
-                </label>
             </div>
             <h3>Gear</h3>
             <div class="row">

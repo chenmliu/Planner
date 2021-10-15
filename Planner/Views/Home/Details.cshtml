@@ -54,21 +54,51 @@ Welcome @Context.Session.GetString("username")
             @Html.DisplayFor(model => model.Awd)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SnowFriendly)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SnowFriendly)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HighClearance)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HighClearance)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CarBrand)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CarBrand)
         </dd>
-        <dt class = "col-sm-3">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CarModel)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CarModel)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Preference)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Preference)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Spaces)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Spaces)
+        </dd>
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.EmergencyContactName)
         </dt>
-        <dd class = "col-sm-9">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.EmergencyContactName)
         </dd>
-        <dt class = "col-sm-3">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.EmergencyContactPhone)
         </dt>
-        <dd class = "col-sm-9">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.EmergencyContactPhone)
         </dd>
         <dt class="col-sm-2">
