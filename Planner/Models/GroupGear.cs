@@ -24,6 +24,13 @@ namespace Planner.Models
 			set;
         }
 
+		[Column("number")]
+		public int Number
+		{
+			get;
+			set;
+		}
+
 		[Required]
 		[Column("trip_id")]
 		public int TripId

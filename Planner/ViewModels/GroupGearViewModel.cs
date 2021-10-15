@@ -16,6 +16,7 @@ namespace Planner.ViewModels
             Id = groupGear.Id;
             TripId = groupGear.TripId;
             Item = groupGear.Item;
+            Number = groupGear.Number;
         }
 
         public int Id
@@ -31,6 +32,12 @@ namespace Planner.ViewModels
         }
 
         public string Item
+        {
+            get;
+            set;
+        }
+
+        public int Number
         {
             get;
             set;
