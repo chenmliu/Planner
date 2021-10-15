@@ -175,7 +175,7 @@ namespace Planner.Controllers
 				.ToListAsync();
 
 			var viewModel = new HikerViewModel(hiker);
-			viewModel.HikerGearList = hikerGear;
+			viewModel.HikerGroupGear = hikerGear;
 
 			return View(viewModel);
 		}

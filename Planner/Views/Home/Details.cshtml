@@ -5,9 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using Microsoft.AspNetCore.Http;
-Welcome @Context.Session.GetString("username")
-
 <div>
     <div class="container">
         <div class="row">
@@ -116,11 +113,42 @@ Welcome @Context.Session.GetString("username")
     </div>
     <br />
 
+    <h2>Group gear</h2>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Item</th>
+            </tr>
+            @foreach (var item in Model.HikerGroupGear)
+            {
+                <tr>
+                    <td>@item.Item</td>
+                </tr>
+            }
+        </table>
+    </div> 
+
+    <h2>Extra gear I can offer to others</h2>
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>Item</th>
+            </tr>
+            @foreach (var item in Model.HikerExtraGear)
+            {
+                <tr>
+                    <td>@item.Item</td>
+                </tr>
+            }
+        </table>
+    </div>    
+
+    <h2>Upcoming trips</h2>
+    <br />
     @if (Model.upcomingTrips.Count() > 0)
     {
         <div class="row">
             <div class="col-sm-12">
-                <h4>Upcoming trips</h4>
                 <div class="row">
                     <table class="table">
                         <tr>
@@ -143,11 +171,12 @@ Welcome @Context.Session.GetString("username")
         <br />
     }
 
+    <h2>Past trips</h2>
+    <br /> 
     @if (Model.pastTrips.Count() > 0)
     {
         <div class="row">
             <div class="col-sm-12">
-                <h4>Past trips</h4>
                 <div class="row">
                     <table class="table">
                         <tr>
@@ -170,11 +199,12 @@ Welcome @Context.Session.GetString("username")
         <br />
     }
 
+    <h2>Hiking Invitations</h2>
+    <br/>
     @if (Model.PendingInvitations.Count() > 0)
     {
         <div class="row">
             <div class="col-sm-12">
-                <h4>Hiking Invitations!</h4>
                 <table class="table">
                     <tr>
                         <th style="width: 25%">Trip</th>

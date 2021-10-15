@@ -93,40 +93,6 @@
                 <input asp-for="FunScale" class="form-control" />
                 <span asp-validation-for="FunScale" class="text-danger"></span>
             </div>
-            <h3>Gear</h3>
-            <div class="row">
-                <table class="table">
-                    <tr>
-                        <th>Name</th>
-                        <th>Brand</th>
-                        <th>Model</th>
-                        <th>Intended Use</th>
-                        <th>Group Use?</th>
-                        <th>Weight</th>
-                        <th>Number of Users</th>
-                        <th>Specs</th>
-                        <th>Details</th>
-                    </tr>
-                    @foreach (var item in Model.HikerGearList)
-                    {
-                        // TODO: Fill in other gear info
-                        <tr>
-                            <td>@item.Item</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    }
-                </table>
-            </div>
-            <div>
-                <a asp-controller="Gear" asp-action="Create">Add Gear</a>
-            </div>
             <div class="form-group">
                 <input type="hidden" name="id" id="tripId" value="@Model.Id" />
                 <input type="hidden" name="userName" id="userName" value="@Model.UserName" />
@@ -134,5 +100,55 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Group gear</h2>
+        <table class="table">
+            <tr>
+                <th>Item</th>
+            </tr>
+            <td>
+                <form asp-action="AddGroupGear">
+                    <div class="form-group">
+                        <input type="text" name="name" value="" />
+                        <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                        <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                    </div>
+                </form>                                               
+            </td>
+            @foreach (var item in Model.HikerGroupGear)
+            {
+                <tr>
+                    <td>@item.Item</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Extra gear I can offer to others</h2>
+        <table class="table">
+            <tr>
+                <th>Item</th>
+            </tr>
+            <td>
+                <form asp-action="AddExtraGear">
+                    <div class="form-group">
+                        <input type="text" name="name" value="" />
+                        <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                        <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                    </div>
+                </form>                                               
+            </td>
+            @foreach (var item in Model.HikerExtraGear)
+            {
+                <tr>
+                    <td>@item.Item</td>
+                </tr>
+            }
+        </table>
     </div>
 </div>

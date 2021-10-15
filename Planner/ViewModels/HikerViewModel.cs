@@ -9,7 +9,7 @@ namespace Planner.ViewModels
 	{
 		public HikerViewModel()
 		{
-			HikerGearList = Enumerable.Empty<HikerGearViewModel>();
+			HikerGroupGear = Enumerable.Empty<HikerGearViewModel>();
 			pastTrips = Enumerable.Empty<TripViewModel>();
 			PendingInvitations = Enumerable.Empty<TripViewModel>();
 			upcomingTrips = Enumerable.Empty<TripViewModel>();
@@ -35,7 +35,7 @@ namespace Planner.ViewModels
 			Preference = hiker.Preference;
 			SnowFriendly = hiker.SnowFriendly;
 			HighClearance = hiker.HighClearance;
-			HikerGearList = Enumerable.Empty<HikerGearViewModel>();
+			HikerGroupGear = Enumerable.Empty<HikerGearViewModel>();
 			pastTrips = Enumerable.Empty<TripViewModel>();
 			PendingInvitations = Enumerable.Empty<TripViewModel>();
 			upcomingTrips = Enumerable.Empty<TripViewModel>();
@@ -174,12 +174,18 @@ namespace Planner.ViewModels
 			set;
 		}
 
-		[Display(Name = "Gear")]
-		public IEnumerable<HikerGearViewModel> HikerGearList
+		[Display(Name = "Group gear")]
+		public IEnumerable<HikerGearViewModel> HikerGroupGear
         {
 			get;
 			set;
         }
+
+		public IEnumerable<HikerGearViewModel> HikerExtraGear
+		{
+			get;
+			set;
+		}
 
 		[Display(Name = "Past Trips")]
 		public IEnumerable<TripViewModel> pastTrips

@@ -44,7 +44,6 @@ namespace Planner.Models
 			set;
 		}
 
-		/*
 		[Required]
 		[Column("brand")]
 		public string Brand
@@ -60,8 +59,9 @@ namespace Planner.Models
 			get;
 			set;
 		}
-
+	
 		[Required]
+		[Column("intended_use")]
 		public GearIntendedUse IntendedUse
         { 
 			get;
@@ -76,8 +76,6 @@ namespace Planner.Models
 			set;
 		}
 
-		*/
-
 		[Required]
 		[Column("weight")]
 		public int Weight
@@ -86,7 +84,6 @@ namespace Planner.Models
 			set;
 		}
 
-		/*
 		[Required]
 		[Column("number_of_users")]
 		// Indicates how many people can use that gear (eg. tent)
@@ -111,7 +108,6 @@ namespace Planner.Models
 			get;
 			set;
 		}
-		*/
 
 		[ForeignKey("HikerId")]
 		public Hiker Hiker

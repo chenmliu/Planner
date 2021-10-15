@@ -89,6 +89,62 @@ namespace Planner.Controllers
 					});
 		}
 
+		[HttpPost]
+		public async Task<ActionResult> AddGroupGear(string name, int hikerId)
+		{
+			var gear = new HikerGear()
+			{
+				HikerId = hikerId,
+				Item = name,
+				Brand = "brand",
+				Model = "model",
+				IntendedUse = GearIntendedUse.Primary,
+				GroupUse = true,
+				Weight = 1,
+				NumberOfUsers = 1,
+				Specs = "specs",
+				Details = "details"
+			};
+			await _dbContext.HikerGear.AddAsync(gear).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			return new RedirectToRouteResult(
+				new RouteValueDictionary
+				{
+					{ "controller", "Home" },
+					{ "action", "Edit" },
+					{ "id", hikerId }
+			});
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> AddExtraGear(string name, int hikerId)
+		{
+			var gear = new HikerGear()
+			{
+				HikerId = hikerId,
+				Item = name,
+				Brand = "brand",
+				Model = "model",
+				IntendedUse = GearIntendedUse.Extra,
+				GroupUse = false,
+				Weight = 1,
+				NumberOfUsers = 1,
+				Specs = "specs",
+				Details = "details"
+			};
+			await _dbContext.HikerGear.AddAsync(gear).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			return new RedirectToRouteResult(
+				new RouteValueDictionary
+				{
+					{ "controller", "Home" },
+					{ "action", "Edit" },
+					{ "id", hikerId }
+			});
+		}
+
 		/// <summary>
 		/// Edit a hiker by ID.
 		/// GET: Home/Edit/{id}
@@ -188,6 +244,14 @@ namespace Planner.Controllers
 			var viewModel = new HikerViewModel(hiker);
 			await AddTripsAsync(viewModel);
 			await AddPendingTripInvitations(viewModel);
+
+			var hikerGear = await _dbContext.HikerGear
+				.Where(hg => hg.HikerId == hiker.Id)
+				.Select(h => new HikerGearViewModel(h))
+				.ToListAsync();
+			viewModel.HikerGroupGear = hikerGear.Where(g => g.GroupUse == true).ToList();
+			viewModel.HikerExtraGear = hikerGear.Where(g => g.IntendedUse == GearIntendedUse.Extra).ToList();
+
 			return View(viewModel);
 		}
 
