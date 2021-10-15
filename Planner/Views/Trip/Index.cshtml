@@ -5,10 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Trips</h1>
-
 @using Microsoft.AspNetCore.Http;
-Welcome @Context.Session.GetString("username")
+
+<h1>Trips</h1>
 
 <p>
     @Html.ActionLink("Create New", "Create")
