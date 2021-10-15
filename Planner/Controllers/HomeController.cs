@@ -161,6 +161,10 @@ namespace Planner.Controllers
 			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
+			// Log in with the newly created user
+			HttpContext.Session.SetString("username", hiker.UserName);
+			HttpContext.Session.SetInt32("userid", hiker.Id);
+
 			return RedirectToAction(nameof(Details), new { id = hiker.Id });
 		}
 

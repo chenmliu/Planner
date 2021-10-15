@@ -91,7 +91,7 @@ namespace Planner.Controllers
 			await _dbContext.Hiker.AddAsync(hiker).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction(nameof(Index));
+			return RedirectToAction(nameof(Details), new { id = hiker.Id });
 		}
 
 		/// <summary>
