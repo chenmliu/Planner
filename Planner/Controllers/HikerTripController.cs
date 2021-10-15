@@ -79,8 +79,16 @@ namespace Planner.Controllers
 				return NotFound();
 			}
 
+			// Only allow inviting users who aren't already a member of the trip
+			var tripMembers = await _dbContext.HikerTrip
+				.Where(ht => ht.TripId == trip.Id)
+				.Join(_dbContext.Hiker,
+						  m => m.HikerId,
+						  v => v.Id,
+						  (m, v) => v)
+				.ToListAsync();
 			var allHikers = await GetAllHikersAsync();
-			ViewData["allHikers"] = allHikers;
+			ViewData["invitableHikers"] = allHikers.Except(tripMembers).OrderBy(h => h.FirstName);
 
 			return View(
 				new HikerTripViewModel {

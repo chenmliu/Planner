@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Invite";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    IEnumerable<Hiker> allHikers = ViewData["allHikers"] as IEnumerable<Hiker>;
+    IEnumerable<Hiker> allHikers = ViewData["invitableHikers"] as IEnumerable<Hiker>;
 }
 
 <hr />
@@ -12,7 +12,6 @@
         <h2>Invite a new hiker to "@Model.TripName"</h2>
     </div>
     <div class="col-md-4">
-        
         <form asp-action="InviteHikerToTrip">
             <input type="hidden" asp-for="TripId" />
             <div class="form-group">
