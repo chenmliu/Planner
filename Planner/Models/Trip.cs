@@ -28,6 +28,7 @@ namespace Planner.Models
 			IsBumpyRoad = trip.IsBumpyRoad;
 			Location = trip.Location;
 			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
+			Permit = trip.Permit;
 		}
 
 		[Key]
@@ -152,5 +153,13 @@ namespace Planner.Models
 			get;
 			set;
 		}
+
+		[Column("permit")]
+		public string Permit
+		{
+			get;
+			set;
+		}
+
 	}
 }

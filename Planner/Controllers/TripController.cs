@@ -136,8 +136,20 @@ namespace Planner.Controllers
 													   Value = Convert.ToString(user.Id),
 													   Text = $"{user.FirstName} {user.LastName}"
 												   };
+			List<SelectListItem> PermitTypeList = new List<SelectListItem>();  
+			foreach (var item in Enum.GetValues(typeof(PermitType)))
+			{
+				PermitTypeList.Add(new SelectListItem
+				{
+					Value = Convert.ToString(item),
+					Text = Convert.ToString(item)
+				});
+			};
+
+			IEnumerable<SelectListItem> permitTypes = PermitTypeList as IEnumerable<SelectListItem>;
 			ViewBag.PeakList = new SelectList(PeakList, "Value", "Text");
 			ViewBag.UserList = new SelectList(UserList, "Value", "Text");
+			ViewBag.PermitTypeList = new SelectList(permitTypes, "Value","Text");
 			return View();
 		}
 

@@ -29,6 +29,7 @@ namespace Planner.ViewModels
 			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
 			TotalDistance = trip.TotalDistance;
 			ElevationGain = trip.ElevationGain;
+			Permit = trip.Permit;
 			
 			WeatherLabel = weatherDesc;
 			IconUrl = iconCode != "" ? $"http://openweathermap.org/img/wn/{iconCode}@2x.png" : "";
@@ -127,6 +128,13 @@ namespace Planner.ViewModels
 			get;
 			set;
 		}
+
+		public string Permit
+		{
+			get;
+			set;
+		}
+
 		public string WeatherLabel
         {
 			get;
