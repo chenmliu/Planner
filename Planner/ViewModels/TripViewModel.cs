@@ -30,9 +30,12 @@ namespace Planner.ViewModels
 			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
 			TotalDistance = trip.TotalDistance;
 			ElevationGain = trip.ElevationGain;
-			
+
+			var latitude = trip.Peak.TrailheadLatitude;
+			var longitude = trip.Peak.TrailheadLongitude;
 			WeatherLabel = weatherDesc;
 			IconUrl = iconCode != "" ? $"http://openweathermap.org/img/wn/{iconCode}@2x.png" : "";
+			WeatherLink = $"https://www.windy.com/{latitude}/{longitude}?{latitude},{longitude},13,i:deg0,m:eWHacOd";
 		}
 
 		public int Id
@@ -134,6 +137,11 @@ namespace Planner.ViewModels
         }
 
 		public string IconUrl
+        {
+			get;
+        }
+		
+		public string WeatherLink
         {
 			get;
         }

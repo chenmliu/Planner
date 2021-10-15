@@ -91,6 +91,63 @@ namespace Planner.Controllers
 		}
 
 		/// <summary>
+		/// Accept a hiker into the trip
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<ActionResult> AcceptHiker(int tripId, int hikerId, string view)
+		{
+			var hikerTrip = _dbContext.HikerTrip
+				.Where(ht => ht.TripId == tripId)
+				.Where(ht => ht.HikerId == hikerId)
+				.FirstOrDefault();
+
+			if (hikerTrip == null)
+			{
+				return NotFound();
+			}
+
+			hikerTrip.HikerStatus = "CONFIRMED";
+			_dbContext.HikerTrip.Update(hikerTrip);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			if (view == "organizer")
+			{
+				return RedirectToAction("Details", "Trip", new { Id = tripId });
+			}
+
+			return RedirectToAction("Details", "Home", new { Id = hikerId });
+		}
+
+		/// <summary>
+		/// Reject a hiker from joining the trip
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<ActionResult> RejectHiker(int tripId, int hikerId, string view)
+		{
+			var hikerTrip = _dbContext.HikerTrip
+				.Where(ht => ht.TripId == tripId)
+				.Where(ht => ht.HikerId == hikerId)
+				.FirstOrDefault();
+
+			if (hikerTrip == null)
+			{
+				return NotFound();
+			}
+
+			_dbContext.HikerTrip.Remove(hikerTrip);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			if (view == "organizer")
+            {
+				return RedirectToAction("Details", "Trip", new { Id = tripId });
+			}
+
+			return RedirectToAction("Details", "Home", new { Id = hikerId });
+		}
+
+		/// <summary>
 		/// Submit a trip.
 		/// </summary>
 		/// <param name="hikerTripViewModel">Information about trip and hiker connection.</param>
@@ -114,9 +171,6 @@ namespace Planner.Controllers
 		{
 			var hirekTrip = _dbContext.HikerTrip
 				.Where(t => t.TripId == tripId && t.HikerId == hikerId)
-				//.Include(t => t.Hiker)
-				//.Include(t => t.Trip)
-				//.Select(t => )
 				.FirstOrDefault();
 			if (hirekTrip == null)
 			{

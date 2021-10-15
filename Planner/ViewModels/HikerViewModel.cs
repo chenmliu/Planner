@@ -24,6 +24,7 @@ namespace Planner.ViewModels
 			EmergencyContactPhone = hiker.EmergencyContactPhone;
 			FunScale = hiker.FunScale;
 			HasCar = hiker.HasCar;
+			CarModelBrand = hiker.CarBrand + " " + hiker.CarModel;
 			CarBrand = hiker.CarBrand;
 			CarModel = hiker.CarModel;
 			Spaces = hiker.Spaces;
@@ -134,6 +135,12 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		public string CarModelBrand
+		{
+			get;
+			set;
+		}
+
 		[Display(Name = "Spaces")]
 		public int? Spaces
         {
@@ -172,6 +179,12 @@ namespace Planner.ViewModels
 			get;
 			set;
 		}
+
+		public IEnumerable<TripViewModel> PendingInvitations
+        {
+			get;
+			set;
+        }
 
 		[Display(Name = "Upcoming Trips")]
 		public IEnumerable<TripViewModel> upcomingTrips
