@@ -14,6 +14,7 @@ namespace Planner.ViewModels
             Id = hikerGear.Id;
             HikerId = hikerGear.HikerId;
             Item = hikerGear.Item;
+            Weight = hikerGear.Weight;
         }
 
         public int Id
@@ -29,6 +30,12 @@ namespace Planner.ViewModels
         }
 
         public string Item
+        {
+            get;
+            set;
+        }
+
+        public int Weight
         {
             get;
             set;
