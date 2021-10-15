@@ -57,7 +57,7 @@ Welcome @Context.Session.GetString("username")
         else
         {
             <td>
-                @Html.ActionLink("Details", "Details", new { id = trip.Id  })
+                @Html.ActionLink("Summary", "SummaryLeader", new { id = trip.Id  })
             </td>
         }
     </tr>
