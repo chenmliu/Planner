@@ -70,9 +70,31 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
+.login-button-width {
+    width: 90px;
+}
+
 .home {
-    background: url(https://cdn.shopify.com/s/files/1/0880/2184/files/5-Reasons-to-Apply-for-a-Big-Outdoors-Thru-Hiker-Sponsorship-5.jpg?v=1484089795);
+    /*    background: url(https://cdn.shopify.com/s/files/1/0880/2184/files/5-Reasons-to-Apply-for-a-Big-Outdoors-Thru-Hiker-Sponsorship-5.jpg?v=1484089795);
+*/ background: url(../home.png);
     color: white;
     text-shadow: 1px 0 black;
-    height: 45rem;
+    height: 25rem;
+}
+
+.home-text {
+    padding-top: 30px;
+    font-weight:bold;
+}
+
+.home-title {
+    font-family: Segoe UI;
+    font-size: 32px;
+    font-weight: 500
+}
+
+.home-paragraph {
+    font-family: Segoe UI;
+    font-size: 14px;
+    font-weight: 400
 }

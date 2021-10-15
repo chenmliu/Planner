@@ -5,10 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Trips</h1>
-
 @using Microsoft.AspNetCore.Http;
-Welcome @Context.Session.GetString("username")
+
+<h1>Trips</h1>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -49,7 +48,7 @@ Welcome @Context.Session.GetString("username")
         {
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = trip.Id }) |
-                @Html.ActionLink("Manage", "DetailsLeader", new { id = trip.Id  }) |
+                @Html.ActionLink("Manage", "Details", new { id = trip.Id  }) |
                 @Html.ActionLink("Summary", "SummaryLeader", new { id = trip.Id  }) |
                 @Html.ActionLink("Delete", "Delete", new { id = trip.Id })
             </td>
@@ -57,7 +56,7 @@ Welcome @Context.Session.GetString("username")
         else
         {
             <td>
-                @Html.ActionLink("Details", "Details", new { id = trip.Id  })
+                @Html.ActionLink("Summary", "SummaryLeader", new { id = trip.Id  })
             </td>
         }
     </tr>

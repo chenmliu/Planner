@@ -95,18 +95,6 @@ namespace Planner.Controllers
 
 		/// <summary>
 		/// Get a trip by ID from the leaders perspective
-		/// GET: Trip/Details/{id}
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns>ID of the trip.</returns>
-		[HttpGet]
-		public async Task<IActionResult> DetailsLeader(int id)
-		{
-			return await GetTripViewModelByIdAsync(id);
-		}
-
-		/// <summary>
-		/// Get a trip by ID from the leaders perspective
 		/// GET: Trip/Summary/{id}
 		/// </summary>
 		/// <param name="id"></param>
@@ -161,8 +149,24 @@ namespace Planner.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel)
 		{
+			// Add trip
 			var trip = new Trip(tripViewModel);
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			// Add trip-organizer relationship
+			var currentUserId = HttpContext.Session.GetInt32("userid");
+			var currentUser = await _dbContext.Hiker
+				.Where(h => h.Id == currentUserId.Value)
+				.FirstOrDefaultAsync();
+
+			var hikerTrip = new HikerTrip()
+			{
+				HikerId = currentUserId.Value,
+				TripId = trip.Id,
+				HikerStatus = "CONFIRMED"
+			};
+			await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
 			return RedirectToAction("Details", new { Id = trip.Id });
@@ -274,6 +278,18 @@ namespace Planner.Controllers
 						  (m, v) => new HikerTripViewModel() { HikerId=v.Id, TripId=m.TripId, HikerName = v.FullName, Hiker = v, HikerStatus = m.HikerStatus })
 				.ToListAsync();
 
+			// Can we make it smarter using lync in the hikers query above?
+			foreach (var hiker in hikers)
+			{
+				var hikerGear = await _dbContext.HikerGear
+					.Where(hg => hg.HikerId == hiker.Hiker.Id).ToListAsync();
+
+				hiker.Hiker.HikerGear = hikerGear;
+			}
+
+			var groupGear = await _dbContext.GroupGear
+				.Where(gg => gg.TripId == trip.Id).Select(g => new GroupGearViewModel(g)).ToListAsync();
+
 			var viewModel = new TripViewModel(trip, "", "");
 			if (_shouldQueryWeatherApi)
             {
@@ -286,11 +302,35 @@ namespace Planner.Controllers
 				//var nwacZone = GetNWACZone(coord: coord);
 
 				// We only have trailhead info, so only send Weather forecast for Day 1.
-				var weatherDescription = forecast.Count > 1 ? DescriptionForForecast(forecast[0]) : "Check Back Later";
-				var weatherIcon = forecast.Count > 1 ? IconForForecast(forecast[0]) : "";
+				var weatherDescription = forecast.Count > 0 ? DescriptionForForecast(forecast[0]) : "Check Back Later";
+				var weatherIcon = forecast.Count > 0 ? IconForForecast(forecast[0]) : "";
 				viewModel = new TripViewModel(trip, weatherDescription, weatherIcon);
 			}
+
 			viewModel.Hikers = hikers;
+			viewModel.GroupGearList = groupGear;
+
+			// Select the first few drivers that have enough seats for the entire group
+			var totalSeatsNeeded = hikers.Count();
+			var potentialDrivers = hikers.Where(h => h.Hiker.HasCar)
+				.Select(d => new PotentialDriver()
+				{
+					HikerId = d.HikerId,
+					Name = d.Hiker.FullName,
+					Seats = d.Hiker.Spaces.Value
+				})
+				.ToList();
+			foreach (var d in potentialDrivers)
+			{
+				d.Selected = true;
+				totalSeatsNeeded = totalSeatsNeeded - d.Seats;
+				if (totalSeatsNeeded <= 0)
+				{
+					break;
+				}
+			}
+			viewModel.PotentialDrivers = potentialDrivers;
+
 			return View(viewModel);
 		}
 

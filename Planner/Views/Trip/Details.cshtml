@@ -1,6 +1,7 @@
 @model Planner.ViewModels.TripViewModel
 
 @using Microsoft.AspNetCore.Http;
+@using System.Collections.Generic;
 
 @{
     ViewData["Title"] = "Details";
@@ -27,14 +28,51 @@
 
 }
 
+@{
+    // Gear matrix calculations
+
+    var gearQuantities = new Dictionary<string, Tuple<int, List<HikerGear>>>();
+
+    // TODO: add handling duplicates in GroupGearList
+    foreach (var gearItem in Model.GroupGearList)
+    {
+        gearQuantities.Add(gearItem.Item, new Tuple<int, List<HikerGear> > (gearItem.Number, new List<HikerGear>()) );
+    }
+
+    foreach (var hiker in Model.Hikers)
+    {
+        foreach (var gearItem in hiker.Hiker.HikerGear)
+        {
+            // If we need that gear
+            if (gearQuantities.ContainsKey(gearItem.Item))
+            {
+                gearQuantities[gearItem.Item].Item2.Add(gearItem);
+            }
+        }
+    }
+
+    var missingItems = new Dictionary<string, int>();
+
+    foreach (var gearItem in gearQuantities)
+    {
+        var needed = gearItem.Value.Item1;
+        var membersHave = gearItem.Value.Item2.Count;
+
+        if (needed > membersHave)
+        {
+            missingItems.Add(gearItem.Key, needed - membersHave);
+        }
+    }
+}
+
 @section Scripts
 {
     <script>
-    function OnClick() {
-        var Url = document.getElementById("inviteLink");
-        navigator.clipboard.writeText(Url.innerHTML)
-        alert("Copied the link: " + Url.innerHTML);
-    }
+        function OnClick() {
+            var Url = document.getElementById("inviteLink");
+            navigator.clipboard.writeText(Url.innerHTML)
+            alert("Copied the link: " + Url.innerHTML);
+        }
 
     </script>
 }
@@ -121,7 +159,6 @@
             }
             else if (@Model.Hikers.Count >= @Model.GroupSize)
             {
-                <p></p>
                 <div class="alert alert-success" role="alert">
                     This trip is full!
                 </div>
@@ -153,15 +190,15 @@
 
                                 @if (isUserOrganizer)
                                 {
-                                    if (hiker.HikerStatus == "ACCEPTED" || hiker.HikerStatus == "PENDING-HIKER")
+                                    if (hiker.HikerStatus == "CONFIRMED" || hiker.HikerStatus == "PENDING-HIKER")
                                     {
                                         <td><a asp-action="Remove" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Remove </a></td>
                                     }
                                     else if (hiker.HikerStatus == "PENDING-LEADER")
                                     {
                                         <td>
-                                            <a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Accept </a> |
-                                            <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Reject </a>
+                                            <a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-view="organizer" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Accept </a> |
+                                            <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-view="organizer" asp-route-tripId="@hiker.TripId" asp-route-hikerId="@hiker.HikerId"> Reject </a>
                                         </td>
                                     }
                                 }
@@ -172,34 +209,81 @@
             }
         </div>
     </div>
-    <hr />
+    <br />
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Group Gear</h4>
+            @if (missingItems.Count > 0)
+            {
+                <div class="alert alert-primary" role="alert">
+                    Looks like participants doesn't have enough gear! Missing items:
+                    <ul>
+                        @foreach (var missingItem in missingItems)
+                        {
+                            <li>@missingItem.Key , @missingItem.Value</li>
+                        }
+                    </ul>
+                </div>
+            }
+            <div class="row">
+                <ul>
+                    @foreach (var gear in gearQuantities)
+                    {
+                        <li>
+                            @gear.Key, need: @gear.Value.Item1
+                            <ul>
+                                @for (int i = 0; i < @gear.Value.Item2.Count; i++)
+                                {
+                                    @if (i < gear.Value.Item1)
+                                    {
+                                        <li><input type="checkbox" checked /> @gear.Value.Item2[i].Hiker.FullName -- weight: @gear.Value.Item2[i].Weight oz </li>
+                                    }
+                                    else
+                                    {
+                                        <li><input type="checkbox"/> @gear.Value.Item2[i].Hiker.FullName -- weight: @gear.Value.Item2[i].Weight oz </li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <hr />
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-12">
             <h4>Carpool Drivers</h4>
-            @if (spacesInACar < needARide)
+            @if (spacesInACar < needARide || needARide == 0)
             {
-                <div class="alert alert-primary" role="alert">
+                <div class="alert alert-warning" role="alert">
                     Looks like this trip doesn't have enough cars to get to trailhead!
                 </div>
-            }
-
-            @if (@Model.Hikers.Where(h => h.Hiker.HasCar).Count() > 0)
+            }        
+            <p>Total seats needed: @needARide</p>
+            @if (@Model.PotentialDrivers.Count() > 0)
             {
                 <div class="row">
+                    <p></p>
                     <table class="table">
                         <tr>
+                            <th></th>
                             <th>Name</th>
-                            <th>Car brand</th>
-                            <th>Car Model</th>
                             <th>Number of spots</th>
                         </tr>
-                        @foreach (var hiker in @Model.Hikers.Where(h => h.Hiker.HasCar))
-                        {
+                        @foreach (var d in @Model.PotentialDrivers)
+                        {         
                             <tr>
-                                <td>@hiker.Hiker.FullName</td>
-                                <td>@hiker.Hiker.CarBrand</td>
-                                <td>@hiker.Hiker.CarModel</td>
-                                <td>@hiker.Hiker.Spaces</td>
+                                @if (@d.Selected)
+                                {
+                                    <td><input type="checkbox" id="driver" name="driver" value="driver" checked="true"/></td>
+                                }
+                                else
+                                {
+                                    <td><input type="checkbox" id="driver" name="driver" value="driver"/></td>
+                                }
+                                <td>@d.Name</td>
+                                <td>@d.Seats</td>
                             </tr>
                         }
                     </table>
@@ -213,7 +297,7 @@
 <div>
     @if (isUserOrganizer)
     {
-        
+
         <a asp-action="Index">Back to List</a> @Html.Raw("|")
 
         if (!string.IsNullOrEmpty(invitationLink))

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Planner.Models;
 
 namespace Planner.ViewModels
@@ -8,7 +9,10 @@ namespace Planner.ViewModels
 	{
 		public HikerViewModel()
 		{
-
+			HikerGearList = Enumerable.Empty<HikerGearViewModel>();
+			pastTrips = Enumerable.Empty<TripViewModel>();
+			PendingInvitations = Enumerable.Empty<TripViewModel>();
+			upcomingTrips = Enumerable.Empty<TripViewModel>();
 		}
 
 		public HikerViewModel(Hiker hiker)
@@ -24,9 +28,17 @@ namespace Planner.ViewModels
 			EmergencyContactPhone = hiker.EmergencyContactPhone;
 			FunScale = hiker.FunScale;
 			HasCar = hiker.HasCar;
+			CarModelBrand = hiker.CarBrand + " " + hiker.CarModel;
 			CarBrand = hiker.CarBrand;
 			CarModel = hiker.CarModel;
 			Spaces = hiker.Spaces;
+			Preference = hiker.Preference;
+			SnowFriendly = hiker.SnowFriendly;
+			HighClearance = hiker.HighClearance;
+			HikerGearList = Enumerable.Empty<HikerGearViewModel>();
+			pastTrips = Enumerable.Empty<TripViewModel>();
+			PendingInvitations = Enumerable.Empty<TripViewModel>();
+			upcomingTrips = Enumerable.Empty<TripViewModel>();
 		}
 
 		public int Id
@@ -131,12 +143,36 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		public string CarModelBrand
+		{
+			get;
+			set;
+		}
+
 		[Display(Name = "Spaces")]
 		public int? Spaces
         {
 			get;
 			set;
         }
+
+		public CarpoolPreference Preference
+		{
+			get;
+			set;
+		}
+
+		public bool SnowFriendly
+		{
+			get;
+			set;
+		}
+
+		public bool HighClearance
+		{
+			get;
+			set;
+		}
 
 		[Display(Name = "Gear")]
 		public IEnumerable<HikerGearViewModel> HikerGearList
@@ -151,6 +187,12 @@ namespace Planner.ViewModels
 			get;
 			set;
 		}
+
+		public IEnumerable<TripViewModel> PendingInvitations
+        {
+			get;
+			set;
+        }
 
 		[Display(Name = "Upcoming Trips")]
 		public IEnumerable<TripViewModel> upcomingTrips

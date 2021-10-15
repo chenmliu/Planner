@@ -22,7 +22,7 @@
                 <input asp-for="Days" class="form-control" />
                 <span asp-validation-for="Days" class="text-danger"></span>
             </div>
-              <div class="form-group">
+            <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
                 <input asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
@@ -43,6 +43,7 @@
             <br/>
             <fieldset style="border:solid">
                 <legend>Trip Details</legend>
+
                 <div class="form-group">
                     <label asp-for="Location" class="control-label">Location</label>
                     <input asp-for="Location" class="form-control"/>
@@ -59,7 +60,6 @@
                     <span asp-validation-for="ElevationGain" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="IsBumpyRoad" class="control-label" />Bumpy Road?</label>
                     <input asp-for="IsBumpyRoad" class="form-control" />
                     <span asp-validation-for="IsBumpyRoad" class="text-danger"></span>
                 </div>
@@ -68,7 +68,7 @@
             <fieldset style="border:solid">
                 <legend>Car Pool</legend>
                 <div class="form-group">
-                    <label asp-for="NeedHighClearanceVehicle" class="control-label" />High Clearance Vehicle?</label>
+                    <label asp-for="NeedHighClearanceVehicle" class="control-label">High Clearance Vehicle?</label>
                     <input asp-for="NeedHighClearanceVehicle" class="form-control" />
                     <span asp-validation-for="NeedHighClearanceVehicle" class="text-danger"></span>
                 </div>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Permit" class="control-label"></label>
-                    <select name="Permit" id="Permit">
+                    <select asp-for="Permit" id="Permit">
                         <option value="DiscoverPass">Discover Pass</option>
                         <option value="America Beautiful">America Beautiful</option>
                         <option value="NorthwestForestPass">Northwest Forest Pass</option>
@@ -87,8 +87,9 @@
                     </select>
                     <span asp-validation-for="Permit" class="text-danger"></span>
                 </div>
-             </fieldset>
-             <br />
+            </fieldset>
+            <br />
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

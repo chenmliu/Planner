@@ -4,9 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -79,8 +77,16 @@ namespace Planner.Controllers
 				return NotFound();
 			}
 
+			// Only allow inviting users who aren't already a member of the trip
+			var tripMembers = await _dbContext.HikerTrip
+				.Where(ht => ht.TripId == trip.Id)
+				.Join(_dbContext.Hiker,
+						  m => m.HikerId,
+						  v => v.Id,
+						  (m, v) => v)
+				.ToListAsync();
 			var allHikers = await GetAllHikersAsync();
-			ViewData["allHikers"] = allHikers;
+			ViewData["invitableHikers"] = allHikers.Except(tripMembers).OrderBy(h => h.FirstName);
 
 			return View(
 				new HikerTripViewModel {
@@ -88,6 +94,63 @@ namespace Planner.Controllers
 					TripName = trip.Name,
 				}
 			);
+		}
+
+		/// <summary>
+		/// Accept a hiker into the trip
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<ActionResult> AcceptHiker(int tripId, int hikerId, string view)
+		{
+			var hikerTrip = _dbContext.HikerTrip
+				.Where(ht => ht.TripId == tripId)
+				.Where(ht => ht.HikerId == hikerId)
+				.FirstOrDefault();
+
+			if (hikerTrip == null)
+			{
+				return NotFound();
+			}
+
+			hikerTrip.HikerStatus = "CONFIRMED";
+			_dbContext.HikerTrip.Update(hikerTrip);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			if (view == "organizer")
+			{
+				return RedirectToAction("Details", "Trip", new { Id = tripId });
+			}
+
+			return RedirectToAction("Details", "Home", new { Id = hikerId });
+		}
+
+		/// <summary>
+		/// Reject a hiker from joining the trip
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<ActionResult> RejectHiker(int tripId, int hikerId, string view)
+		{
+			var hikerTrip = _dbContext.HikerTrip
+				.Where(ht => ht.TripId == tripId)
+				.Where(ht => ht.HikerId == hikerId)
+				.FirstOrDefault();
+
+			if (hikerTrip == null)
+			{
+				return NotFound();
+			}
+
+			_dbContext.HikerTrip.Remove(hikerTrip);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+
+			if (view == "organizer")
+            {
+				return RedirectToAction("Details", "Trip", new { Id = tripId });
+			}
+
+			return RedirectToAction("Details", "Home", new { Id = hikerId });
 		}
 
 		/// <summary>
@@ -114,9 +177,6 @@ namespace Planner.Controllers
 		{
 			var hirekTrip = _dbContext.HikerTrip
 				.Where(t => t.TripId == tripId && t.HikerId == hikerId)
-				//.Include(t => t.Hiker)
-				//.Include(t => t.Trip)
-				//.Select(t => )
 				.FirstOrDefault();
 			if (hirekTrip == null)
 			{

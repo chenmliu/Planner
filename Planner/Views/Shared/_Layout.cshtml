@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Planner</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="icon" href="favicon.ico" type=”image/x-icon” />
 </head>
 
 
@@ -13,6 +14,7 @@
 
 @{
     var username = Context.Session.GetString("username");
+    var userId = Context.Session.GetInt32("userid");
 }
 
 <body>
@@ -44,6 +46,12 @@
                         }
                     </ul>
                 </div>
+                @if (username != null)
+                {
+                    <div>
+                        Welcome @username!
+                    </div>
+                }
                 <form class="form-inline my-2 my-lg-0">
                     @if(username == null) {
                         <a class="btn btn-default text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>

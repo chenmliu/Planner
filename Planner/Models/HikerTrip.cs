@@ -33,6 +33,10 @@ namespace Planner.Models
 			set;
 		}
 
+		// Possible values:
+		// CONFIRMED
+		// PENDING-LEADER
+		// PENDING-HIKER
 		[Required]
 		[Column("hiker_status")]
 		public string HikerStatus

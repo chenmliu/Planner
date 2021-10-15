@@ -30,6 +30,9 @@ namespace Planner.Models
 			CarBrand = hiker.CarBrand;
 			CarModel = hiker.CarModel;
 			Spaces = hiker.Spaces;
+			Preference = hiker.Preference;
+			SnowFriendly = hiker.SnowFriendly;
+			HighClearance = hiker.HighClearance;
 
 			if (encryptedPassword == null)
             {
@@ -160,13 +163,36 @@ namespace Planner.Models
 			set;
 		}
 
-		public IEnumerable<HikerGear> HikerGear
+        [Column("preference")]
+        public CarpoolPreference Preference
+        {
+            get;
+            set;
+        }
+
+        [Column("snow_friendly")]
+        public bool SnowFriendly
+        {
+            get;
+            set;
+        }
+
+        [Column("high_clearance")]
+        public bool HighClearance
+        {
+            get;
+            set;
+        }
+
+        [NotMapped]
+		public List<HikerGear> HikerGear
         {
 			get;
 			set;
         }
 
 		[NotMapped]
+
 		public string FullName
 		{
 			get {
@@ -178,6 +204,12 @@ namespace Planner.Models
         {
 			var salt = new byte[1];
 			salt[0] = 0;
+
+			// handling NullException for password
+			if (password == null)
+            {
+				return null;
+            }
 
 			// derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
 			// TODO: Add salt management

@@ -23,6 +23,7 @@ namespace Planner.ViewModels
 			OwnerName = trip.Owner.FirstName;
 			GroupSize = trip.GroupSize;
 			Hikers = new List<HikerTripViewModel>();
+			GroupGearList = new List<GroupGearViewModel>();
 			Location = trip.Location;
 			HasSnow = trip.HasSnow;
 			IsBumpyRoad = trip.IsBumpyRoad;
@@ -30,9 +31,11 @@ namespace Planner.ViewModels
 			TotalDistance = trip.TotalDistance;
 			ElevationGain = trip.ElevationGain;
 			Permit = trip.Permit;
-			
+			var latitude = trip.Peak.TrailheadLatitude;
+			var longitude = trip.Peak.TrailheadLongitude;
 			WeatherLabel = weatherDesc;
 			IconUrl = iconCode != "" ? $"http://openweathermap.org/img/wn/{iconCode}@2x.png" : "";
+			WeatherLink = $"https://www.windy.com/{latitude}/{longitude}?{latitude},{longitude},13,i:deg0,m:eWHacOd";
 		}
 
 		public int Id
@@ -144,10 +147,21 @@ namespace Planner.ViewModels
         {
 			get;
         }
+		
+		public string WeatherLink
+        {
+			get;
+        }
 
 		public List<HikerTripViewModel> Hikers { get; set; }
 
-		// public List<GroupGearViewModel> GroupGearList { get; set; }
+		public List<GroupGearViewModel> GroupGearList { get; set; }
+
+		public IList<PotentialDriver> PotentialDrivers
+		{
+			get;
+			set;
+		}
 	}
     
 }
