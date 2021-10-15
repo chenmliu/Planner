@@ -25,6 +25,7 @@
         }
     }
 
+    var profilePhoto = Convert.ToBase64String(Model.ProfilePhoto);
 }
 
 @section Scripts
@@ -34,78 +35,82 @@
         var Url = document.getElementById("inviteLink");
         navigator.clipboard.writeText(Url.innerHTML)
         alert("Copied the link: " + Url.innerHTML);
-    }
+        }
 
     </script>
 }
 
 <div>
     <hr />
-    <div class="row">
-        <div class="col-sm-12">
-            <h4>Trip Details</h4>
-            <dl class="row">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Days)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Days)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.StartDate)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.WeatherLabel)
-                </dt>
-                <dd class="col-sm-10">
-                    <img src="@Model.IconUrl" width="50" height="50" />
-                    @Html.DisplayFor(model => model.WeatherLabel)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PeakName)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.PeakName)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.OwnerName)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.OwnerName)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.GroupSize)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.GroupSize)
-                </dd>
-            </dl>
-            @if (isUserOrganizer)
-            {
-                <form asp-action="Edit" method="get">
-                    <input type="hidden" name="Id" value="@Model.Id" />
-                    <input type="submit" value="Edit" class="btn btn-danger" />
-                </form>
-            }
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h4>Trip Details</h4>
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Days)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Days)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.StartDate)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.WeatherLabel)
+                    </dt>
+                    <dd class="col-sm-10">
+                        <img src="@Model.IconUrl" width="50" height="50" />
+                        @Html.DisplayFor(model => model.WeatherLabel)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.PeakName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PeakName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OwnerName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OwnerName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.GroupSize)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.GroupSize)
+                    </dd>
+                </dl>
+                @if (isUserOrganizer)
+                {
+                    <form asp-action="Edit" method="get">
+                        <input type="hidden" name="Id" value="@Model.Id" />
+                        <input type="submit" value="Edit" class="btn btn-danger" />
+                    </form>
+                }
 
-            @if (!isUserOrganizer && !alreadyUser)
-            {
-                <form asp-action="RequestToJoin" method="post">
-                    <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
-                    <input type="hidden" name="hikerId" id="hikerId" value="@sessionId" />
-                    <input type="submit" value="Request To Join" class="btn btn-danger" />
-                </form>
-            }
-
+                @if (!isUserOrganizer && !alreadyUser)
+                {
+                    <form asp-action="RequestToJoin" method="post">
+                        <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
+                        <input type="hidden" name="hikerId" id="hikerId" value="@sessionId" />
+                        <input type="submit" value="Request To Join" class="btn btn-danger" />
+                    </form>
+                }
+            </div>
+            <div class="col-md-5">
+                <img src="data:image/png;base64, @profilePhoto" id="profile" class="img-fluid rounded" alt="Responsive image">
+            </div>
         </div>
     </div>
     <hr />

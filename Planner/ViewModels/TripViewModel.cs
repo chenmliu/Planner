@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using Planner.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Planner.ViewModels
 {
 	public class TripViewModel
 	{
 		public TripViewModel()
-		{
-
-		}
+        {
+        }
 
 		public TripViewModel(Trip trip, string weatherDesc, string iconCode)
 		{
@@ -30,7 +31,7 @@ namespace Planner.ViewModels
 			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
 			TotalDistance = trip.TotalDistance;
 			ElevationGain = trip.ElevationGain;
-			
+			ProfilePhoto = trip.ProfilePhoto;
 			WeatherLabel = weatherDesc;
 			IconUrl = iconCode != "" ? $"http://openweathermap.org/img/wn/{iconCode}@2x.png" : "";
 		}
@@ -136,6 +137,12 @@ namespace Planner.ViewModels
 		public string IconUrl
         {
 			get;
+        }
+
+		public byte[] ProfilePhoto
+        {
+			get;
+			set;
         }
 
 		public List<HikerTripViewModel> Hikers { get; set; }

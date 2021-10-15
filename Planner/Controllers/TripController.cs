@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Planner.Models;
 using Planner.ViewModels;
+using System.IO;
 
 namespace Planner.Controllers
 {
@@ -135,10 +136,13 @@ namespace Planner.Controllers
 		/// <param name="tripViewModel">Trip information.</param>
 		/// <returns></returns>
 		[HttpPost, ActionName("Create")]
-		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel)
+		public async Task<ActionResult> CreateSubmitted(TripViewModel tripViewModel, IFormFile profilePhoto)
 		{
 			// Add trip
 			var trip = new Trip(tripViewModel);
+			using var dataStream = new MemoryStream();
+			profilePhoto.CopyTo(dataStream);
+			trip.ProfilePhoto = dataStream.ToArray();
 			await _dbContext.Trip.AddAsync(trip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 

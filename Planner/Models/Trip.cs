@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Planner.ViewModels;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Planner.Models
 {
@@ -28,12 +30,20 @@ namespace Planner.Models
 			IsBumpyRoad = trip.IsBumpyRoad;
 			Location = trip.Location;
 			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
-		}
+			ProfilePhoto = trip.ProfilePhoto;
+        }
 
 		[Key]
 		[Required]
 		public int Id
 		{
+			get;
+			set;
+		}
+
+		[Column("profile_photo")]
+		public byte[] ProfilePhoto 
+		{ 
 			get;
 			set;
 		}
