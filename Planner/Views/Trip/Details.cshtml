@@ -121,7 +121,6 @@
             }
             else if (@Model.Hikers.Count >= @Model.GroupSize)
             {
-                <p></p>
                 <div class="alert alert-success" role="alert">
                     This trip is full!
                 </div>
@@ -216,25 +215,31 @@
                 <div class="alert alert-primary" role="alert">
                     Looks like this trip doesn't have enough cars to get to trailhead!
                 </div>
-            }
-
-            @if (@Model.Hikers.Where(h => h.Hiker.HasCar).Count() > 0)
+            }        
+            <p>Total seats needed: @needARide</p>
+            @if (@Model.PotentialDrivers.Count() > 0)
             {
                 <div class="row">
+                    <p></p>
                     <table class="table">
                         <tr>
+                            <th></th>
                             <th>Name</th>
-                            <th>Car brand</th>
-                            <th>Car Model</th>
                             <th>Number of spots</th>
                         </tr>
-                        @foreach (var hiker in @Model.Hikers.Where(h => h.Hiker.HasCar))
-                        {
+                        @foreach (var d in @Model.PotentialDrivers)
+                        {         
                             <tr>
-                                <td>@hiker.Hiker.FullName</td>
-                                <td>@hiker.Hiker.CarBrand</td>
-                                <td>@hiker.Hiker.CarModel</td>
-                                <td>@hiker.Hiker.Spaces</td>
+                                @if (@d.Selected)
+                                {
+                                    <td><input type="checkbox" id="driver" name="driver" value="driver" checked="true"/></td>
+                                }
+                                else
+                                {
+                                    <td><input type="checkbox" id="driver" name="driver" value="driver"/></td>
+                                }
+                                <td>@d.Name</td>
+                                <td>@d.Seats</td>
                             </tr>
                         }
                     </table>

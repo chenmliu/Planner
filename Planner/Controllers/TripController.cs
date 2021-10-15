@@ -297,6 +297,28 @@ namespace Planner.Controllers
 
 			viewModel.Hikers = hikers;
 			viewModel.GroupGearList = groupGear;
+
+			// Select the first few drivers that have enough seats for the entire group
+			var totalSeatsNeeded = hikers.Count();
+			var potentialDrivers = hikers.Where(h => h.Hiker.HasCar)
+				.Select(d => new PotentialDriver()
+				{
+					HikerId = d.HikerId,
+					Name = d.Hiker.FullName,
+					Seats = d.Hiker.Spaces.Value
+				})
+				.ToList();
+			foreach (var d in potentialDrivers)
+			{
+				d.Selected = true;
+				totalSeatsNeeded = totalSeatsNeeded - d.Seats;
+				if (totalSeatsNeeded <= 0)
+				{
+					break;
+				}
+			}
+			viewModel.PotentialDrivers = potentialDrivers;
+
 			return View(viewModel);
 		}
 
