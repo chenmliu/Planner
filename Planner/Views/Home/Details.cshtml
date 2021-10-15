@@ -9,100 +9,158 @@
 Welcome @Context.Session.GetString("username")
 
 <div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Awd)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Awd)
-        </dd>
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.EmergencyContactName)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.EmergencyContactName)
-        </dd>
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.EmergencyContactPhone)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.EmergencyContactPhone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FunScale)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FunScale)
-        </dd>
-    </dl>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-    </div>
-
-    <h3>Upcoming trips</h3>
-    <div class="row">       
-        <table class="table">
-            <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Link</th>
-            </tr>
-        @foreach(var trip in Model.upcomingTrips) {
-            <tr>
-                <td>@trip.Name</td>
-                <td>@trip.StartDate</td>
-                <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
-            </tr>
-        }
-        </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <dl class="row">
+                    <dt class="col-sm-3" text-truncate>
+                        First Name
+                    </dt>
+                    <dd class="col-sm-3" text-truncate>
+                        @Html.DisplayFor(model => model.FirstName)
+                    </dd>
+                    <dt class="col-sm-3" text-truncate>
+                        Last Name
+                    </dt>
+                    <dd class="col-sm-3" text-truncate>
+                        @Html.DisplayFor(model => model.LastName)
+                    </dd>
+                    <dt class="col-sm-3" text-truncate>
+                        Full Name
+                    </dt>
+                    <dd class="col-sm-3" text-truncate>
+                        @Html.DisplayFor(model => model.FullName)
+                    </dd>
+                    <dt class="col-sm-3" text-truncate>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </dt>
+                    <dd class="col-sm-3" text-truncate>
+                        @Html.DisplayFor(model => model.Phone)
+                    </dd>
+                    <dt class="col-sm-3" text-truncate>
+                        @Html.DisplayNameFor(model => model.City)
+                    </dt>
+                    <dd class="col-sm-3" text-truncate>
+                        @Html.DisplayFor(model => model.City)
+                    </dd>
+                    <dt class="col-sm-3" text-truncate>
+                        Drives an AWD?
+                    </dt>
+                    <dd class="col-sm-3" text-truncate>
+                        @Html.DisplayFor(model => model.Awd)
+                    </dd>
+                    <dt class="col-sm-3" text-truncate>
+                        Emergency Contact Name
+                    </dt>
+                    <dd class="col-sm-3" text-truncate>
+                        @Html.DisplayFor(model => model.EmergencyContactName)
+                    </dd>
+                    <dt class="col-sm-3" text-truncate>
+                        Emergency Contact Number
+                    </dt>
+                    <dd class="col-sm-3" text-truncate>
+                        @Html.DisplayFor(model => model.EmergencyContactPhone)
+                    </dd>
+                    <dt class="col-sm-3" text-truncate>
+                        Fun Scale
+                    </dt>
+                    <dd class="col-sm-3" text-truncate>
+                        @Html.DisplayFor(model => model.FunScale)
+                    </dd>
+                </dl>
+                <form asp-action="Edit" method="get">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <input type="submit" value="Edit" class="btn btn-danger" />
+                </form>
+            </div>
+            <div class="col-md-3">
+                <img src="/hiker.jpg" class="img-fluid rounded" alt="Responsive image">
+            </div>
+        </div>
     </div>
     <br />
-    <h3>Past trips</h3>
-    <div class="row">       
-        <table class="table">
-            <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Link</th>
-            </tr>
-        @foreach(var trip in Model.pastTrips) {
-            <tr>
-                <td>@trip.Name</td>
-                <td>@trip.StartDate</td>
-                <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
-            </tr>
-        }
-        </table>
-    </div>
+
+    @if (Model.upcomingTrips.Count() > 0)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Upcoming trips</h4>
+                <div class="row">
+                    <table class="table">
+                        <tr>
+                            <th style="width: 33%">Name</th>
+                            <th style="width: 33%">Date</th>
+                            <th style="width: 33%">Link</th>
+                        </tr>
+                        @foreach (var trip in Model.upcomingTrips)
+                        {
+                            <tr>
+                                <td>@trip.Name</td>
+                                <td>@trip.StartDate</td>
+                                <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+
+    @if (Model.pastTrips.Count() > 0)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Past trips</h4>
+                <div class="row">
+                    <table class="table">
+                        <tr>
+                            <th style="width: 33%">Name</th>
+                            <th style="width: 33%">Date</th>
+                            <th style="width: 33%">Link</th>
+                        </tr>
+                        @foreach (var trip in Model.pastTrips)
+                        {
+                            <tr>
+                                <td>@trip.Name</td>
+                                <td>@trip.StartDate</td>
+                                <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+
+    @if (Model.PendingInvitations.Count() > 0)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Hiking Invitations!</h4>
+                <table class="table">
+                    <tr>
+                        <th style="width: 25%">Trip</th>
+                        <th style="width: 25%">Organizer</th>
+                        <th style="width: 25%">Link</th>
+                        <th style="width: 25%">Action</th>
+                    </tr>
+                    @foreach (var trip in Model.PendingInvitations)
+                    {
+                <tr>
+                    <td>@trip.Name</td>
+                    <td>@trip.OwnerName</td>
+                    <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
+                    <td>
+                        <a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-view="hiker" asp-route-tripId="@trip.Id" asp-route-hikerId="@Model.Id"> Accept </a> |
+                        <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-view="hiker" asp-route-tripId="@trip.Id" asp-route-hikerId="@Model.Id"> Reject </a>
+                    </td>
+                </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+
 </div>

@@ -27,6 +27,9 @@ namespace Planner.ViewModels
 			CarBrand = hiker.CarBrand;
 			CarModel = hiker.CarModel;
 			Spaces = hiker.Spaces;
+			Preference = hiker.Preference;
+			SnowFriendly = hiker.SnowFriendly;
+			HighClearance = hiker.HighClearance;
 		}
 
 		public int Id
@@ -138,6 +141,24 @@ namespace Planner.ViewModels
 			set;
         }
 
+		public CarpoolPreference Preference
+		{
+			get;
+			set;
+		}
+
+		public bool SnowFriendly
+		{
+			get;
+			set;
+		}
+
+		public bool HighClearance
+		{
+			get;
+			set;
+		}
+
 		[Display(Name = "Gear")]
 		public IEnumerable<HikerGearViewModel> HikerGearList
         {
@@ -151,6 +172,12 @@ namespace Planner.ViewModels
 			get;
 			set;
 		}
+
+		public IEnumerable<TripViewModel> PendingInvitations
+        {
+			get;
+			set;
+        }
 
 		[Display(Name = "Upcoming Trips")]
 		public IEnumerable<TripViewModel> upcomingTrips
