@@ -1,6 +1,7 @@
 @model Planner.ViewModels.TripViewModel
 
 @using Microsoft.AspNetCore.Http;
+@using System.Collections.Generic;
 
 @{
     ViewData["Title"] = "Details";
@@ -27,14 +28,51 @@
 
 }
 
+@{
+    // Gear matrix calculations
+
+    var gearQuantities = new Dictionary<string, Tuple<int, List<HikerGear>>>();
+
+    // TODO: add handling duplicates in GroupGearList
+    foreach (var gearItem in Model.GroupGearList)
+    {
+        gearQuantities.Add(gearItem.Item, new Tuple<int, List<HikerGear> > (gearItem.Number, new List<HikerGear>()) );
+    }
+
+    foreach (var hiker in Model.Hikers)
+    {
+        foreach (var gearItem in hiker.Hiker.HikerGear)
+        {
+            // If we need that gear
+            if (gearQuantities.ContainsKey(gearItem.Item))
+            {
+                gearQuantities[gearItem.Item].Item2.Add(gearItem);
+            }
+        }
+    }
+
+    var missingItems = new Dictionary<string, int>();
+
+    foreach (var gearItem in gearQuantities)
+    {
+        var needed = gearItem.Value.Item1;
+        var membersHave = gearItem.Value.Item2.Count;
+
+        if (needed > membersHave)
+        {
+            missingItems.Add(gearItem.Key, needed - membersHave);
+        }
+    }
+}
+
 @section Scripts
 {
     <script>
-    function OnClick() {
-        var Url = document.getElementById("inviteLink");
-        navigator.clipboard.writeText(Url.innerHTML)
-        alert("Copied the link: " + Url.innerHTML);
-    }
+        function OnClick() {
+            var Url = document.getElementById("inviteLink");
+            navigator.clipboard.writeText(Url.innerHTML)
+            alert("Copied the link: " + Url.innerHTML);
+        }
 
     </script>
 }
@@ -175,35 +213,41 @@
     <hr />
     <div class="row">
         <div class="col-sm-12">
-            <h4>Gear</h4>
-            <div class="row">
-                <table class="table">
-                    <tr>
-                        <th>Hiker</th>
-                        @foreach (var gear in @Model.GroupGearList)
+            <h4>Group Gear</h4>
+            @if (true)
+            {
+                <div class="alert alert-primary" role="alert">
+                    Looks like participants doesn't have enough gear! Missing items:
+                    <ul>
+                        @foreach (var missingItem in missingItems)
                         {
-                            <th>@gear.Item</th>
+                            <li>@missingItem.Key , @missingItem.Value</li>
                         }
-                    </tr>
-                    @foreach (var hiker in @Model.Hikers)
+                    </ul>
+                </div>
+            }
+            <div class="row">
+                <ul>
+                    @foreach (var gear in gearQuantities)
                     {
-                        <tr>
-                            <td>@hiker.Hiker.FullName</td>
-                            @foreach (var gear in @Model.GroupGearList)
-                            {
-                                <!-- Doesn't handle properly multiple gear of the same type -->
-                                @if (hiker.Hiker.HikerGear.Any(g => g.Item.ToString().Equals(gear.Item.ToString(), StringComparison.InvariantCultureIgnoreCase)))
+                        <li>
+                            @gear.Key, need: @gear.Value.Item1
+                            <ul>
+                                @for (int i = 0; i < @gear.Value.Item2.Count; i++)
                                 {
-                                    <td>I have it!</td>
+                                    @if (i < gear.Value.Item1)
+                                    {
+                                        <li><input type="checkbox" checked /> @gear.Value.Item2[i].Hiker.FullName -- weight: @gear.Value.Item2[i].Weight oz </li>
+                                    }
+                                    else
+                                    {
+                                        <li><input type="checkbox"/> @gear.Value.Item2[i].Hiker.FullName -- weight: @gear.Value.Item2[i].Weight oz </li>
+                                    }
                                 }
-                                else
-                                {
-                                    <td>Don't have</td>
-                                }
-                            }
-                        </tr>
+                            </ul>
+                        </li>
                     }
-                </table>
+                </ul>
             </div>
             <hr />
         </div>
@@ -248,7 +292,7 @@
 <div>
     @if (isUserOrganizer)
     {
-        
+
         <a asp-action="Index">Back to List</a> @Html.Raw("|")
 
         if (!string.IsNullOrEmpty(invitationLink))

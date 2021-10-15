@@ -76,6 +76,8 @@ namespace Planner.Models
 			set;
 		}
 
+		*/
+
 		[Required]
 		[Column("weight")]
 		public int Weight
@@ -84,6 +86,7 @@ namespace Planner.Models
 			set;
 		}
 
+		/*
 		[Required]
 		[Column("number_of_users")]
 		// Indicates how many people can use that gear (eg. tent)
