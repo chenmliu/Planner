@@ -46,10 +46,12 @@
                         }
                     </ul>
                 </div>
-                <div>
-                    Welcome @username!
-                    <br />
-                </div>
+                @if (username != null)
+                {
+                    <div>
+                        Welcome @username!
+                    </div>
+                }
                 <form class="form-inline my-2 my-lg-0">
                     @if(username == null) {
                         <a class="btn btn-default text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
