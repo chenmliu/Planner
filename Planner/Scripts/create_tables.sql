@@ -115,3 +115,9 @@ CREATE TABLE rangerStation
 	name VARCHAR(200) NOT NULL,
 	phone VARCHAR(50) NOT NULL,
 );
+
+CREATE TABLE predefinedGroupGear
+(
+	id INT PRIMARY KEY IDENTITY (1, 1),
+	name VARCHAR (50) NOT NULL
+);
