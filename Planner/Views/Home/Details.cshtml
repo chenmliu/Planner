@@ -118,26 +118,34 @@
         <table class="table">
             <tr>
                 <th>Item</th>
+                <th>Brand</th>
+                <th>Model</th>
             </tr>
             @foreach (var item in Model.HikerGroupGear)
             {
                 <tr>
                     <td>@item.Item</td>
+                    <td>@item.Brand</td>
+                    <td>@item.Model</td>
                 </tr>
             }
         </table>
     </div> 
 
-    <h2>Extra gear I can offer to others</h2>
+    <h2>Gear I can offer to others</h2>
     <div class="row">
         <table class="table">
             <tr>
                 <th>Item</th>
+                <th>Brand</th>
+                <th>Model</th>            
             </tr>
             @foreach (var item in Model.HikerExtraGear)
             {
                 <tr>
                     <td>@item.Item</td>
+                    <td>@item.Brand</td>
+                    <td>@item.Model</td>
                 </tr>
             }
         </table>
