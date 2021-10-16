@@ -95,9 +95,14 @@
         <fieldset>
             <legend>Gear List</legend>
             <table class="table">
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th></th>
+                </tr>
                 <form asp-action="AddTripGroupGear">
                     <tr>
-                        <td> <lable>Gear:</lable>
+                        <td>
                             <select name="item" id="item">
                                 <option value="Carabiner">Carabiner</option>                                       
                                 <option value="Crampons">Crampons</option>      
@@ -115,7 +120,6 @@
                             <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
                         </td>
                         <td>
-                            <lable>Quantity:</lable>
                             <input type="number" name="quantity" id="quantity" value="1" />
                         </td>
                         <td>
@@ -123,15 +127,19 @@
                         </td>
                     </tr>
                 </form>      
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                </tr>
                 @foreach (var item in Model.GroupGearList)
                 {
                     <tr>
                         <td>@item.Item</td>
                         <td>@item.Number</td>
+                        <td>
+                            <form asp-action="RemoveTripGroupGear">
+                                <input type="hidden" name="item" id="item" value="@item.Item" />
+                                <input type="hidden" name="quantity" id="quantity" value="@item.Number" />
+                                <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
+                                <input type="submit" value="Remove" class="btn btn-primary login-button-width" />
+                            </form>
+                        </td>
                     </tr>
                 }
             </table>

@@ -434,6 +434,25 @@ namespace Planner.Controllers
 			return RedirectToAction("Edit", new { Id = tripId });
 		}
 
+		[HttpPost]
+		public async Task<ActionResult> RemoveTripGroupGear(string item, int tripId, int quantity)
+		{
+			var gear = await _dbContext.GroupGear
+				.FirstOrDefaultAsync(g => g.Item.Equals(item)
+					&& g.TripId == tripId
+					&& g.Number == quantity)
+				.ConfigureAwait(true);
+
+			if (gear == null)
+			{
+				return NotFound();
+			}
+
+			_dbContext.GroupGear.Remove(gear);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			return RedirectToAction("Edit", new { Id = tripId });
+		}
+
 		private NWACZone? GetNWACZone(Point coord)
 		{
 			// TODO: Load zone file. Iterate through each zone and check if
