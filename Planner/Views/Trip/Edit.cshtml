@@ -92,56 +92,53 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
-
-            <fieldset>
-                <legend>Gear List</legend>
-                      <table class="table">
-                        <form asp-action="AddTripGroupGear">
-                        <tr>
-                          <td> <lable>Gear:</lable>
-                               <select name="item" id="item">
-                                    <option value="Carabiner">Carabiner</option>                                       
-                                    <option value="Crampons">Crampons</option>      
-                                    <option value="Hard shell">HardShell</option>
-                                    <option value="Harness">Harness</option>                                       
-                                    <option value="Gas">Gas</option>
-                                    <option value="Ice Axe">Ice Axe</option>
-                                    <option value="Rope 60m">Rope 60m</option>
-                                    <option value="Rope 45m">Rope 45m</option>
-                                    <option value="Rope 30m">Rope 30m</option>
-                                    <option value="Snow picket">Snow Picket</option>
-                                    <option value="Stove">Stove</option>                                       
-                                    <option value="Tent">Tent</option>
-                                </select>
-                                <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
-                           </td>
-                           <td>
-                                <lable>Quantity:</lable>
-                                <input type="number" name="quantity" id="quantity" value="1" />
-                           </td>
-                           <td>
-                               <input type="submit" value="Add" class="btn btn-primary login-button-width" />
-                           </td>
-                          </tr>
-                         </form>      
-                         <tr>
-                            <th>Item</th>
-                            <th>Quantity</th>
-                         </tr>
-                        @foreach (var item in Model.GroupGearList)
-                        {
-                            <tr>
-                                <td>@item.Item</td>
-                                <td>@item.Number</td>
-                            </tr>
-                        }
-                    </table>
-                    </fieldset>
-                    <div>
-                        <a asp-action="Index">Back to List</a>
-                    </div>
-                </div>
-            </div>
+        <fieldset>
+            <legend>Gear List</legend>
+            <table class="table">
+                <form asp-action="AddTripGroupGear">
+                    <tr>
+                        <td> <lable>Gear:</lable>
+                            <select name="item" id="item">
+                                <option value="Carabiner">Carabiner</option>                                       
+                                <option value="Crampons">Crampons</option>      
+                                <option value="Hard shell">HardShell</option>
+                                <option value="Harness">Harness</option>                                       
+                                <option value="Gas">Gas</option>
+                                <option value="Ice Axe">Ice Axe</option>
+                                <option value="Rope 60m">Rope 60m</option>
+                                <option value="Rope 45m">Rope 45m</option>
+                                <option value="Rope 30m">Rope 30m</option>
+                                <option value="Snow picket">Snow Picket</option>
+                                <option value="Stove">Stove</option>                                       
+                                <option value="Tent">Tent</option>
+                            </select>
+                            <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
+                        </td>
+                        <td>
+                            <lable>Quantity:</lable>
+                            <input type="number" name="quantity" id="quantity" value="1" />
+                        </td>
+                        <td>
+                            <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                        </td>
+                    </tr>
+                </form>      
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                </tr>
+                @foreach (var item in Model.GroupGearList)
+                {
+                    <tr>
+                        <td>@item.Item</td>
+                        <td>@item.Number</td>
+                    </tr>
+                }
+            </table>
+        </fieldset>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
     </div>
 </div>
 
