@@ -105,50 +105,104 @@
 <div class="row">
     <div class="col-md-4">
         <h2>Group gear</h2>
-        <table class="table">
-            <tr>
-                <th>Item</th>
-            </tr>
-            <td>
+        <fieldset>
+            <table class="table">
                 <form asp-action="AddGroupGear">
-                    <div class="form-group">
-                        <input type="text" name="name" value="" />
-                        <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
-                        <input type="submit" value="Add" class="btn btn-primary login-button-width" />
-                    </div>
-                </form>                                               
-            </td>
-            @foreach (var item in Model.HikerGroupGear)
-            {
-                <tr>
-                    <td>@item.Item</td>
-                </tr>
-            }
-        </table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                    </tr>
+                    <tr>
+                        <td> 
+                            <select name="item" id="item">
+                                <option value="Carabiner">Carabiner</option>                                       
+                                <option value="Crampons">Crampons</option>      
+                                <option value="Hard shell">HardShell</option>
+                                <option value="Harness">Harness</option>                                       
+                                <option value="Gas">Gas</option>
+                                <option value="Ice Axe">Ice Axe</option>
+                                <option value="Rope 60m">Rope 60m</option>
+                                <option value="Rope 45m">Rope 45m</option>
+                                <option value="Rope 30m">Rope 30m</option>
+                                <option value="Snow picket">Snow Picket</option>
+                                <option value="Stove">Stove</option>                                       
+                                <option value="Tent">Tent</option>
+                            </select>
+                            <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                        </td>
+                        <td>
+                            <input type="text" name="brand" id="brand" value="" />
+                        </td>
+                         <td>
+                            <input type="text" name="model" id="model" value="" />
+                        </td>
+                        <td>
+                            <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                        </td>
+                    </tr>
+                </form>      
+                @foreach (var item in Model.HikerGroupGear)
+                {
+                    <tr>
+                        <td>@item.Item</td>
+                        <td>@item.Brand</td>
+                        <td>@item.Model</td>
+                    </tr>
+                }
+            </table>
+        </fieldset>
     </div>
 </div>
 <div class="row">
     <div class="col-md-4">
-        <h2>Extra gear I can offer to others</h2>
-        <table class="table">
-            <tr>
-                <th>Item</th>
-            </tr>
-            <td>
+        <h2>Gear I can offer to others</h2>
+        <fieldset>
+            <table class="table">
                 <form asp-action="AddExtraGear">
-                    <div class="form-group">
-                        <input type="text" name="name" value="" />
-                        <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
-                        <input type="submit" value="Add" class="btn btn-primary login-button-width" />
-                    </div>
-                </form>                                               
-            </td>
-            @foreach (var item in Model.HikerExtraGear)
-            {
-                <tr>
-                    <td>@item.Item</td>
-                </tr>
-            }
-        </table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                    </tr>
+                    <tr>
+                        <td> 
+                            <select name="item" id="item">
+                                <option value="Carabiner">Carabiner</option>                                       
+                                <option value="Crampons">Crampons</option>      
+                                <option value="Hard shell">HardShell</option>
+                                <option value="Harness">Harness</option>                                       
+                                <option value="Gas">Gas</option>
+                                <option value="Ice Axe">Ice Axe</option>
+                                <option value="Rope 60m">Rope 60m</option>
+                                <option value="Rope 45m">Rope 45m</option>
+                                <option value="Rope 30m">Rope 30m</option>
+                                <option value="Snow picket">Snow Picket</option>
+                                <option value="Stove">Stove</option>                                       
+                                <option value="Tent">Tent</option>
+                            </select>
+                            <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                        </td>
+                        <td>
+                            <input type="text" name="brand" id="brand" value="" />
+                        </td>
+                         <td>
+                            <input type="text" name="model" id="model" value="" />
+                        </td>
+                        <td>
+                            <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                        </td>
+                    </tr>
+                </form>      
+                @foreach (var item in Model.HikerExtraGear)
+                {
+                    <tr>
+                        <td>@item.Item</td>
+                        <td>@item.Brand</td>
+                        <td>@item.Model</td>
+                    </tr>
+                }
+            </table>
+        </fieldset>
     </div>
 </div>

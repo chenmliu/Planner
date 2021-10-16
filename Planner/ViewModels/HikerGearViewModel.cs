@@ -15,6 +15,7 @@ namespace Planner.ViewModels
             HikerId = hikerGear.HikerId;
             Item = hikerGear.Item;
             Weight = hikerGear.Weight;
+            Brand = hikerGear.Brand;
             Model = hikerGear.Model;
             IntendedUse = hikerGear.IntendedUse;
             GroupUse = hikerGear.GroupUse;
@@ -43,6 +44,12 @@ namespace Planner.ViewModels
             get;
             set;
         }
+
+        public string Brand
+		{
+            get;
+            set;
+		}
 
         public string Model
 		{

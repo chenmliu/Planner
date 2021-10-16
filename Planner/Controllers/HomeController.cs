@@ -90,14 +90,14 @@ namespace Planner.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> AddGroupGear(string name, int hikerId)
+		public async Task<ActionResult> AddGroupGear(string item, string brand, string model, int hikerId)
 		{
 			var gear = new HikerGear()
 			{
 				HikerId = hikerId,
-				Item = name,
-				Brand = "brand",
-				Model = "model",
+				Item = item,
+				Brand = brand,
+				Model = model,
 				IntendedUse = GearIntendedUse.Primary,
 				GroupUse = true,
 				Weight = 1,
@@ -118,14 +118,14 @@ namespace Planner.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> AddExtraGear(string name, int hikerId)
+		public async Task<ActionResult> AddExtraGear(string item, string brand, string model, int hikerId)
 		{
 			var gear = new HikerGear()
 			{
 				HikerId = hikerId,
-				Item = name,
-				Brand = "brand",
-				Model = "model",
+				Item = item,
+				Brand = brand,
+				Model = model,
 				IntendedUse = GearIntendedUse.Extra,
 				GroupUse = false,
 				Weight = 1,
