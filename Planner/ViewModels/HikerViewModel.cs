@@ -9,10 +9,11 @@ namespace Planner.ViewModels
 	{
 		public HikerViewModel()
 		{
-			HikerGroupGear = Enumerable.Empty<HikerGearViewModel>();
-			pastTrips = Enumerable.Empty<TripViewModel>();
-			PendingInvitations = Enumerable.Empty<TripViewModel>();
-			upcomingTrips = Enumerable.Empty<TripViewModel>();
+			HikerGroupGear = new List<HikerGearViewModel>();
+			pastTrips = new List<TripViewModel>();
+			PendingInvitations = new List<TripViewModel>();
+			upcomingTrips = new List<TripViewModel>();
+			ParkingPasses = new List<ParkingPassViewModel>();
 		}
 
 		public HikerViewModel(Hiker hiker)
@@ -35,10 +36,11 @@ namespace Planner.ViewModels
 			Preference = hiker.Preference;
 			SnowFriendly = hiker.SnowFriendly;
 			HighClearance = hiker.HighClearance;
-			HikerGroupGear = Enumerable.Empty<HikerGearViewModel>();
-			pastTrips = Enumerable.Empty<TripViewModel>();
-			PendingInvitations = Enumerable.Empty<TripViewModel>();
-			upcomingTrips = Enumerable.Empty<TripViewModel>();
+			HikerGroupGear = new List<HikerGearViewModel>();
+			pastTrips = new List<TripViewModel>();
+			PendingInvitations = new List<TripViewModel>();
+			upcomingTrips = new List<TripViewModel>();
+			ParkingPasses = new List<ParkingPassViewModel>();
 		}
 
 		public int Id
@@ -175,13 +177,19 @@ namespace Planner.ViewModels
 		}
 
 		[Display(Name = "Group gear")]
-		public IEnumerable<HikerGearViewModel> HikerGroupGear
+		public IList<HikerGearViewModel> HikerGroupGear
         {
 			get;
 			set;
         }
 
-		public IEnumerable<HikerGearViewModel> HikerExtraGear
+		public IList<HikerGearViewModel> HikerExtraGear
+		{
+			get;
+			set;
+		}
+
+		public IList<ParkingPassViewModel> ParkingPasses
 		{
 			get;
 			set;

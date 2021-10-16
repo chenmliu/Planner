@@ -121,3 +121,11 @@ CREATE TABLE predefinedGroupGear
 	id INT PRIMARY KEY IDENTITY (1, 1),
 	name VARCHAR (50) NOT NULL
 );
+
+CREATE TABLE ParkingPass
+(
+	id INT PRIMARY KEY IDENTITY (1, 1),
+	name VARCHAR (50) NOT NULL,
+	hiker_id INT NOT NULL,
+	expiration_year INT NOT NULL
+);

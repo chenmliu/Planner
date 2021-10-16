@@ -256,6 +256,39 @@ namespace Planner.Controllers
 			return RedirectToAction("Index"); 
 		}
 
+		[HttpPost]
+		public async Task<ActionResult> AddParkingPass(string name, int expirationYear, int hikerId)
+		{
+			var pass = new ParkingPass()
+			{
+				Name = name,
+				ExpirationYear = expirationYear,
+				HikerId = hikerId
+			};
+			await _dbContext.ParkingPass.AddAsync(pass).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			return RedirectToAction("Edit", new { Id = hikerId });
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> RemoveParkingPass(string name, int expirationYear, int hikerId)
+		{
+			var pass = await _dbContext.ParkingPass
+				.FirstOrDefaultAsync(g => g.Name.Equals(name)
+					&& g.ExpirationYear == expirationYear
+					&& g.HikerId == hikerId)
+				.ConfigureAwait(true);
+
+			if (pass == null)
+			{
+				return NotFound();
+			}
+
+			_dbContext.ParkingPass.Remove(pass);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			return RedirectToAction("Edit", new { Id = hikerId });
+		}
+
 		private async Task<IActionResult> GetHikerViewModelByIdAsync(int id)
 		{
 			var hiker = await _dbContext.Hiker
@@ -277,6 +310,12 @@ namespace Planner.Controllers
 				.ToListAsync();
 			viewModel.HikerGroupGear = hikerGear.Where(g => g.GroupUse == true).ToList();
 			viewModel.HikerExtraGear = hikerGear.Where(g => g.IntendedUse == GearIntendedUse.Extra).ToList();
+
+			var parkingPasses = await _dbContext.ParkingPass
+				.Where(p => p.HikerId == hiker.Id)
+				.Select(p => new ParkingPassViewModel(p))
+				.ToListAsync();
+			viewModel.ParkingPasses = parkingPasses;
 
 			return View(viewModel);
 		}

@@ -103,7 +103,60 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
+        <h2>Parking pass</h2>
+        <fieldset>
+            <table class="table">
+                <form asp-action="AddParkingPass">
+                    <tr>
+                        <th>Pass</th>
+                        <th>Expiration year</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td> 
+                            <select name="name" id="name">
+                                <option value="DiscoverPass">Discover Pass</option>
+                                <option value="America Beautiful">America Beautiful</option>
+                                <option value="NorthwestForestPass">Northwest Forest Pass</option>
+                            </select>
+                        </td>
+                        <td> 
+                            <select name="expirationYear" id="expirationYear">
+                                <option value=2021>2021</option>
+                                <option value=2022>2022</option>
+                                <option value=2023>2023</option>
+                                <option value=2024>2024</option>
+                                <option value=2025>2025</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                            <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                        </td>
+                    </tr>
+                </form>      
+                @foreach (var item in Model.ParkingPasses)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.ExpirationYear</td>
+                        <td>
+                            <form asp-action="RemoveParkingPass">
+                                <input type="hidden" name="name" id="name" value="@item.Name" />
+                                <input type="hidden" name="expirationYear" id="expirationYear" value="@item.ExpirationYear" />
+                                <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                                <input type="submit" value="Remove" class="btn btn-primary login-button-width" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
         <h2>Group gear</h2>
         <fieldset>
             <table class="table">
@@ -165,7 +218,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <h2>Gear I can offer to others</h2>
         <fieldset>
             <table class="table">

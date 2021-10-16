@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 using Planner.Models;
 using Planner.ViewModels;
 
 namespace Planner
 {
-    public class PlannerDbContext : DbContext
+	public class PlannerDbContext : DbContext
     {
-
         public PlannerDbContext(DbContextOptions<PlannerDbContext> options)
             : base(options)
         {
@@ -35,6 +32,8 @@ namespace Planner
         public DbSet<HikerGearViewModel> HikerGearModel { get; set; }
 
         public DbSet<PredefinedGroupGear> PredefinedGroupGear { get; set; }
+
+        public DbSet<ParkingPass> ParkingPass { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
