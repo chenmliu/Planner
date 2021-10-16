@@ -78,6 +78,7 @@ namespace Planner.Controllers
 													   Text = peak.Name
 												   };
 			ViewBag.PeakList = new SelectList(PeakList, "Value", "Text");
+			await GetPredefinedGroupGearList();
 			return await GetTripViewModelByIdAsync(id);
 		}
 
@@ -110,7 +111,7 @@ namespace Planner.Controllers
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet]
-		public ActionResult Create()
+		public async Task<ActionResult> CreateAsync()
 		{
 			IEnumerable<SelectListItem> PeakList = from peak in _dbContext.Peak
 												   select new SelectListItem
@@ -138,6 +139,7 @@ namespace Planner.Controllers
 			ViewBag.PeakList = new SelectList(PeakList, "Value", "Text");
 			ViewBag.UserList = new SelectList(UserList, "Value", "Text");
 			ViewBag.PermitTypeList = new SelectList(permitTypes, "Value","Text");
+			await GetPredefinedGroupGearList();
 			return View();
 		}
 
@@ -254,6 +256,12 @@ namespace Planner.Controllers
 			_dbContext.Trip.Remove(trip);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 			return RedirectToAction(nameof(Index));
+		}
+
+		public async Task GetPredefinedGroupGearList()
+		{
+			var gearList = await _dbContext.PredefinedGroupGear.ToListAsync();
+			ViewBag.predefinedGroupGearList = new SelectList(gearList, "Value", "Text");
 		}
 
 		private async Task<IActionResult> GetTripViewModelByIdAsync(int id)

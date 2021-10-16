@@ -34,6 +34,8 @@ namespace Planner
 
         public DbSet<HikerGearViewModel> HikerGearModel { get; set; }
 
+        public DbSet<PredefinedGroupGear> PredefinedGroupGear { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HikerTrip>()
