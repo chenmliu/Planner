@@ -118,6 +118,32 @@ namespace Planner.Controllers
 		}
 
 		[HttpPost]
+		public async Task<ActionResult> RemoveGear(string item, string brand, string model, int hikerId)
+		{
+			var gear = await _dbContext.HikerGear
+				.FirstOrDefaultAsync(g => g.Item.Equals(item)
+					&& g.Brand.Equals(brand)
+					&& g.Model.Equals(model)
+					&& g.HikerId.Equals(hikerId))
+				.ConfigureAwait(true);
+
+			if (gear == null)
+			{
+				return NotFound();
+			}
+
+			_dbContext.HikerGear.Remove(gear);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			return new RedirectToRouteResult(
+				new RouteValueDictionary
+				{
+					{ "controller", "Home" },
+					{ "action", "Edit" },
+					{ "id", hikerId }
+			});
+		}
+
+		[HttpPost]
 		public async Task<ActionResult> AddExtraGear(string item, string brand, string model, int hikerId)
 		{
 			var gear = new HikerGear()

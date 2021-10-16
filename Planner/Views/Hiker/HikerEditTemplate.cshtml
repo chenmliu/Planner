@@ -112,6 +112,7 @@
                         <th>Item</th>
                         <th>Brand</th>
                         <th>Model</th>
+                        <th></th>
                     </tr>
                     <tr>
                         <td> 
@@ -148,6 +149,15 @@
                         <td>@item.Item</td>
                         <td>@item.Brand</td>
                         <td>@item.Model</td>
+                        <td>
+                            <form asp-action="RemoveGear">
+                                <input type="hidden" name="item" id="item" value="@item.Item" />
+                                <input type="hidden" name="brand" id="brand" value="@item.Brand" />
+                                <input type="hidden" name="model" id="model" value="@item.Model" />
+                                <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                                <input type="submit" value="Remove" class="btn btn-primary login-button-width" />
+                            </form>
+                        </td>
                     </tr>
                 }
             </table>
@@ -164,7 +174,8 @@
                         <th>Item</th>
                         <th>Brand</th>
                         <th>Model</th>
-                    </tr>
+                        <th></th>
+                    </th>
                     <tr>
                         <td> 
                             <select name="item" id="item">
@@ -200,6 +211,15 @@
                         <td>@item.Item</td>
                         <td>@item.Brand</td>
                         <td>@item.Model</td>
+                        <td>
+                            <form asp-action="RemoveGear">
+                                <input type="hidden" name="item" id="item" value="@item.Item" />
+                                <input type="hidden" name="brand" id="brand" value="@item.Brand" />
+                                <input type="hidden" name="model" id="model" value="@item.Model" />
+                                <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                                <input type="submit" value="Remove" class="btn btn-primary login-button-width" />
+                            </form>
+                        </td>
                     </tr>
                 }
             </table>
