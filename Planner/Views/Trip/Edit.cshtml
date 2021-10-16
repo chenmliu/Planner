@@ -41,7 +41,7 @@
                 <span asp-validation-for="GroupSize" class="text-danger"></span>
             </div>
             <br/>
-            <fieldset style="border:solid">
+            <fieldset>
                 <legend>Trip Details</legend>
 
                 <div class="form-group">
@@ -60,17 +60,16 @@
                     <span asp-validation-for="ElevationGain" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="Location" class="control-label">Bumpy Road?</label>
                     <input asp-for="IsBumpyRoad" class="form-control" />
-                    <span asp-validation-for="IsBumpyRoad" class="text-danger"></span>
                 </div>
             </fieldset>
             <br/>
-            <fieldset style="border:solid">
+            <fieldset>
                 <legend>Car Pool</legend>
                 <div class="form-group">
                     <label asp-for="NeedHighClearanceVehicle" class="control-label">High Clearance Vehicle?</label>
                     <input asp-for="NeedHighClearanceVehicle" class="form-control" />
-                    <span asp-validation-for="NeedHighClearanceVehicle" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="HasSnow" class="control-label">Snow?</label>
@@ -89,15 +88,61 @@
                 </div>
             </fieldset>
             <br />
-
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+
+            <fieldset>
+                <legend>Gear List</legend>
+                      <table class="table">
+                        <form asp-action="AddTripGroupGear">
+                        <tr>
+                          <td> <lable>Gear:</lable>
+                               <select name="item" id="item">
+                                    <option value="Carabiner">Carabiner</option>                                       
+                                    <option value="Crampons">Crampons</option>      
+                                    <option value="Hard shell">HardShell</option>
+                                    <option value="Harness">Harness</option>                                       
+                                    <option value="Gas">Gas</option>
+                                    <option value="Ice Axe">Ice Axe</option>
+                                    <option value="Rope 60m">Rope 60m</option>
+                                    <option value="Rope 45m">Rope 45m</option>
+                                    <option value="Rope 30m">Rope 30m</option>
+                                    <option value="Snow picket">Snow Picket</option>
+                                    <option value="Stove">Stove</option>                                       
+                                    <option value="Tent">Tent</option>
+                                </select>
+                                <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
+                           </td>
+                           <td>
+                                <lable>Quantity:</lable>
+                                <input type="number" name="quantity" id="quantity" value="1" />
+                           </td>
+                           <td>
+                               <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                           </td>
+                          </tr>
+                         </form>      
+                         <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                         </tr>
+                        @foreach (var item in Model.GroupGearList)
+                        {
+                            <tr>
+                                <td>@item.Item</td>
+                                <td>@item.Number</td>
+                            </tr>
+                        }
+                    </table>
+                    </fieldset>
+                    <div>
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+            </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

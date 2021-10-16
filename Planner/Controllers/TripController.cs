@@ -169,7 +169,7 @@ namespace Planner.Controllers
 			await _dbContext.HikerTrip.AddAsync(hikerTrip).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
 
-			return RedirectToAction("Details", new { Id = trip.Id });
+			return RedirectToAction("Edit", new { Id = trip.Id });
 		}
 
 		/// <summary>
@@ -411,6 +411,20 @@ namespace Planner.Controllers
             }
 			return description.ToString();
         }
+
+		[HttpPost]
+		public async Task<ActionResult> AddTripGroupGear(string item, int tripId, int quantity)
+		{
+			var gear = new GroupGear()
+			{
+				TripId = tripId,
+				Item = item,
+				Number = quantity,
+			};
+			await _dbContext.GroupGear.AddAsync(gear).ConfigureAwait(true);
+			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			return RedirectToAction("Edit", new { Id = tripId });
+		}
 
 		private NWACZone? GetNWACZone(Point coord)
 		{
