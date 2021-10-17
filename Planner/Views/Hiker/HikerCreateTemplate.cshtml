@@ -34,6 +34,12 @@
                 <input asp-for="City" class="form-control" />
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="FunScale" class="control-label"></label>
+                <input asp-for="FunScale" class="form-control" />
+                <span asp-validation-for="FunScale" class="text-danger"></span>
+            </div>
+            <h2>Car preference</h2>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="HasCar" /> @Html.DisplayNameFor(model => model.HasCar)
@@ -87,6 +93,7 @@
                 <option value="8+">8+</option>
                 </select>
             </div>
+            <h2>Emergency contact</h2>
             <div class="form-group">
                 <label asp-for="EmergencyContactName" class="control-label"></label>
                 <input asp-for="EmergencyContactName" class="form-control" />
@@ -96,11 +103,6 @@
                 <label asp-for="EmergencyContactPhone" class="control-label"></label>
                 <input asp-for="EmergencyContactPhone" class="form-control" />
                 <span asp-validation-for="EmergencyContactPhone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FunScale" class="control-label"></label>
-                <input asp-for="FunScale" class="form-control" />
-                <span asp-validation-for="FunScale" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

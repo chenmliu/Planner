@@ -33,4 +33,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\css\home.css" />
+  </ItemGroup>
 </Project>
