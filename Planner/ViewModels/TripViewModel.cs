@@ -37,6 +37,11 @@ namespace Planner.ViewModels
 			WeatherLabel = weatherDesc;
 			IconUrl = iconCode != "" ? $"http://openweathermap.org/img/wn/{iconCode}@2x.png" : "";
 			WeatherLink = $"https://www.windy.com/{latitude}/{longitude}?{latitude},{longitude},13,i:deg0,m:eWHacOd";
+			RiverCrossing = trip.RiverCrossing;
+			Glacier = trip.Glacier;
+			RockClimb = trip.RockClimb;
+			Overnight = trip.Overnight;
+			PotentialAvalanche = trip.PotentialAvalanche;
 		}
 
 		public int Id
@@ -175,6 +180,38 @@ namespace Planner.ViewModels
 			get;
 			set;
 		}
+
+		[Display(Name = "River crossing")]
+		public bool RiverCrossing
+		{
+			get;
+			set;
+		}
+
+		public bool Glacier
+		{
+			get;
+			set;
+		}
+
+		[Display(Name = "Rock climb")]
+		public bool RockClimb
+		{
+			get;
+			set;
+		}
+
+		public bool Overnight
+		{
+			get;
+			set;
+		}
+
+		[Display(Name = "Potential avalanche")]
+		public bool PotentialAvalanche
+		{
+			get;
+			set;
+		}
 	}
-    
 }

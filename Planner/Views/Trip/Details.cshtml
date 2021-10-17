@@ -131,7 +131,7 @@
             {
                 <form asp-action="Edit" method="get">
                     <input type="hidden" name="Id" value="@Model.Id" />
-                    <input type="submit" value="Edit" class="btn btn-danger" />
+                    <input type="submit" value="Edit" class="btn btn-primary" />
                 </form>
             }
 
@@ -140,7 +140,7 @@
                 <form asp-action="RequestToJoin" method="post">
                     <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
                     <input type="hidden" name="hikerId" id="hikerId" value="@sessionId" />
-                    <input type="submit" value="Request To Join" class="btn btn-danger" />
+                    <input type="submit" value="Request To Join" class="btn btn-primary" />
                 </form>
             }
 

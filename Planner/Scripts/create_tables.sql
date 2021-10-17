@@ -96,7 +96,12 @@ CREATE TABLE trip
 	isBumpyRoad BIT DEFAULT(0),
 	needHighClearanceVehicle  BIT DEFAULT(0),
 	elevationGain INT DEFAULT(0),
-	totalDistance Float default(0)
+	totalDistance Float default(0),
+	river_crossing BIT,
+	glacier BIT,
+	rock_climb BIT,
+	overnight BIT,
+	potential_avalanche BIT
 );
 
 CREATE TABLE hikerTrip

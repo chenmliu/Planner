@@ -29,6 +29,11 @@ namespace Planner.Models
 			Location = trip.Location;
 			NeedHighClearanceVehicle = trip.NeedHighClearanceVehicle;
 			Permit = trip.Permit;
+			RiverCrossing = trip.RiverCrossing;
+			Glacier = trip.Glacier;
+			RockClimb = trip.RockClimb;
+			Overnight = trip.Overnight;
+			PotentialAvalanche = trip.PotentialAvalanche;
 		}
 
 		[Key]
@@ -161,5 +166,37 @@ namespace Planner.Models
 			set;
 		}
 
+		[Column("river_crossing")]
+		public bool RiverCrossing
+		{
+			get;
+			set;
+		}
+
+		public bool Glacier
+		{
+			get;
+			set;
+		}
+
+		[Column("rock_climb")]
+		public bool RockClimb
+		{
+			get;
+			set;
+		}
+
+		public bool Overnight
+		{
+			get;
+			set;
+		}
+
+		[Column("potential_avalanche")]
+		public bool PotentialAvalanche
+		{
+			get;
+			set;
+		}
 	}
 }
