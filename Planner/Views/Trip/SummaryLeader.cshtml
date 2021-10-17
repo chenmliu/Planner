@@ -62,7 +62,9 @@
             @Html.DisplayFor(model => model.OwnerName)
         </dd>
     </dl>
-    <h4>Trip Roster:</h4>
+    <br />
+
+    <h2>Emergency contact</h2>
     <div class="row">
         <table class="table">
             <tr>
@@ -82,7 +84,9 @@
             }
         </table>
     </div>
-    <h4>Carpool information:</h4>
+    <br />
+
+    <h2>Carpool</h4>
     <h5>Drivers</h5>
     <div class="row">
         <table class="table">
@@ -117,6 +121,77 @@
                 </tr>
             }
         </table>
+    </div>
+    <br />
+
+    <h2>Personal gear</h2>
+    <div>
+        <p>10 essentials</p>
+        <ul>
+            <li>Map, compass</li>
+            <li>Headlamp with extra batteries</li>
+            <li>Sunglasses, sunscreen, chapstick</li>
+            <li>First aid kit</li>
+            <li>Repair kit</li>
+            <li>Matches or lighter</li>
+            <li>Emergency bivy</li>
+            <li>Food</li>
+            <li>Water</li>
+            <li>Clothing</li>
+        </ul>
+        @if (Model.RiverCrossing)
+        {
+            <p>River crossing</p>
+            <ul>
+                <li>Sandals</li>
+                <li>Poles</li>
+            </ul>
+        }
+        @if (Model.Glacier)
+        {
+            <p>Glacier</p>
+            <ul>
+                <li>Crampons</li>
+                <li>Ice ax</li>
+                <li>Helmet</li>
+                <li>Crevasse rescue kit</li>
+                <li>Harness</li>
+            </ul>
+        }
+        @if (Model.RockClimb)
+        {
+            <p>Rock climb</p>
+            <ul>
+                <li>Belay device</li>
+                <li>Belay gloves</li>
+                <li>Prusik</li>
+                <li>Webbing</li>
+                <li>Personal anchor</li>
+                @if(Model.Glacier == false)
+                {
+                    <li>Helmet</li>
+                    <li>Harness</li>   
+                }
+            </ul>
+        }
+        @if (Model.Overnight)
+        {
+            <p>Overnight</p>
+            <ul>
+                <li>Sleeping bag</li>
+                <li>Sleeping pad</li>
+                <li>Blue bag</li>
+            </ul>
+        }
+        @if (Model.PotentialAvalanche)
+        {
+            <p>Potential avalance</p>
+            <ul>
+                <li>Avalanche beacon</li>
+                <li>Shovel</li>
+                <li>Probe</li>
+            </ul>
+        }
     </div>
 </div>
 
