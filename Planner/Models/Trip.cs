@@ -34,6 +34,8 @@ namespace Planner.Models
 			RockClimb = trip.RockClimb;
 			Overnight = trip.Overnight;
 			PotentialAvalanche = trip.PotentialAvalanche;
+			MeetingTime = trip.MeetingTime;
+			MeetingLocation = trip.MeetingLocation;
 		}
 
 		[Key]
@@ -194,6 +196,20 @@ namespace Planner.Models
 
 		[Column("potential_avalanche")]
 		public bool PotentialAvalanche
+		{
+			get;
+			set;
+		}
+
+		[Column("meeting_time")]
+		public bool MeetingTime
+		{
+			get;
+			set;
+		}
+
+		[Column("meeting_location")]
+		public bool MeetingLocation
 		{
 			get;
 			set;

@@ -67,6 +67,8 @@ CREATE TABLE group_gear -- table to store group gear requirements by leader
 	trip_id INT NOT NULL,
 	item VARCHAR(50) NOT NULL,
 	number INT NOT NULL,
+	meeting_time VARCHAR (100),
+	meeting_location VARCHAR (100),
 	FOREIGN KEY (trip_id) REFERENCES trip (id)
 );
 

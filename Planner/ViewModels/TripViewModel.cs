@@ -42,6 +42,8 @@ namespace Planner.ViewModels
 			RockClimb = trip.RockClimb;
 			Overnight = trip.Overnight;
 			PotentialAvalanche = trip.PotentialAvalanche;
+			MeetingTime = trip.MeetingTime;
+			MeetingLocation = trip.MeetingLocation;
 		}
 
 		public int Id
@@ -209,6 +211,20 @@ namespace Planner.ViewModels
 
 		[Display(Name = "Potential avalanche")]
 		public bool PotentialAvalanche
+		{
+			get;
+			set;
+		}
+
+		[Display(Name = "Meeting time")]
+		public bool MeetingTime
+		{
+			get;
+			set;
+		}
+
+		[Display(Name = "Meeting location")]
+		public bool MeetingLocation
 		{
 			get;
 			set;
