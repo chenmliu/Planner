@@ -26,9 +26,6 @@ namespace Planner.Controllers
 
 		public ActionResult Index()
 		{
-			return RedirectToAction("Edit", new { Id = 34 });
-
-
 			if (!string.IsNullOrWhiteSpace(HttpContext.Session.GetString("username")))
 			{
 				return new RedirectToRouteResult(
@@ -115,7 +112,7 @@ namespace Planner.Controllers
 				new RouteValueDictionary
 				{
 					{ "controller", "Home" },
-					{ "action", "Edit" },
+					{ "action", "Details" },
 					{ "id", hikerId }
 			});
 		}
@@ -141,7 +138,7 @@ namespace Planner.Controllers
 				new RouteValueDictionary
 				{
 					{ "controller", "Home" },
-					{ "action", "Edit" },
+					{ "action", "Details" },
 					{ "id", hikerId }
 			});
 		}
@@ -169,7 +166,7 @@ namespace Planner.Controllers
 				new RouteValueDictionary
 				{
 					{ "controller", "Home" },
-					{ "action", "Edit" },
+					{ "action", "Details" },
 					{ "id", hikerId }
 			});
 		}

@@ -10,100 +10,100 @@
         <div class="row">
             <div class="col-md-7">
                 <dl class="row">
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         First Name
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.FirstName)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         Last Name
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.LastName)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         Full Name
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.FullName)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         @Html.DisplayNameFor(model => model.Phone)
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.Phone)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         @Html.DisplayNameFor(model => model.City)
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.City)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         Has a Car?
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.HasCar)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         Carpool Preference
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.Preference)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         How many spaces available in your car
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.Spaces)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         Drives an AWD?
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.Awd)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         Car Model and Brand
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.CarModelBrand)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         SnowFriendly?
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.SnowFriendly)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         HighClearance?
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.HighClearance)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         Emergency Contact Name
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.EmergencyContactName)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         Emergency Contact Number
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.EmergencyContactPhone)
                     </dd>
-                    <dt class="col-sm-3" text-truncate>
+                    <dt class="col-sm-6">
                         Fun Scale
                     </dt>
-                    <dd class="col-sm-3" text-truncate>
+                    <dd class="col-sm-6">
                         @Html.DisplayFor(model => model.FunScale)
                     </dd>
                 </dl>
                 <form asp-action="Edit" method="get">
                     <input type="hidden" name="Id" value="@Model.Id" />
-                    <input type="submit" value="Edit" class="btn btn-danger" />
+                    <input type="submit" value="Edit" class="btn btn-primary" />
                 </form>
             </div>
             <div class="col-md-3">
@@ -111,72 +111,221 @@
             </div>
         </div>
     </div>
-    <br />
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Parking pass</h2>
+        <fieldset>
+            <table class="table">
+                <form asp-action="AddParkingPass">
+                    <tr>
+                        <th>Pass</th>
+                        <th>Expiration year</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td> 
+                            <select name="name" id="name">
+                                <option value="DiscoverPass">Discover Pass</option>
+                                <option value="America Beautiful">America Beautiful</option>
+                                <option value="NorthwestForestPass">Northwest Forest Pass</option>
+                            </select>
+                        </td>
+                        <td> 
+                            <select name="expirationYear" id="expirationYear">
+                                <option value=2021>2021</option>
+                                <option value=2022>2022</option>
+                                <option value=2023>2023</option>
+                                <option value=2024>2024</option>
+                                <option value=2025>2025</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                            <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                        </td>
+                    </tr>
+                </form>      
+                @foreach (var item in Model.ParkingPasses)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.ExpirationYear</td>
+                        <td>
+                            <form asp-action="RemoveParkingPass">
+                                <input type="hidden" name="name" id="name" value="@item.Name" />
+                                <input type="hidden" name="expirationYear" id="expirationYear" value="@item.ExpirationYear" />
+                                <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                                <input type="submit" value="Remove" class="btn btn-danger login-button-width" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Group gear</h2>
+        <fieldset>
+            <table class="table">
+                <form asp-action="AddGroupGear">
+                    <tr>
+                        <th>Item</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td> 
+                            <select name="item" id="item">
+                                <option value="Carabiner">Carabiner</option>                                       
+                                <option value="Crampons">Crampons</option>      
+                                <option value="Hard shell">HardShell</option>
+                                <option value="Harness">Harness</option>                                       
+                                <option value="Gas">Gas</option>
+                                <option value="Ice Axe">Ice Axe</option>
+                                <option value="Rope 60m">Rope 60m</option>
+                                <option value="Rope 45m">Rope 45m</option>
+                                <option value="Rope 30m">Rope 30m</option>
+                                <option value="Snow picket">Snow Picket</option>
+                                <option value="Stove">Stove</option>                                       
+                                <option value="Tent">Tent</option>
+                            </select>
+                            <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                        </td>
+                        <td>
+                            <input type="text" name="brand" id="brand" value="" />
+                        </td>
+                         <td>
+                            <input type="text" name="model" id="model" value="" />
+                        </td>
+                        <td>
+                            <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                        </td>
+                    </tr>
+                </form>      
+                @if (Model.HikerGroupGear.Count() > 0)
+                {
+                    @foreach (var item in Model.HikerGroupGear)
+                    {
+                        <tr>
+                            <td>@item.Item</td>
+                            <td>@item.Brand</td>
+                            <td>@item.Model</td>
+                            <td>
+                                <form asp-action="RemoveGear">
+                                    <input type="hidden" name="item" id="item" value="@item.Item" />
+                                    <input type="hidden" name="brand" id="brand" value="@item.Brand" />
+                                    <input type="hidden" name="model" id="model" value="@item.Model" />
+                                    <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                                    <input type="submit" value="Remove" class="btn btn-danger login-button-width" />
+                                </form>
+                            </td>
+                        </tr>
+                    }   
+                } else {
+                    <p>You haven't added any group gear.</p>
+                }
+            </table>
+        </fieldset>
+    </div>
+</div>
 
-    <h2>Group gear</h2>
-    <div class="row">
-        <table class="table">
-            <tr>
-                <th>Item</th>
-                <th>Brand</th>
-                <th>Model</th>
-            </tr>
-            @foreach (var item in Model.HikerGroupGear)
-            {
-                <tr>
-                    <td>@item.Item</td>
-                    <td>@item.Brand</td>
-                    <td>@item.Model</td>
-                </tr>
-            }
-        </table>
-    </div> 
-
-    <h2>Gear I can offer to others</h2>
-    <div class="row">
-        <table class="table">
-            <tr>
-                <th>Item</th>
-                <th>Brand</th>
-                <th>Model</th>            
-            </tr>
-            @foreach (var item in Model.HikerExtraGear)
-            {
-                <tr>
-                    <td>@item.Item</td>
-                    <td>@item.Brand</td>
-                    <td>@item.Model</td>
-                </tr>
-            }
-        </table>
-    </div>    
-
+<div class="row">
+    <div class="col-md-6">
+        <h2>Gear I can offer to others</h2>
+        <fieldset>
+            <table class="table">
+                <form asp-action="AddExtraGear">
+                    <tr>
+                        <th>Item</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th></th>
+                    </th>
+                    <tr>
+                        <td> 
+                            <select name="item" id="item">
+                                <option value="Carabiner">Carabiner</option>                                       
+                                <option value="Crampons">Crampons</option>      
+                                <option value="Hard shell">HardShell</option>
+                                <option value="Harness">Harness</option>                                       
+                                <option value="Gas">Gas</option>
+                                <option value="Ice Axe">Ice Axe</option>
+                                <option value="Rope 60m">Rope 60m</option>
+                                <option value="Rope 45m">Rope 45m</option>
+                                <option value="Rope 30m">Rope 30m</option>
+                                <option value="Snow picket">Snow Picket</option>
+                                <option value="Stove">Stove</option>                                       
+                                <option value="Tent">Tent</option>
+                            </select>
+                            <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                        </td>
+                        <td>
+                            <input type="text" name="brand" id="brand" value="" />
+                        </td>
+                         <td>
+                            <input type="text" name="model" id="model" value="" />
+                        </td>
+                        <td>
+                            <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                        </td>
+                    </tr>
+                </form>                 
+                @if (Model.HikerGroupGear.Count() > 0)
+                {
+                    @foreach (var item in Model.HikerExtraGear)
+                    {
+                        <tr>
+                            <td>@item.Item</td>
+                            <td>@item.Brand</td>
+                            <td>@item.Model</td>
+                            <td>
+                                <form asp-action="RemoveGear">
+                                    <input type="hidden" name="item" id="item" value="@item.Item" />
+                                    <input type="hidden" name="brand" id="brand" value="@item.Brand" />
+                                    <input type="hidden" name="model" id="model" value="@item.Model" />
+                                    <input type="hidden" name="hikerId" id="hikerId" value="@Model.Id" />
+                                    <input type="submit" value="Remove" class="btn btn-danger login-button-width" />
+                                </form>
+                            </td>
+                        </tr>
+                    }  
+                } else {
+                    <p>You haven't added any extra gear.</p>
+                }
+            </table>
+        </fieldset>
+    </div>
+</div>
+<div>
     <h2>Upcoming trips</h2>
     <br />
     @if (Model.upcomingTrips.Count() > 0)
     {
         <div class="row">
-            <div class="col-sm-12">
-                <div class="row">
-                    <table class="table">
-                        <tr>
-                            <th style="width: 33%">Name</th>
-                            <th style="width: 33%">Date</th>
-                            <th style="width: 33%">Link</th>
-                        </tr>
-                        @foreach (var trip in Model.upcomingTrips)
-                        {
-                            <tr>
-                                <td>@trip.Name</td>
-                                <td>@trip.StartDate</td>
-                                <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
-                            </tr>
-                        }
-                    </table>
-                </div>
-            </div>
+            <table class="table">
+                <tr>
+                    <th style="width: 33%">Name</th>
+                    <th style="width: 33%">Date</th>
+                    <th style="width: 33%">Link</th>
+                </tr>
+                @foreach (var trip in Model.upcomingTrips)
+                {
+                    <tr>
+                        <td>@trip.Name</td>
+                        <td>@trip.StartDate</td>
+                        <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
+                    </tr>
+                }
+            </table>
         </div>
         <br />
+    } else
+    {
+        <p>No upcoming trips.</p>
     }
 
     <h2>Past trips</h2>
@@ -184,57 +333,55 @@
     @if (Model.pastTrips.Count() > 0)
     {
         <div class="row">
-            <div class="col-sm-12">
-                <div class="row">
-                    <table class="table">
-                        <tr>
-                            <th style="width: 33%">Name</th>
-                            <th style="width: 33%">Date</th>
-                            <th style="width: 33%">Link</th>
-                        </tr>
-                        @foreach (var trip in Model.pastTrips)
-                        {
-                            <tr>
-                                <td>@trip.Name</td>
-                                <td>@trip.StartDate</td>
-                                <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
-                            </tr>
-                        }
-                    </table>
-                </div>
-            </div>
+            <table class="table">
+                <tr>
+                    <th style="width: 33%">Name</th>
+                    <th style="width: 33%">Date</th>
+                    <th style="width: 33%">Link</th>
+                </tr>
+                @foreach (var trip in Model.pastTrips)
+                {
+                    <tr>
+                        <td>@trip.Name</td>
+                        <td>@trip.StartDate</td>
+                        <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
+                    </tr>
+                }
+            </table>
         </div>
         <br />
+    } else
+    {
+        <p>No past trips.</p>
     }
 
-    <h2>Hiking Invitations</h2>
+    <h2>Pending invitations</h2>
     <br/>
     @if (Model.PendingInvitations.Count() > 0)
     {
         <div class="row">
-            <div class="col-sm-12">
-                <table class="table">
-                    <tr>
-                        <th style="width: 25%">Trip</th>
-                        <th style="width: 25%">Organizer</th>
-                        <th style="width: 25%">Link</th>
-                        <th style="width: 25%">Action</th>
-                    </tr>
-                    @foreach (var trip in Model.PendingInvitations)
-                    {
+            <table class="table">
                 <tr>
-                    <td>@trip.Name</td>
-                    <td>@trip.OwnerName</td>
-                    <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
-                    <td>
-                        <a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-view="hiker" asp-route-tripId="@trip.Id" asp-route-hikerId="@Model.Id"> Accept </a> |
-                        <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-view="hiker" asp-route-tripId="@trip.Id" asp-route-hikerId="@Model.Id"> Reject </a>
-                    </td>
+                    <th style="width: 25%">Trip</th>
+                    <th style="width: 25%">Organizer</th>
+                    <th style="width: 25%">Link</th>
+                    <th style="width: 25%">Action</th>
                 </tr>
-                    }
-                </table>
-            </div>
+                @foreach (var trip in Model.PendingInvitations)
+                {
+                    <tr>
+                        <td>@trip.Name</td>
+                        <td>@trip.OwnerName</td>
+                        <td>@Html.ActionLink("Link", "Details", "Trip", new { id = @trip.Id })</td>
+                        <td>
+                            <a asp-action="AcceptHiker" asp-controller="HikerTrip" asp-route-view="hiker" asp-route-tripId="@trip.Id" asp-route-hikerId="@Model.Id"> Accept </a> |
+                            <a asp-action="RejectHiker" asp-controller="HikerTrip" asp-route-view="hiker" asp-route-tripId="@trip.Id" asp-route-hikerId="@Model.Id"> Reject </a>
+                        </td>
+                    </tr>
+                }
+            </table>
         </div>
+    } else {
+        <p>No pending invitations.</p>
     }
-
 </div>
