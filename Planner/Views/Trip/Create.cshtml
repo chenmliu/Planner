@@ -74,7 +74,17 @@
             </div>
             <br/>
 
-            <h2>Road condition</h2>
+            <h2>Driving</h2>
+            <div class="form-group">
+                <label asp-for="MeetingTime" class="control-label">Meeting time</label>
+                <input asp-for="MeetingTime" class="form-control"/>
+                <span asp-validation-for="MeetingTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MeetingLocation" class="control-label">Meeting location</label>
+                <input asp-for="MeetingLocation" class="form-control"/>
+                <span asp-validation-for="MeetingLocation" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="NeedHighClearanceVehicle" /> @Html.DisplayNameFor(model => model.NeedHighClearanceVehicle)

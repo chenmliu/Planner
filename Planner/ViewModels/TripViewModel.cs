@@ -217,14 +217,14 @@ namespace Planner.ViewModels
 		}
 
 		[Display(Name = "Meeting time")]
-		public bool MeetingTime
+		public string MeetingTime
 		{
 			get;
 			set;
 		}
 
 		[Display(Name = "Meeting location")]
-		public bool MeetingLocation
+		public string MeetingLocation
 		{
 			get;
 			set;

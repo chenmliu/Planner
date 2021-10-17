@@ -149,7 +149,7 @@
     <hr />
     <div class="row">
         <div class="col-sm-12">
-            <h4>Members</h4>
+            <h2>Members</h2>
             @if (@moreMembers > 0)
             {
                 <div class="alert alert-primary" role="alert">
@@ -253,7 +253,17 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <h4>Carpool Drivers</h4>
+            <h2>Carpool</h2>
+            <div class="form-group col-sm-6">
+                <label asp-for="MeetingTime" class="control-label">Meeting time</label>
+                <input asp-for="MeetingTime" class="form-control"/>
+                <span asp-validation-for="MeetingTime" class="text-danger"></span>
+            </div>
+            <div class="form-group col-sm-6">
+                <label asp-for="MeetingLocation" class="control-label">Meeting location</label>
+                <input asp-for="MeetingLocation" class="form-control"/>
+                <span asp-validation-for="MeetingLocation" class="text-danger"></span>
+            </div>
             @if (spacesInACar < needARide || needARide == 0)
             {
                 <div class="alert alert-warning" role="alert">

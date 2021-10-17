@@ -202,14 +202,14 @@ namespace Planner.Models
 		}
 
 		[Column("meeting_time")]
-		public bool MeetingTime
+		public string MeetingTime
 		{
 			get;
 			set;
 		}
 
 		[Column("meeting_location")]
-		public bool MeetingLocation
+		public string MeetingLocation
 		{
 			get;
 			set;

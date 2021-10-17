@@ -87,6 +87,20 @@
     <br />
 
     <h2>Carpool</h4>
+    <dl class="row">
+        <dt class="col-sm-6">
+            @Html.DisplayNameFor(model => model.MeetingTime)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.MeetingTime)
+        </dd>
+        <dt class="col-sm-6">
+            @Html.DisplayNameFor(model => model.MeetingLocation)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.MeetingLocation)
+        </dd>
+    </dl>
     <h5>Drivers</h5>
     <div class="row">
         <table class="table">
@@ -108,7 +122,7 @@
         </table>
     </div>
     <br />
-    <h5>Need a ride:</h5>
+    <h5>Need a ride</h5>
     <div class="row">
         <table class="table">
             <tr>
