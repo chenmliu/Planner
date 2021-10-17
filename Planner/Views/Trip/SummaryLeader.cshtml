@@ -42,11 +42,11 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.WeatherLabel)
         </dt>
-        <dd class="col-sm-9">
+        <dd class="col-sm-8">
             <img src="@Model.IconUrl" width="50" height="50" />
             @Html.DisplayFor(model => model.WeatherLabel)
         </dd>
-        <dd class="col-sm-1">
+        <dd class="col-sm-2">
             <a href="@Model.WeatherLink">Link</a>
         </dd>
         <dt class="col-sm-2">
@@ -65,6 +65,33 @@
     <br />
 
     <h2>Emergency contact</h2>
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.EscalateBy)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.EscalateBy.ToString("dd/MM/yyyy hh:mm")
+        </dd>
+        <dt class="col-sm-3">
+            Focal contact
+        </dt>
+        <dd class="col-sm-9">
+            @Model.Owner.EmergencyContactName
+        </dd>
+        <dt class="col-sm-3">
+            Notify who
+        </dt>
+        <dd class="col-sm-9">
+            Focal contact calls 911 and asked to be transferred to the mountain rescue. Then call @Model.Peak.RangerStationName at @Model.Peak.RangerStationPhone. Then notify everyone's emergency contacts.
+        </dd>
+        <dt class="col-sm-3">
+            Emergency gear
+        </dt>
+        <dd class="col-sm-9">
+            Emergency bivy, InReach, first aid kit, sleeping bag & pad, stove & fuel
+        </dd>
+    </dl>
+
     <div class="row">
         <table class="table">
             <tr>
@@ -108,7 +135,6 @@
                 <th>Name</th>
                 <th>Car brand</th>
                 <th>Car model</th>
-                <th>Number of spots</th>
                 <th>Seats</th>
                 <th>License plate</th>
             </tr>

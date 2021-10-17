@@ -22,6 +22,7 @@ namespace Planner.ViewModels
 			PeakName = trip.Peak.Name;
 			OwnerId = trip.Owner.Id;
 			OwnerName = trip.Owner.FirstName;
+			Owner = trip.Owner;
 			GroupSize = trip.GroupSize;
 			Hikers = new List<HikerTripViewModel>();
 			GroupGearList = new List<GroupGearViewModel>();
@@ -44,6 +45,7 @@ namespace Planner.ViewModels
 			PotentialAvalanche = trip.PotentialAvalanche;
 			MeetingTime = trip.MeetingTime;
 			MeetingLocation = trip.MeetingLocation;
+			Peak = new PeakViewModel(trip.Peak);
 		}
 
 		public int Id
@@ -92,6 +94,12 @@ namespace Planner.ViewModels
 
 		[Display(Name = "Organizer")]
 		public string OwnerName
+		{
+			get;
+			set;
+		}
+
+		public Hiker Owner
 		{
 			get;
 			set;
@@ -158,6 +166,7 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		[Display(Name = "Weather")]
 		public string WeatherLabel
         {
 			get;
@@ -236,6 +245,20 @@ namespace Planner.ViewModels
 		{
 			get;
 			set;
+		}
+
+		public PeakViewModel Peak
+		{
+			get;
+			set;
+		}
+
+		public DateTime EscalateBy
+		{
+			get
+			{
+				return new DateTime(StartDate.Year, StartDate.Month, StartDate.Day, 12, 0, 0);
+			}
 		}
 	}
 }

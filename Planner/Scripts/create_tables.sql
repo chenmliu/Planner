@@ -79,7 +79,9 @@ CREATE TABLE peak
 	name VARCHAR (50) NOT NULL,
 	routes VARCHAR (1000),
 	trailhead_latitude DECIMAL (8,6),
-	trailhead_longtitude DECIMAL (9,6)
+	trailhead_longtitude DECIMAL (9,6),
+	ranger_station_phone VARCHAR (100),
+	ranger_station_name VARCHAR (100)
 );
 
 CREATE TABLE trip

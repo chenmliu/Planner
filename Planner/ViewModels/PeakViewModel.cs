@@ -1,10 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Planner.Models;
 
 namespace Planner.ViewModels
 {
 	public class PeakViewModel
 	{
+		public PeakViewModel()
+		{
+
+		}
+
 		public PeakViewModel(Peak peak)
 		{
 			Id = peak.Id;
@@ -12,6 +19,8 @@ namespace Planner.ViewModels
 			Routes = peak.Routes.Split(";");
 			TrailheadLatitude = peak.TrailheadLatitude;
 			TrailheadLongitude = peak.TrailheadLongitude;
+			RangerStationName = peak.RangerStationName;
+			RangerStationPhone = peak.RangerStationPhone;
 		}
 
 		public int Id
@@ -26,6 +35,7 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		[NotMapped]
 		public IEnumerable<string> Routes
 		{
 			get;
@@ -39,6 +49,20 @@ namespace Planner.ViewModels
 		}
 
 		public decimal TrailheadLongitude
+		{
+			get;
+			set;
+		}
+
+		[Display(Name = "Ranger station name")]
+		public string RangerStationName
+		{
+			get;
+			set;
+		}
+
+		[Display(Name = "Ranger station phone")]
+		public string RangerStationPhone
 		{
 			get;
 			set;

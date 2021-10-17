@@ -39,5 +39,20 @@ namespace Planner.Models
 			get;
 			set;
 		}
+
+		[Column("ranger_station_name")]
+		public string RangerStationName
+		{
+			get;
+			set;
+		}
+
+		[Column("ranger_station_phone")]
+		public string RangerStationPhone
+		{
+			get;
+			set;
+		}
+
 	}
 }
