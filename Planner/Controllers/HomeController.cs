@@ -342,7 +342,7 @@ namespace Planner.Controllers
 				.Join(_dbContext.Trip,
 						  m => m.TripId,
 						  v => v.Id,
-						  (m, v) => new TripViewModel() { Name = v.Name, StartDate = v.StartDate, Id = v.Id })
+						  (m, v) => new TripViewModel() { Name = v.Name, StartDate = v.StartDate, Id = v.Id, OwnerName = v.Owner.FullName })
 				.ToListAsync();
 			var pastTrips = trips.Where(t => t.StartDate < DateTime.Today);
 			var upcomingTrips = trips.Except(pastTrips);
