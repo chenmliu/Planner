@@ -279,7 +279,7 @@ namespace Planner.Controllers
 
 			var hikers = await _dbContext.HikerTrip
 				.Where(ht => ht.TripId == trip.Id)
-				//.Include(ht => ht.Hiker)
+				.Include(ht => ht.Hiker)
 				.Join(_dbContext.Hiker,
 						  m => m.HikerId,
 						  v => v.Id,
@@ -331,7 +331,7 @@ namespace Planner.Controllers
 				.Select(h => new HikerViewModel(h.Hiker))
 				.ToList();
 			var potentialDrivers = hikerTrips
-				.Where(h => !h.Hiker.HasCar)
+				.Where(h => h.Hiker.HasCar)
 				.Select(d => new PotentialDriver()
 				{
 					HikerId = d.HikerId,
@@ -349,7 +349,7 @@ namespace Planner.Controllers
 				}
 			}
 			trip.PotentialDrivers = potentialDrivers;
-			trip.MembersNeedingRide = membersNeedingRide;
+			//trip.MembersNeedingRide = membersNeedingRide;
 			return trip;
 		}
 

@@ -271,6 +271,7 @@
                 </div>
             }        
             <p>Total seats needed: @needARide</p>
+            <h3>Drivers</h3>
             @if (@Model.PotentialDrivers.Count() > 0)
             {
                 <div class="row">
@@ -279,7 +280,7 @@
                         <tr>
                             <th></th>
                             <th>Name</th>
-                            <th>Number of spots</th>
+                            <th>Seats</th>
                         </tr>
                         @foreach (var d in @Model.PotentialDrivers)
                         {         
@@ -298,8 +299,27 @@
                         }
                     </table>
                 </div>
+            } else {
+                <p>No drivers.</p>
             }
-            <hr />
+            <h3>Need a ride</h3>
+            <div class="row">
+                @if(@Model.Hikers.Where(h => !h.Hiker.HasCar).Count() > 0)
+                {
+                    <table class="table">
+                        <th>Name</th>
+                        @foreach (var hiker in @Model.Hikers.Where(h => !h.Hiker.HasCar))
+                        {
+                            <tr>
+                                <td>@hiker.Hiker.FullName</td>
+                            </tr>
+                        }
+                    </table>
+                    } else
+                    {
+                        <p>No one needs a ride.</p>
+                    }
+            </div>
         </div>
     </div>
 </div>

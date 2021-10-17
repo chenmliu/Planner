@@ -17,6 +17,7 @@ CREATE TABLE hiker
 	snow_friendly BIT,
 	high_clearance BIT,
 	spaces INT,
+	license_plate VARCHAR(100),
 	preference INT, -- make enum in the code to parse that (Alone, Driver, Rider, etc.)
 );
 

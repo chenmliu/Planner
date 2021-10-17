@@ -107,8 +107,10 @@
             <tr>
                 <th>Name</th>
                 <th>Car brand</th>
-                <th>Car Model</th>
+                <th>Car model</th>
                 <th>Number of spots</th>
+                <th>Seats</th>
+                <th>License plate</th>
             </tr>
             @foreach (var hiker in @Model.Hikers.Where(h => h.Hiker.HasCar))
             {
@@ -117,14 +119,15 @@
                     <td>@hiker.Hiker.CarBrand</td>
                     <td>@hiker.Hiker.CarModel</td>
                     <td>@hiker.Hiker.Spaces</td>
+                    <td>@hiker.Hiker.LicensePlate</td>
                 </tr>
             }
         </table>
     </div>
     <br />
-    <h3>Need a ride</h3>
+    <h3>Riders</h3>
     <div class="row">
-        @if(Model.MembersNeedingRide.Count() > 0)
+        @if(@Model.Hikers.Where(h => !h.Hiker.HasCar).Count() > 0)
         {
             <table class="table">
                 <th>Name</th>
@@ -137,7 +140,7 @@
             </table>
             } else
             {
-                <p>No one needs a ride.</p>
+                <p>None.</p>
             }
     </div>
     <br />

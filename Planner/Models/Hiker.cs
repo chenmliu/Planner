@@ -33,6 +33,7 @@ namespace Planner.Models
 			Preference = hiker.Preference;
 			SnowFriendly = hiker.SnowFriendly;
 			HighClearance = hiker.HighClearance;
+			LicensePlate = hiker.LicensePlate;
 
 			if (encryptedPassword == null)
             {
@@ -198,6 +199,13 @@ namespace Planner.Models
 			get {
 				return $"{this.FirstName} {this.LastName}";
 			}
+		}
+
+		[Column("license_plate")]
+		public string LicensePlate
+		{
+			get;
+			set;
 		}
 
 		public static string EncryptPassword(string password)

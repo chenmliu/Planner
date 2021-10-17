@@ -70,6 +70,11 @@
                 <input asp-for="CarModel" class="form-control" />
                 <span asp-validation-for="CarModel" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="LicensePlate" class="control-label"></label>
+                <input asp-for="LicensePlate" class="form-control" />
+                <span asp-validation-for="LicensePlate" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Awd" /> @Html.DisplayNameFor(model => model.Awd)

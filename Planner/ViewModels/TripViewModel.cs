@@ -183,11 +183,13 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		/*
 		public IList<HikerViewModel> MembersNeedingRide
 		{
 			get;
 			set;
 		}
+		*/
 
 		[Display(Name = "River crossing")]
 		public bool RiverCrossing

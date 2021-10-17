@@ -41,6 +41,7 @@ namespace Planner.ViewModels
 			PendingInvitations = new List<TripViewModel>();
 			upcomingTrips = new List<TripViewModel>();
 			ParkingPasses = new List<ParkingPassViewModel>();
+			LicensePlate = hiker.LicensePlate;
 		}
 
 		public int Id
@@ -212,6 +213,13 @@ namespace Planner.ViewModels
 
 		[Display(Name = "Upcoming trips")]
 		public IEnumerable<TripViewModel> upcomingTrips
+		{
+			get;
+			set;
+		}
+
+		[Display(Name = "License plate")]
+		public string LicensePlate
 		{
 			get;
 			set;
