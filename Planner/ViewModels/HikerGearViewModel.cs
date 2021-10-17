@@ -1,4 +1,5 @@
-﻿using Planner.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Planner.Models;
 
 namespace Planner.ViewModels
 {
@@ -57,6 +58,7 @@ namespace Planner.ViewModels
             set;
 		}
 
+        [Display(Name = "Intended use")]
         public GearIntendedUse IntendedUse
         {
             get;

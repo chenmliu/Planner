@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Planner.Models;
 
 namespace Planner.ViewModels
@@ -56,6 +57,7 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		[Display(Name = "Start date")]
 		public DateTime StartDate
 		{
 			get;
@@ -68,6 +70,7 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		[Display(Name = "Peak")]
 		public string PeakName
 		{
 			get;
@@ -80,11 +83,14 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		[Display(Name = "Organizer")]
 		public string OwnerName
 		{
 			get;
 			set;
 		}
+
+		[Display(Name = "Group size")]
 
 		public int GroupSize
 		{
@@ -104,28 +110,35 @@ namespace Planner.ViewModels
 			set;
         }
 
+		[Display(Name = "Has snow")]
 		public bool HasSnow
         {
 			get;
 			set;
         }
+
+		[Display(Name = "Bumpy road")]
 		public bool IsBumpyRoad
 		{
 			get;
 			set;
 		}
+
+		[Display(Name = "Need high clearance vehicle")]
 		public bool NeedHighClearanceVehicle
         {
 			get;
 			set;
         }
 
+		[Display(Name = "Total distance")]
 		public double TotalDistance
         {
 			get;
 			set;
         }
 
+		[Display(Name = "Elevation gain")]
 		public int ElevationGain
 		{
 			get;

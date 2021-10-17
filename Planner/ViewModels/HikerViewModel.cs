@@ -49,14 +49,14 @@ namespace Planner.ViewModels
 			set;
 		}
 
-		[Display(Name = "First Name")]
+		[Display(Name = "First name")]
 		public string FirstName
 		{
 			get;
 			set;
 		}
 
-		[Display(Name = "Last Name")]
+		[Display(Name = "Last name")]
 		public string LastName
 		{
 			get;
@@ -90,21 +90,21 @@ namespace Planner.ViewModels
 			set;
 		}
 
-		[Display(Name = "Emergency Contact Name")]
+		[Display(Name = "Emergency contact name")]
 		public string EmergencyContactName
 		{
 			get;
 			set;
 		}
 
-		[Display(Name = "Emergency Contact Phone")]
+		[Display(Name = "Emergency contact phone")]
 		public string EmergencyContactPhone
 		{
 			get;
 			set;
 		}
 
-		[Display(Name = "Fun Scale")]
+		[Display(Name = "Fun scale")]
 		public int FunScale
 		{
 			get;
@@ -131,14 +131,14 @@ namespace Planner.ViewModels
 			set;
         }
 
-		[Display(Name = "Car Brand")]
+		[Display(Name = "Car brand")]
 		public string CarBrand
         {
 			get;
 			set;
         }
 
-		[Display(Name = "Car Model")]
+		[Display(Name = "Car model")]
 		public string CarModel
 		{
 			get;
@@ -164,12 +164,14 @@ namespace Planner.ViewModels
 			set;
 		}
 
+		[Display(Name = "Snow friendly")]
 		public bool SnowFriendly
 		{
 			get;
 			set;
 		}
 
+		[Display(Name = "High clearance")]
 		public bool HighClearance
 		{
 			get;
@@ -195,7 +197,7 @@ namespace Planner.ViewModels
 			set;
 		}
 
-		[Display(Name = "Past Trips")]
+		[Display(Name = "Past trips")]
 		public IEnumerable<TripViewModel> pastTrips
 		{
 			get;
@@ -208,7 +210,7 @@ namespace Planner.ViewModels
 			set;
         }
 
-		[Display(Name = "Upcoming Trips")]
+		[Display(Name = "Upcoming trips")]
 		public IEnumerable<TripViewModel> upcomingTrips
 		{
 			get;

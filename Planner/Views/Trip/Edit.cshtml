@@ -41,105 +41,104 @@
                 <span asp-validation-for="GroupSize" class="text-danger"></span>
             </div>
             <br/>
-            <fieldset>
-                <legend>Trip Details</legend>
 
-                <div class="form-group">
-                    <label asp-for="Location" class="control-label">Location</label>
-                    <input asp-for="Location" class="form-control"/>
-                    <span asp-validation-for="Location" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="TotalDistance" class="control-label">Distance (mi)</label>
-                    <input asp-for="TotalDistance" class="form-control"/>
-                    <span asp-validation-for="TotalDistance" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ElevationGain" class="control-label">Elevation Gain (feet)</label>
-                    <input asp-for="ElevationGain" class="form-control"/>
-                    <span asp-validation-for="ElevationGain" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Location" class="control-label">Bumpy Road?</label>
-                    <input asp-for="IsBumpyRoad" class="form-control" />
-                </div>
-            </fieldset>
+            <h2>Trip details</h2>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label">Location</label>
+                <input asp-for="Location" class="form-control"/>
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalDistance" class="control-label">Distance (mi)</label>
+                <input asp-for="TotalDistance" class="form-control"/>
+                <span asp-validation-for="TotalDistance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ElevationGain" class="control-label">Elevation Gain (feet)</label>
+                <input asp-for="ElevationGain" class="form-control"/>
+                <span asp-validation-for="ElevationGain" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsBumpyRoad" /> @Html.DisplayNameFor(model => model.IsBumpyRoad)
+                </label>
+            </div>
             <br/>
-            <fieldset>
-                <legend>Car Pool</legend>
-                <div class="form-group">
-                    <label asp-for="NeedHighClearanceVehicle" class="control-label">High Clearance Vehicle?</label>
-                    <input asp-for="NeedHighClearanceVehicle" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="HasSnow" class="control-label">Snow?</label>
-                    <input asp-for="HasSnow" class="form-control" />
-                    <span asp-validation-for="HasSnow" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Permit" class="control-label"></label>
-                    <select asp-for="Permit" id="Permit">
-                        <option value="DiscoverPass">Discover Pass</option>
-                        <option value="America Beautiful">America Beautiful</option>
-                        <option value="NorthwestForestPass">Northwest Forest Pass</option>
-                        <option value="NA">Not Needed</option>
-                    </select>
-                    <span asp-validation-for="Permit" class="text-danger"></span>
-                </div>
-            </fieldset>
+
+            <h2>Road condition</h2>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="NeedHighClearanceVehicle"/> @Html.DisplayNameFor(model => model.NeedHighClearanceVehicle)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HasSnow" name="1" /> @Html.DisplayNameFor(model => model.HasSnow)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Permit" class="control-label"></label>
+                <select asp-for="Permit" id="Permit">
+                    <option value="DiscoverPass">Discover Pass</option>
+                    <option value="America Beautiful">America Beautiful</option>
+                    <option value="NorthwestForestPass">Northwest Forest Pass</option>
+                    <option value="NA">Not Needed</option>
+                </select>
+                <span asp-validation-for="Permit" class="text-danger"></span>
+            </div>
             <br />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
-        <fieldset>
-            <legend>Gear List</legend>
-            <table class="table">
+        <br />
+
+        <h2>Group gear</h2>
+        <table class="table">
+            <tr>
+                <th style="width: 33%">Item</th>
+                <th style="width: 33%">Quantity</th>
+                <th style="width: 33%"></th>
+            </tr>
+            <form asp-action="AddTripGroupGear">
                 <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th></th>
+                    <td>
+                        <select name="item" id="item">
+                            <option value="Rope">Rope</option>                                       
+                            <option value="Tent">Tent</option>                                       
+                            <option value="Stove">Stove</option>                                       
+                            <option value="Tent">Tent</option>                                       
+                            <option value="Emergency bivy">Emergency bivy</option>                                       
+                            <option value="Satellite messenger">Satellite messenger</option>                                       
+                            <option value="Shovel">Shovel</option> 
+                            <option value="Water filter">Water filter</option>  
+                        </select>
+                        <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
+                    </td>
+                    <td>
+                        <input type="number" name="quantity" id="quantity" value="1" />
+                    </td>
+                    <td>
+                        <input type="submit" value="Add" class="btn btn-primary login-button-width" />
+                    </td>
                 </tr>
-                <form asp-action="AddTripGroupGear">
-                    <tr>
-                        <td>
-                            <select name="item" id="item">
-                                <option value="Rope">Rope</option>                                       
-                                <option value="Tent">Tent</option>                                       
-                                <option value="Stove">Stove</option>                                       
-                                <option value="Tent">Tent</option>                                       
-                                <option value="Emergency bivy">Emergency bivy</option>                                       
-                                <option value="Satellite messenger">Satellite messenger</option>                                       
-                                <option value="Shovel">Shovel</option> 
-                                <option value="Water filter">Water filter</option>  
-                            </select>
+            </form>      
+            @foreach (var item in Model.GroupGearList)
+            {
+                <tr>
+                    <td>@item.Item</td>
+                    <td>@item.Number</td>
+                    <td>
+                        <form asp-action="RemoveTripGroupGear">
+                            <input type="hidden" name="item" id="item" value="@item.Item" />
+                            <input type="hidden" name="quantity" id="quantity" value="@item.Number" />
                             <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
-                        </td>
-                        <td>
-                            <input type="number" name="quantity" id="quantity" value="1" />
-                        </td>
-                        <td>
-                            <input type="submit" value="Add" class="btn btn-primary login-button-width" />
-                        </td>
-                    </tr>
-                </form>      
-                @foreach (var item in Model.GroupGearList)
-                {
-                    <tr>
-                        <td>@item.Item</td>
-                        <td>@item.Number</td>
-                        <td>
-                            <form asp-action="RemoveTripGroupGear">
-                                <input type="hidden" name="item" id="item" value="@item.Item" />
-                                <input type="hidden" name="quantity" id="quantity" value="@item.Number" />
-                                <input type="hidden" name="tripId" id="tripId" value="@Model.Id" />
-                                <input type="submit" value="Remove" class="btn btn-danger login-button-width" />
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </table>
-        </fieldset>
+                            <input type="submit" value="Remove" class="btn btn-danger login-button-width" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
         <div>
             <a asp-action="Index">Back to List</a>
         </div>

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Planner.Models;
+﻿using Planner.Models;
 
 namespace Planner.ViewModels
 {
-    public class GroupGearViewModel
+	public class GroupGearViewModel
     {
         public GroupGearViewModel()
         {
