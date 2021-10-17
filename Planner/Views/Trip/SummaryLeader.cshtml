@@ -101,7 +101,7 @@
             @Html.DisplayFor(model => model.MeetingLocation)
         </dd>
     </dl>
-    <h5>Drivers</h5>
+    <h3>Drivers</h3>
     <div class="row">
         <table class="table">
             <tr>
@@ -122,19 +122,23 @@
         </table>
     </div>
     <br />
-    <h5>Need a ride</h5>
+    <h3>Need a ride</h3>
     <div class="row">
-        <table class="table">
-            <tr>
+        @if(Model.MembersNeedingRide.Count() > 0)
+        {
+            <table class="table">
                 <th>Name</th>
-            </tr>
-            @foreach (var hiker in @Model.Hikers.Where(h => !h.Hiker.HasCar))
+                @foreach (var hiker in @Model.Hikers.Where(h => !h.Hiker.HasCar))
+                {
+                    <tr>
+                        <td>@hiker.Hiker.FullName</td>
+                    </tr>
+                }
+            </table>
+            } else
             {
-                <tr>
-                    <td>@hiker.Hiker.FullName</td>
-                </tr>
+                <p>No one needs a ride.</p>
             }
-        </table>
     </div>
     <br />
 

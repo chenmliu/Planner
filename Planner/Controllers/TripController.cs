@@ -317,10 +317,21 @@ namespace Planner.Controllers
 
 			viewModel.Hikers = hikers;
 			viewModel.GroupGearList = groupGear;
+			viewModel = GetPotentialDrivers(viewModel, hikers);
 
+			return View(viewModel);
+		}
+
+		private TripViewModel GetPotentialDrivers(TripViewModel trip, List<HikerTripViewModel> hikerTrips)
+		{
 			// Select the first few drivers that have enough seats for the entire group
-			var totalSeatsNeeded = hikers.Count();
-			var potentialDrivers = hikers.Where(h => h.Hiker.HasCar)
+			var totalSeatsNeeded = hikerTrips.Count();
+			var membersNeedingRide = hikerTrips
+				.Where(h => !h.Hiker.HasCar)
+				.Select(h => new HikerViewModel(h.Hiker))
+				.ToList();
+			var potentialDrivers = hikerTrips
+				.Where(h => !h.Hiker.HasCar)
 				.Select(d => new PotentialDriver()
 				{
 					HikerId = d.HikerId,
@@ -337,9 +348,9 @@ namespace Planner.Controllers
 					break;
 				}
 			}
-			viewModel.PotentialDrivers = potentialDrivers;
-
-			return View(viewModel);
+			trip.PotentialDrivers = potentialDrivers;
+			trip.MembersNeedingRide = membersNeedingRide;
+			return trip;
 		}
 
 		/// <summary>
