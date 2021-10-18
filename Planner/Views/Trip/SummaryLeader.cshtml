@@ -128,7 +128,7 @@
             @Html.DisplayFor(model => model.MeetingLocation)
         </dd>
     </dl>
-    <h3>Drivers</h3>
+    <h4>Drivers</h4>
     <div class="row">
         <table class="table">
             <tr>
@@ -151,7 +151,7 @@
         </table>
     </div>
     <br />
-    <h3>Riders</h3>
+    <h4>Riders</h4>
     <div class="row">
         @if(@Model.Hikers.Where(h => !h.Hiker.HasCar).Count() > 0)
         {

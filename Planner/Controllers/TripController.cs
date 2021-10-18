@@ -318,8 +318,97 @@ namespace Planner.Controllers
 			viewModel.Hikers = hikers;
 			viewModel.GroupGearList = groupGear;
 			viewModel = GetPotentialDrivers(viewModel, hikers);
+			viewModel = await CalculateGroupGearMatrixAsync(viewModel);
 
 			return View(viewModel);
+		}
+
+		private async Task<TripViewModel> CalculateGroupGearMatrixAsync(TripViewModel trip)
+		{
+			var gearQuantities = new Dictionary<string, Tuple<int, List<PotentialGroupGearContributor>>>();
+
+			// A gear needed -> <quantity needed, hikers who have it>
+			foreach (var gearItem in trip.GroupGearList)
+			{
+				gearQuantities.Add(gearItem.Item, new Tuple<int, List<PotentialGroupGearContributor>>(gearItem.Number, new List<PotentialGroupGearContributor>()));
+			}
+
+			// Hiker id -> number of gear assigned to them
+			var hikerToNumGearAssigned = new Dictionary<int, int>();
+
+			foreach (var hiker in trip.Hikers)
+			{
+				foreach (var gearItem in hiker.Hiker.HikerGear)
+				{
+
+					// If we need that gear
+					if (gearQuantities.ContainsKey(gearItem.Item))
+					{
+						gearQuantities[gearItem.Item].Item2.Add(new PotentialGroupGearContributor()
+						{
+							HikerId = gearItem.HikerId,
+							HikerName = hiker.HikerName
+						});
+					}
+				}
+			}
+
+			var memberIds = await _dbContext.HikerTrip
+				.Where(ht => ht.TripId == trip.Id)
+				.Select(h => h.HikerId)
+				.ToListAsync();
+
+			foreach (var memberId in memberIds)
+			{
+				hikerToNumGearAssigned.Add(memberId, 0);
+			}
+
+			// Assign gear
+			foreach (var gear in gearQuantities.Keys)
+			{
+				// model: trip id, hiker id, gear name
+				var numNeeded = gearQuantities[gear].Item1;
+				var potentialContributors = gearQuantities[gear].Item2;
+
+				// sortedContributors is hikerId -> numGearAssigned
+				var sortedContributors = from entry in hikerToNumGearAssigned orderby entry.Value ascending select entry;
+
+				foreach (var entry in sortedContributors)
+				{
+					var hikerId = entry.Key;
+
+					if (potentialContributors.FirstOrDefault(p => p.HikerId == hikerId) != null)
+					{
+						var existing = potentialContributors.Where(h => h.HikerId == hikerId).FirstOrDefault();
+						existing.Selected = true;
+
+						// Update hiker's assigned gear count
+						hikerToNumGearAssigned[hikerId]++;
+						numNeeded--;
+						if (numNeeded == 0)
+						{
+							break;
+						}
+					}
+				}
+			}
+
+			// Gear -> number still needed
+			var missingItems = new Dictionary<string, int>();
+			foreach (var gear in gearQuantities.Keys)
+			{
+				var numNeeded = gearQuantities[gear].Item1;
+				var numAssigned = gearQuantities[gear].Item2.Count;
+				if (numNeeded > numAssigned)
+				{
+					missingItems.Add(gear, numNeeded - numAssigned);
+				}
+			}
+
+			trip.potentialGroupGearContributors = gearQuantities;
+			trip.missingItems = missingItems;
+
+			return trip;
 		}
 
 		private TripViewModel GetPotentialDrivers(TripViewModel trip, List<HikerTripViewModel> hikerTrips)

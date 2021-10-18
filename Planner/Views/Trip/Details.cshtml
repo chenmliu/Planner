@@ -15,6 +15,7 @@
     // Need to be enhanced to take car type and ppl preferences into account
     var spacesInACar = Model.Hikers.Where(h => h.Hiker.HasCar).Sum(h => h.Hiker.Spaces);
     var needARide = Model.Hikers.Count();
+    var numMoreSeatsNeeded = needARide - spacesInACar;
 
     var allHikers = Model.Hikers;
     bool alreadyUser = false;
@@ -78,10 +79,9 @@
 }
 
 <div>
-    <hr />
     <div class="row">
         <div class="col-sm-12">
-            <h4>Trip Details</h4>
+            <h2>Trip Details</h2>
             <dl class="row">
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Name)
@@ -146,7 +146,9 @@
 
         </div>
     </div>
+
     <hr />
+
     <div class="row">
         <div class="col-sm-12">
             <h2>Members</h2>
@@ -209,57 +211,67 @@
             }
         </div>
     </div>
-    <br />
+
+    <hr />
+
     <div class="row">
         <div class="col-sm-12">
-            <h4>Group Gear</h4>
-            @if (missingItems.Count > 0)
+            <h2>Group Gear</h2>
+            @if (Model.potentialGroupGearContributors.Keys.Count()  == 0){
+                <p>Not needed.</p>
+            }
+
+            @if (Model.missingItems.Count() > 0)
             {
-                <div class="alert alert-primary" role="alert">
+                <div class="alert alert-warning" role="alert">
                     Looks like participants doesn't have enough gear! Missing items:
                     <ul>
-                        @foreach (var missingItem in missingItems)
+                        @foreach (var missingItem in ViewBag.missingItems)
                         {
-                            <li>@missingItem.Key , @missingItem.Value</li>
+                            <li>@missingItem.Key, still need @missingItem.Value</li>
                         }
                     </ul>
                 </div>
             }
             <div class="row">
                 <ul>
-                    @foreach (var gear in gearQuantities)
+                    @foreach (var gear in Model.potentialGroupGearContributors)
                     {
                         <li>
-                            @gear.Key, need: @gear.Value.Item1
-                            <ul>
-                                @for (int i = 0; i < @gear.Value.Item2.Count; i++)
-                                {
-                                    @if (i < gear.Value.Item1)
-                                    {
-                                        <li><input type="checkbox" checked /> @gear.Value.Item2[i].Hiker.FullName -- weight: @gear.Value.Item2[i].Weight oz </li>
-                                    }
-                                    else
-                                    {
-                                        <li><input type="checkbox"/> @gear.Value.Item2[i].Hiker.FullName -- weight: @gear.Value.Item2[i].Weight oz </li>
-                                    }
+                            @gear.Key, need @gear.Value.Item1
+                            <ul style="padding-left: 0">
+                                @foreach (var c in gear.Value.Item2)
+                                {         
+                                    <li style="list-style-type: none">
+                                        @if (@c.Selected)
+                                        {
+                                            <input type="checkbox" id="contributor" name="contributor" value="contributor" checked="true"/> @c.HikerName
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" id="contributor" name="contributor" value="contributor"/> @c.HikerName
+                                        }
+                                    </li>
                                 }
                             </ul>
                         </li>
                     }
                 </ul>
             </div>
-            <hr />
         </div>
     </div>
+
+    <hr />
+
     <div class="row">
         <div class="col-sm-12">
             <h2>Carpool</h2>
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-6" style="padding-left: 0">
                 <label asp-for="MeetingTime" class="control-label">Meeting time</label>
                 <input asp-for="MeetingTime" class="form-control"/>
                 <span asp-validation-for="MeetingTime" class="text-danger"></span>
             </div>
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-6" style="padding-left: 0">
                 <label asp-for="MeetingLocation" class="control-label">Meeting location</label>
                 <input asp-for="MeetingLocation" class="form-control"/>
                 <span asp-validation-for="MeetingLocation" class="text-danger"></span>
@@ -267,20 +279,20 @@
             @if (spacesInACar < needARide || needARide == 0)
             {
                 <div class="alert alert-warning" role="alert">
-                    Looks like this trip doesn't have enough cars to get to trailhead!
+                    Looks like this trip doesn't have enough cars to get to trailhead! @numMoreSeatsNeeded more seat(s) needed.
                 </div>
             }        
             <p>Total seats needed: @needARide</p>
-            <h3>Drivers</h3>
+            <h4>Drivers</h4>
             @if (@Model.PotentialDrivers.Count() > 0)
             {
                 <div class="row">
                     <p></p>
                     <table class="table">
                         <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Seats</th>
+                            <th style="width: 33%"></th>
+                            <th style="width: 33%">Name</th>
+                            <th style="width: 33%">Seats</th>
                         </tr>
                         @foreach (var d in @Model.PotentialDrivers)
                         {         
@@ -302,11 +314,11 @@
             } else {
                 <p>No drivers.</p>
             }
-            <h3>Need a ride</h3>
+            <h4>Riders</h4>
             <div class="row">
                 @if(@Model.Hikers.Where(h => !h.Hiker.HasCar).Count() > 0)
                 {
-                    <table class="table">
+                    <table class="table ">
                         <th>Name</th>
                         @foreach (var hiker in @Model.Hikers.Where(h => !h.Hiker.HasCar))
                         {

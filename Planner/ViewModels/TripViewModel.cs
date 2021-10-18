@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Planner.Models;
 
 namespace Planner.ViewModels
@@ -187,6 +188,20 @@ namespace Planner.ViewModels
 		public List<GroupGearViewModel> GroupGearList { get; set; }
 
 		public IList<PotentialDriver> PotentialDrivers
+		{
+			get;
+			set;
+		}
+
+		[NotMapped]
+		public Dictionary<string, int> missingItems
+		{
+			get;
+			set;
+		}
+
+		[NotMapped]
+		public Dictionary<string, Tuple<int, List<PotentialGroupGearContributor>>> potentialGroupGearContributors
 		{
 			get;
 			set;
