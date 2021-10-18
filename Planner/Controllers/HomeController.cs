@@ -275,7 +275,7 @@ namespace Planner.Controllers
 		{
 			var pass = await _dbContext.ParkingPass
 				.FirstOrDefaultAsync(g => g.Name.Equals(name)
-					&& g.ExpirationYear == expirationYear
+//					&& g.ExpirationYear == expirationYear
 					&& g.HikerId == hikerId)
 				.ConfigureAwait(true);
 
