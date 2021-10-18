@@ -267,7 +267,7 @@ namespace Planner.Controllers
 			};
 			await _dbContext.ParkingPass.AddAsync(pass).ConfigureAwait(true);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
-			return RedirectToAction("Edit", new { Id = hikerId });
+			return RedirectToAction("Details", new { Id = hikerId });
 		}
 
 		[HttpPost]
@@ -286,7 +286,7 @@ namespace Planner.Controllers
 
 			_dbContext.ParkingPass.Remove(pass);
 			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
-			return RedirectToAction("Edit", new { Id = hikerId });
+			return RedirectToAction("Details", new { Id = hikerId });
 		}
 
 		private async Task<IActionResult> GetHikerViewModelByIdAsync(int id)
