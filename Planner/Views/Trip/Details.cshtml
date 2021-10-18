@@ -226,7 +226,7 @@
                 <div class="alert alert-warning" role="alert">
                     Looks like participants doesn't have enough gear! Missing items:
                     <ul>
-                        @foreach (var missingItem in ViewBag.missingItems)
+                        @foreach (var missingItem in Model.missingItems)
                         {
                             <li>@missingItem.Key, still need @missingItem.Value</li>
                         }

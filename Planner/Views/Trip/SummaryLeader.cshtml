@@ -19,7 +19,6 @@
 }
 
 <div>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -62,7 +61,6 @@
             @Html.DisplayFor(model => model.OwnerName)
         </dd>
     </dl>
-    <br />
 
     <h2>Emergency contact</h2>
     <dl class="row">
@@ -111,7 +109,6 @@
             }
         </table>
     </div>
-    <br />
 
     <h2>Carpool</h4>
     <dl class="row">
@@ -169,7 +166,31 @@
                 <p>None.</p>
             }
     </div>
-    <br />
+
+    <h2>Group gear</h2>
+    @if (Model.potentialGroupGearContributors.Keys.Count()  == 0){
+        <p>Not needed.</p>
+    }
+
+    <div class="row">
+        <ul>
+            @foreach (var gear in Model.potentialGroupGearContributors)
+            {
+                <li>
+                    @gear.Key, need @gear.Value.Item1
+                    <ul>
+                        @foreach (var c in gear.Value.Item2)
+                        {         
+                            @if (@c.Selected)
+                            {
+                                <li>@c.HikerName</li>
+                            }
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
 
     <h2>Personal gear</h2>
     <div>
@@ -241,8 +262,6 @@
         }
     </div>
 </div>
-
-<hr />
 
 <div>
     <a asp-action="Index">Back to List</a>
