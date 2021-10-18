@@ -132,7 +132,7 @@ namespace Planner.ViewModels
 			set;
         }
 
-		[Display(Name = "Car brand")]
+		[Display(Name = "Car make")]
 		public string CarBrand
         {
 			get;

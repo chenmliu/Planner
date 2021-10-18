@@ -319,8 +319,40 @@ namespace Planner.Controllers
 			viewModel.GroupGearList = groupGear;
 			viewModel = GetPotentialDrivers(viewModel, hikers);
 			viewModel = await CalculateGroupGearMatrixAsync(viewModel);
+			viewModel = await GetExtraGear(viewModel);
 
 			return View(viewModel);
+		}
+
+		private async Task<TripViewModel> GetExtraGear(TripViewModel trip)
+		{
+			var hikers = await _dbContext.HikerTrip
+				.Where(ht => ht.TripId == trip.Id)
+				.Include(ht => ht.Hiker)
+				.Join(_dbContext.Hiker,
+				m => m.HikerId,
+				v => v.Id,
+				(m, v) => new HikerViewModel(v))
+				.ToListAsync();
+
+			var extraGear = new List<ExtraGear>();
+			foreach (var hiker in hikers)
+			{
+				var gear = await _dbContext.HikerGear
+					.Where(hg => hg.HikerId == hiker.Id &&
+						hg.IntendedUse == GearIntendedUse.Extra)
+					.Select(g => new ExtraGear()
+					{
+						Name = g.Item,
+						Brand = g.Brand,
+						Model = g.Model,
+						OwnerName = hiker.FullName
+					})
+					.ToListAsync();
+				extraGear.AddRange(gear);
+			}
+			trip.ExtraGear = extraGear;
+			return trip;
 		}
 
 		private async Task<TripViewModel> CalculateGroupGearMatrixAsync(TripViewModel trip)

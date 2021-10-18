@@ -62,6 +62,8 @@
         </dd>
     </dl>
 
+    <br />
+
     <h2>Emergency contact</h2>
     <dl class="row">
         <dt class="col-sm-3">
@@ -110,6 +112,8 @@
         </table>
     </div>
 
+    <br />
+
     <h2>Carpool</h4>
     <dl class="row">
         <dt class="col-sm-6">
@@ -130,7 +134,7 @@
         <table class="table">
             <tr>
                 <th>Name</th>
-                <th>Car brand</th>
+                <th>Car make</th>
                 <th>Car model</th>
                 <th>Seats</th>
                 <th>License plate</th>
@@ -167,6 +171,8 @@
             }
     </div>
 
+    <br />
+
     <h2>Group gear</h2>
     @if (Model.potentialGroupGearContributors.Keys.Count()  == 0){
         <p>Not needed.</p>
@@ -191,6 +197,34 @@
             }
         </ul>
     </div>
+    
+    <br />
+
+    <h2>Extra gear offered by group members</h2>
+    @if (Model.ExtraGear.Count() > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>Item</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Owner</th>
+            </tr>
+            @foreach (var gear in Model.ExtraGear)
+            {
+                <tr>
+                    <td>@gear.Name</td>
+                    <td>@gear.Brand</td>
+                    <td>@gear.Model</td>
+                    <td>@gear.OwnerName</td>
+                </tr>
+            }
+        </table>
+    } else {
+        <p>None.</p>
+    }
+
+    <br />
 
     <h2>Personal gear</h2>
     <div>

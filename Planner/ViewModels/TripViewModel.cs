@@ -47,6 +47,7 @@ namespace Planner.ViewModels
 			MeetingTime = trip.MeetingTime;
 			MeetingLocation = trip.MeetingLocation;
 			Peak = new PeakViewModel(trip.Peak);
+			ExtraGear = new List<ExtraGear>();
 		}
 
 		public int Id
@@ -274,6 +275,12 @@ namespace Planner.ViewModels
 			{
 				return new DateTime(StartDate.Year, StartDate.Month, StartDate.Day, 12, 0, 0);
 			}
+		}
+
+		public IList<ExtraGear> ExtraGear
+		{
+			get;
+			set;
 		}
 	}
 }
