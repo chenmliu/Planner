@@ -92,21 +92,33 @@ namespace Planner.Controllers
 		[HttpPost]
 		public async Task<ActionResult> AddGroupGear(string item, string brand, string model, int hikerId)
 		{
-			var gear = new HikerGear()
+			// If the same gear was already added
+			var existingGear = await _dbContext.HikerGear
+				.Where(g => g.Item.Equals(item)
+					&& g.Brand.Equals(brand)
+					&& g.Model.Equals(model)
+					&& g.HikerId.Equals(hikerId)
+					&& g.GroupUse == true)
+				.ToListAsync();
+
+			if (!existingGear.Any())
 			{
-				HikerId = hikerId,
-				Item = item,
-				Brand = brand,
-				Model = model,
-				IntendedUse = GearIntendedUse.Primary,
-				GroupUse = true,
-				Weight = 1,
-				NumberOfUsers = 1,
-				Specs = "specs",
-				Details = "details"
-			};
-			await _dbContext.HikerGear.AddAsync(gear).ConfigureAwait(true);
-			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+				var gear = new HikerGear()
+				{
+					HikerId = hikerId,
+					Item = item,
+					Brand = brand,
+					Model = model,
+					IntendedUse = GearIntendedUse.Primary,
+					GroupUse = true,
+					Weight = 1,
+					NumberOfUsers = 1,
+					Specs = "specs",
+					Details = "details"
+				};
+				await _dbContext.HikerGear.AddAsync(gear).ConfigureAwait(true);
+				await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			}
 
 			return new RedirectToRouteResult(
 				new RouteValueDictionary
@@ -146,21 +158,33 @@ namespace Planner.Controllers
 		[HttpPost]
 		public async Task<ActionResult> AddExtraGear(string item, string brand, string model, int hikerId)
 		{
-			var gear = new HikerGear()
+			// If the same gear was already added
+			var existingGear = await _dbContext.HikerGear
+				.Where(g => g.Item.Equals(item)
+					&& g.Brand.Equals(brand)
+					&& g.Model.Equals(model)
+					&& g.HikerId.Equals(hikerId)
+					&& g.IntendedUse == GearIntendedUse.Extra)
+				.ToListAsync();
+
+			if (!existingGear.Any())
 			{
-				HikerId = hikerId,
-				Item = item,
-				Brand = brand,
-				Model = model,
-				IntendedUse = GearIntendedUse.Extra,
-				GroupUse = false,
-				Weight = 1,
-				NumberOfUsers = 1,
-				Specs = "specs",
-				Details = "details"
-			};
-			await _dbContext.HikerGear.AddAsync(gear).ConfigureAwait(true);
-			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+				var gear = new HikerGear()
+				{
+					HikerId = hikerId,
+					Item = item,
+					Brand = brand,
+					Model = model,
+					IntendedUse = GearIntendedUse.Extra,
+					GroupUse = false,
+					Weight = 1,
+					NumberOfUsers = 1,
+					Specs = "specs",
+					Details = "details"
+				};
+				await _dbContext.HikerGear.AddAsync(gear).ConfigureAwait(true);
+				await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			}
 
 			return new RedirectToRouteResult(
 				new RouteValueDictionary
@@ -259,14 +283,25 @@ namespace Planner.Controllers
 		[HttpPost]
 		public async Task<ActionResult> AddParkingPass(string name, int expirationYear, int hikerId)
 		{
-			var pass = new ParkingPass()
+			// If the same pass was already added
+			var existingPass = await _dbContext.ParkingPass
+				.Where(g => g.Name.Equals(name)
+					&& g.ExpirationYear == expirationYear
+					&& g.HikerId == hikerId)
+				.ToListAsync();
+
+			if (!existingPass.Any())
 			{
-				Name = name,
-				ExpirationYear = expirationYear,
-				HikerId = hikerId
-			};
-			await _dbContext.ParkingPass.AddAsync(pass).ConfigureAwait(true);
-			await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+				var pass = new ParkingPass()
+				{
+					Name = name,
+					ExpirationYear = expirationYear,
+					HikerId = hikerId
+				};
+				await _dbContext.ParkingPass.AddAsync(pass).ConfigureAwait(true);
+				await _dbContext.SaveChangesAsync().ConfigureAwait(true);
+			}
+
 			return RedirectToAction("Details", new { Id = hikerId });
 		}
 
@@ -275,7 +310,7 @@ namespace Planner.Controllers
 		{
 			var pass = await _dbContext.ParkingPass
 				.FirstOrDefaultAsync(g => g.Name.Equals(name)
-//					&& g.ExpirationYear == expirationYear
+					&& g.ExpirationYear == expirationYear
 					&& g.HikerId == hikerId)
 				.ConfigureAwait(true);
 

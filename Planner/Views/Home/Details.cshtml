@@ -123,9 +123,9 @@
                 <tr>
                     <td> 
                         <select name="name" id="name">
-                            <option value="DiscoverPass">Discover Pass</option>
+                            <option value="Discover Pass">Discover Pass</option>
                             <option value="America Beautiful">America Beautiful</option>
-                            <option value="NorthwestForestPass">Northwest Forest Pass</option>
+                            <option value="Northwest Forest Pass">Northwest Forest Pass</option>
                         </select>
                     </td>
                     <td> 
@@ -147,7 +147,7 @@
             {
                 <tr>
                     <td>@item.Name</td>
-                    <td>2022</td>
+                    <td>@item.ExpirationYear</td>
                     <td>
                         <form asp-action="RemoveParkingPass">
                             <input type="hidden" name="name" id="name" value="@item.Name" />

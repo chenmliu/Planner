@@ -11,7 +11,7 @@
 		{
 			Id = pass.Id;
 			Name = pass.Name;
-			ExpirationYear = ExpirationYear;
+			ExpirationYear = pass.ExpirationYear;
 		}
 
 		public int Id
