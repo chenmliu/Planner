@@ -4,32 +4,29 @@
 
 Hassle-free hike planner is a unified collaboration platform that helps organizers easily plan logistics and coordinate with the group.   It does online research for you, and automatically generates trip plans based on group members' profile including their information and contribution to the group, to optimize driving, gear sharing and itinerary. Everyone gets their personalized to-do list for the trips, and the group is ready to have a safe and fun adventure together.
 
-## Database access
-
-Azure subscription: \<to be shared separately\>
-Resource group: Hackathon2021
-SQL server name: `tahoma`
-SQL database name: `tahoma`
-
-To view and edit the database locally, you can use [SQL Management Studio](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15) with the following configuration:
-
-- Server type: Database Engine
-- Server name: `tcp:tahoma.database.windows.net,1433`
-- Authentication: SQL Server Authentication
-- Login: `tahoma`
-- Password: \<to be shared separately\>
-
-When prompted, sign it to your Azure account.
-
-If you get an error message saying your IP addressed is not allowed, go to the SQL Database in the Azure portal. On the overview page, click "Set server firewall", and add your IP there. Give it any rule name, and you can use your same IP for Start IP and End IP.
-
-![SQL Server login](tahomadb.png)
-
 ## Local development
 
-Open appsettings.json file, and provide the value for `DB_CONNECTION_STRING` setting. You can find the connection string for the "Tahoma" SQL Database in the Azure portal, and replace the `{your_password}` placeholder with the password shared separately.
+Open appsettings.json file, and provide the value for `DB_CONNECTION_STRING` setting. You can find the connection string for the "Tahoma" SQL Database in the Azure portal, and replace the `{your_password}` placeholder with the password shared separately. Populate other settings as shown below.
 
 Make sure to undo the changes to this file before checking in code changes.
+
+```
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft": "Warning",
+            "Microsoft.Hosting.Lifetime": "Information"
+        }
+    },
+    "AllowedHosts": "*",
+    "DB_CONNECTION_STRING": "",
+    "BITLY_BEARER_TOKEN": "",
+    "SHOULD_QUERY_BITLY": false,
+    "SHOULD_QUERY_WEATHER": true
+}
+
+```
 
 ## Folder structure
 
