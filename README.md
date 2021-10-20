@@ -1,6 +1,6 @@
 # Planner
 
-![Login](login.png)
+![Login](login.PNG)
 
 ## Introduction
 
