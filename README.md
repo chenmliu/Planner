@@ -1,5 +1,7 @@
 # Planner
 
+![Login](login.png)
+
 ## Introduction
 
 Hassle-free hike planner is a unified collaboration platform that helps organizers easily plan logistics and coordinate with the group.   It does online research for you, and automatically generates trip plans based on group members' profile including their information and contribution to the group, to optimize driving, gear sharing and itinerary. Everyone gets their personalized to-do list for the trips, and the group is ready to have a safe and fun adventure together.
