@@ -32,10 +32,6 @@
     <None Remove="Json.Net" />
     <None Remove="Newtonsoft.Json" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Controllers\CODEOWNERS" />
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
