@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\CODEOWNERS" />
     <None Remove="Data\" />
     <None Remove="RestSharp" />
     <None Remove="GeoJSON.Net" />
@@ -30,6 +31,10 @@
     <None Remove="GeoJSON.Net.Contrib.Wkb" />
     <None Remove="Json.Net" />
     <None Remove="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Controllers\CODEOWNERS" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
